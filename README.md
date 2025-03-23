@@ -2,7 +2,7 @@
 
 A retro-style incremental game inspired by the Commodore computers of the 1980s. Render pixels, upgrade your system, and unlock new capabilities in this nostalgic clicker game.
 
-## [Changelog](CHANGELOG.md)
+## [Changelog](public/CHANGELOG.md)
 
 ## Features
 

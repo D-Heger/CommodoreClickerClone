@@ -7,8 +7,8 @@
     </header>
 
     <main>
-      <div class="settings-container" :class="{ 'show': showSettingsPanel }">
-        <SettingsPanel />
+      <div class="settings-container crt-panel" :class="{ 'show': showSettingsPanel }">
+        <SettingsPanel @open-changelog="openChangelog" />
       </div>
 
       <div class="content-area">
@@ -26,10 +26,12 @@
               {{ showUpgradesPanel ? '>' : '<' }} </button>
       </div>
 
-      <div class="upgrades-container" :class="{ 'show': showUpgradesPanel }">
+      <div class="upgrades-container crt-panel" :class="{ 'show': showUpgradesPanel }">
         <UpgradesPanel :pixels="pixels" :upgrades="upgrades" @purchase="purchaseUpgrade" />
       </div>
     </main>
+
+    <ChangelogPopup :show="showChangelog" :changelog="changelogContent" @close="closeChangelog" />
   </div>
 </template>
 
@@ -39,6 +41,7 @@ import StatsDisplay from './components/game/StatsDisplay.vue'
 import PixelCanvas from './components/game/PixelCanvas.vue'
 import UpgradesPanel from './components/game/UpgradesPanel.vue'
 import SettingsPanel from './components/game/SettingsPanel.vue'
+import ChangelogPopup from './components/game/ChangelogPopup.vue'
 import { toDecimal, formatNumber, add, multiply } from './utils/numbers'
 import { 
   loadUpgrades, 
@@ -56,6 +59,8 @@ const lastUpdate = ref(Date.now())
 const upgrades = ref([])
 const showUpgradesPanel = ref(false)
 const showSettingsPanel = ref(false)
+const showChangelog = ref(false)
+const changelogContent = ref('')
 
 // Panel visibility toggles
 const toggleUpgradesPanel = () => {
@@ -70,6 +75,10 @@ const toggleSettingsPanel = () => {
   if (showSettingsPanel.value && showUpgradesPanel.value) {
     showUpgradesPanel.value = false
   }
+}
+
+const closeChangelog = () => {
+  showChangelog.value = false
 }
 
 // Computed properties
@@ -102,6 +111,33 @@ const purchaseUpgrade = (upgradeId) => {
   }
 }
 
+// Load changelog
+const loadChangelog = async () => {
+  try {
+    // Try to fetch the changelog
+    const response = await fetch('/CHANGELOG.md')
+    if (!response.ok) {
+      throw new Error('Failed to load changelog')
+    }
+    changelogContent.value = await response.text()
+    // Only show if we successfully loaded content
+    if (changelogContent.value) {
+      showChangelog.value = true
+    }
+  } catch (error) {
+    console.error('Failed to load changelog:', error)
+  }
+}
+
+// Changelog handling
+const openChangelog = async () => {
+  if (!changelogContent.value) {
+    await loadChangelog()
+  } else {
+    showChangelog.value = true
+  }
+}
+
 // Automatic pixel generation
 const updatePixels = () => {
   const now = Date.now()
@@ -127,6 +163,7 @@ onMounted(() => {
   upgrades.value = loadUpgrades(upgradesData)
   lastUpdate.value = Date.now()
   animationFrameId = requestAnimationFrame(tick)
+  loadChangelog() // Show changelog on initial load
 })
 
 onUnmounted(() => {
@@ -246,11 +283,13 @@ main {
 .settings-container {
   left: -320px;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.5);
+  border-right: var(--panel-border);
 }
 
 .upgrades-container {
   right: -320px;
   box-shadow: -3px 0 10px rgba(0, 0, 0, 0.5);
+  border-left: var(--panel-border);
 }
 
 .settings-container.show {

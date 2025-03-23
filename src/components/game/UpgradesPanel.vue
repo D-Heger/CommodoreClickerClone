@@ -1,5 +1,5 @@
 <template>
-  <div class="upgrades-panel crt-panel">
+  <div class="upgrades-panel">
     <h2 class="retro-title">UPGRADES</h2>
 
     <div class="upgrades-list">
@@ -57,7 +57,6 @@ defineEmits(['purchase'])
 .upgrades-panel {
   height: 100%;
   padding: 1.5rem 1rem;
-  border-left: var(--panel-border);
   overflow: scroll;
 }
 

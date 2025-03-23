@@ -1,7 +1,12 @@
 <template>
   <div class="pixel-canvas">
     <canvas ref="canvas" :width="400" :height="300"></canvas>
-    <div class="progress">{{ renderedPixels }}/{{ totalPixels }} pixels rendered</div>
+    <div class="progress">
+      {{ renderedPixels }}/{{ totalPixels }} pixels rendered
+      <span v-if="completedCanvases > 0" class="canvas-count">
+        (Frame #{{ completedCanvases + 1 }}, Total: {{ totalRenderedPixels }})
+      </span>
+    </div>
   </div>
 </template>
 
@@ -17,6 +22,8 @@ const renderedPixels = ref(0)
 const totalPixels = ref(0)
 const hueShift = ref(0)
 const isComplete = ref(false)
+const completedCanvases = ref(0)
+const totalRenderedPixels = ref(0)
 
 // Animation IDs for cleanup
 const cursorAnimationId = ref(null)
@@ -52,8 +59,9 @@ const createCheckerPattern = (width, height, hueOffset = 0) => {
     for (let x = 0; x < width; x++) {
       const isEvenTile = (Math.floor(x / tileSize) + Math.floor(y / tileSize)) % 2 === 0
       const hue = (isEvenTile ? 0 : 15) + hueOffset
+      const saturation = 30
       const lightness = isEvenTile ? 90 : 80
-      const [r, g, b] = hslToRgb(hue % 360, 10, lightness)
+      const [r, g, b] = hslToRgb(hue % 360, saturation, lightness)
       
       pattern[pixelIndex] = r
       pattern[pixelIndex + 1] = g
@@ -108,23 +116,24 @@ const drawCursor = () => {
 const renderPixels = (totalAvailable) => {
   if (!imageData.value || !canvas.value) return
   
-  const total = canvas.value.width * canvas.value.height
-  const pixelsToRender = Math.min(parseInt(totalAvailable), total)
+  const canvasTotal = canvas.value.width * canvas.value.height
   
-  const wasComplete = isComplete.value
-  isComplete.value = pixelsToRender >= total
+  // Calculate how many complete canvases we have rendered
+  const newCompletedCanvases = Math.floor(totalAvailable / canvasTotal)
   
-  if (!wasComplete && isComplete.value) {
-    startColorCycle()
+  // Calculate pixels to render in the current canvas
+  const pixelsInCurrentCanvas = totalAvailable % canvasTotal
+  
+  // If we've completed a new canvas, update the hue shift more dramatically
+  if (newCompletedCanvases > completedCanvases.value) {
+    // For each new completed canvas, use a more noticeable hue shift
+    hueShift.value = (newCompletedCanvases * 60) % 360
+    completedCanvases.value = newCompletedCanvases
+    isComplete.value = false
   }
   
-  // Reset canvas to black
-  for (let i = 0; i < imageData.value.data.length; i += 4) {
-    imageData.value.data[i] = 0
-    imageData.value.data[i + 1] = 0
-    imageData.value.data[i + 2] = 0
-    imageData.value.data[i + 3] = 255
-  }
+  // Update the total rendered pixels
+  totalRenderedPixels.value = totalAvailable
   
   // Apply current pattern
   const currentPattern = createCheckerPattern(
@@ -133,13 +142,40 @@ const renderPixels = (totalAvailable) => {
     hueShift.value
   )
   
-  for (let i = 0; i < pixelsToRender * 4; i += 4) {
+  // Fill the entire canvas with the new colored pattern
+  for (let i = 0; i < imageData.value.data.length; i += 4) {
     imageData.value.data[i] = currentPattern[i]
     imageData.value.data[i + 1] = currentPattern[i + 1]
     imageData.value.data[i + 2] = currentPattern[i + 2]
+    // Alpha channel stays at 255
   }
   
-  renderedPixels.value = pixelsToRender
+  // Then blank out the unrendered pixels by setting RGB values to 0 (keeping alpha at 255)
+  for (let i = pixelsInCurrentCanvas * 4; i < imageData.value.data.length; i += 4) {
+    imageData.value.data[i] = 0
+    imageData.value.data[i + 1] = 0
+    imageData.value.data[i + 2] = 0
+    // Alpha channel stays at 255
+  }
+  
+  // Update rendered pixels for the current canvas
+  renderedPixels.value = pixelsInCurrentCanvas
+  
+  // Check if the current canvas is complete
+  const wasComplete = isComplete.value
+  isComplete.value = pixelsInCurrentCanvas >= canvasTotal
+  
+  if (!wasComplete && isComplete.value) {
+    startColorCycle()
+  } else if (wasComplete && !isComplete.value) {
+    // If we were previously complete but now starting a new canvas
+    // Cancel the color cycle animation
+    if (cycleAnimationId.value) {
+      cancelAnimationFrame(cycleAnimationId.value)
+      cycleAnimationId.value = null
+    }
+  }
+  
   updateCanvas()
 }
 
@@ -159,7 +195,7 @@ const startColorCycle = () => {
   const cyclePalette = () => {
     if (!isComplete.value) return
     
-    hueShift.value = (hueShift.value + 0.2) % 360
+    hueShift.value = (hueShift.value + 0.5) % 360
     const newPattern = createCheckerPattern(
       canvas.value.width,
       canvas.value.height,
@@ -221,5 +257,11 @@ canvas {
   margin-top: 0.5rem;
   font-family: var(--font-mono);
   color: var(--secondary);
+}
+
+.canvas-count {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-left: 0.5rem;
 }
 </style>
