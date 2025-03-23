@@ -8,7 +8,16 @@
 
     <main>
       <div class="settings-container crt-panel" :class="{ 'show': showSettingsPanel }">
-        <SettingsPanel @open-changelog="openChangelog" />
+        <SettingsPanel 
+          @open-changelog="openChangelog"
+          :saveSlots="saveSlots"
+          @save="handleSave"
+          @load="handleLoad"
+          @delete="handleDelete"
+          @export="handleExport"
+          @import="handleImport"
+          @reset="handleReset"
+        />
       </div>
 
       <div class="content-area">
@@ -49,6 +58,15 @@ import {
   calculateTotalPixelGeneration,
   calculateClickPower 
 } from './utils/upgradeManager'
+import {
+  saveToSlot,
+  loadFromSlot,
+  deleteSaveSlot,
+  exportSave,
+  importSave,
+  listSaveSlots,
+  resetAllData
+} from './utils/saveManager'
 import upgradesData from './assets/upgrades.json'
 
 // Game state
@@ -61,6 +79,146 @@ const showUpgradesPanel = ref(false)
 const showSettingsPanel = ref(false)
 const showChangelog = ref(false)
 const changelogContent = ref('')
+
+// Save system state
+const saveSlots = ref([])
+
+// Initialize save slots
+const initializeSaveSlots = () => {
+  // Create array of slots 1-5 with null data for empty slots
+  saveSlots.value = Array.from({ length: 5 }, (_, i) => {
+    const slot = i + 1;
+    try {
+      const saveData = loadFromSlot(slot);
+      return {
+        slot,
+        data: saveData ? {
+          timestamp: saveData.timestamp,
+          pixels: saveData.pixels,
+          completedFrames: saveData.completedFrames
+        } : null
+      };
+    } catch {
+      return { slot, data: null };
+    }
+  });
+}
+
+// Save handlers
+const handleSave = async (slot) => {
+  try {
+    const gameState = {
+      pixels: pixels.value,
+      totalPixels: totalPixels.value,
+      spentPixels: spentPixels.value,
+      upgrades: upgrades.value,
+      completedFrames: completedCanvases.value
+    }
+    
+    await saveToSlot(slot, gameState)
+    initializeSaveSlots() // Refresh slots display
+  } catch (error) {
+    console.error('Failed to save game:', error)
+  }
+}
+
+const handleLoad = async (slot) => {
+  try {
+    const saveData = await loadFromSlot(slot)
+    if (!saveData) return
+    
+    // Restore game state
+    pixels.value = saveData.pixels
+    totalPixels.value = saveData.totalPixels
+    spentPixels.value = saveData.spentPixels
+    
+    // Restore upgrades
+    upgrades.value = loadUpgrades(upgradesData)
+    saveData.upgrades.forEach(savedUpgrade => {
+      const upgrade = upgrades.value.find(u => u.id === savedUpgrade.id)
+      if (upgrade) {
+        upgrade.level = savedUpgrade.level
+        upgrade.purchased = savedUpgrade.purchased
+      }
+    })
+    
+    // Update canvas state
+    if (saveData.completedFrames) {
+      completedCanvases.value = saveData.completedFrames
+    }
+  } catch (error) {
+    console.error('Failed to load game:', error)
+  }
+}
+
+const handleDelete = async (slot) => {
+  try {
+    await deleteSaveSlot(slot)
+    initializeSaveSlots() // Refresh slots display
+  } catch (error) {
+    console.error('Failed to delete save:', error)
+  }
+}
+
+const handleExport = () => {
+  try {
+    const gameState = {
+      pixels: pixels.value,
+      totalPixels: totalPixels.value,
+      spentPixels: spentPixels.value,
+      upgrades: upgrades.value,
+      completedFrames: completedCanvases.value
+    }
+    exportSave(gameState)
+  } catch (error) {
+    console.error('Failed to export save:', error)
+  }
+}
+
+const handleImport = async (file) => {
+  try {
+    const saveData = await importSave(file)
+    // Use same logic as load, but with imported data
+    pixels.value = saveData.pixels
+    totalPixels.value = saveData.totalPixels
+    spentPixels.value = saveData.spentPixels
+    
+    upgrades.value = loadUpgrades(upgradesData)
+    saveData.upgrades.forEach(savedUpgrade => {
+      const upgrade = upgrades.value.find(u => u.id === savedUpgrade.id)
+      if (upgrade) {
+        upgrade.level = savedUpgrade.level
+        upgrade.purchased = savedUpgrade.purchased
+      }
+    })
+    
+    if (saveData.completedFrames) {
+      completedCanvases.value = saveData.completedFrames
+    }
+  } catch (error) {
+    console.error('Failed to import save:', error)
+  }
+}
+
+const handleReset = () => {
+  try {
+    // Reset all game state
+    pixels.value = '0'
+    totalPixels.value = '0'
+    spentPixels.value = '0'
+    upgrades.value = loadUpgrades(upgradesData)
+    completedCanvases.value = 0
+    
+    // Clear all saves
+    resetAllData()
+    initializeSaveSlots()
+  } catch (error) {
+    console.error('Failed to reset game:', error)
+  }
+}
+
+// Add completedCanvases ref for tracking completed frames
+const completedCanvases = ref(0)
 
 // Panel visibility toggles
 const toggleUpgradesPanel = () => {
@@ -159,16 +317,32 @@ const tick = () => {
   animationFrameId = requestAnimationFrame(tick)
 }
 
+// Autosave
+const AUTOSAVE_INTERVAL = 60000 // 1 minute
+let autosaveInterval = null
+
+const autoSave = () => {
+  // Use slot 1 for autosaves
+  handleSave(1)
+}
+
 onMounted(() => {
   upgrades.value = loadUpgrades(upgradesData)
   lastUpdate.value = Date.now()
   animationFrameId = requestAnimationFrame(tick)
   loadChangelog() // Show changelog on initial load
+  initializeSaveSlots() // Initialize save slots
+  
+  // Start autosave
+  autosaveInterval = setInterval(autoSave, AUTOSAVE_INTERVAL)
 })
 
 onUnmounted(() => {
   if (animationFrameId !== null) {
     cancelAnimationFrame(animationFrameId)
+  }
+  if (autosaveInterval !== null) {
+    clearInterval(autosaveInterval)
   }
 })
 </script>

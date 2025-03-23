@@ -5,17 +5,55 @@
     <div class="settings-list">
       <div class="settings-section">
         <h3 class="section-title">GAME DATA</h3>
-        <div class="settings-buttons">
-          <button class="retro-button">
-            <span class="action-text">SAVE GAME</span>
+        <div class="save-slots">
+          <div class="slot-list">
+            <p>
+              <span class="setting-label">SAVES</span>
+              <br>
+              Select a save slot to save or load your game data.
+              <br>
+              Slot 1 is reserved for auto-saves, it WILL be overwritten.
+            </p>
+            <div v-for="slot in saveSlots" :key="slot.slot" 
+                class="save-slot" 
+                :class="{ 'selected': selectedSlot === slot.slot }"
+                @click="selectSlot(slot.slot)">
+              <div class="slot-info">
+                <span class="slot-number">SLOT {{ slot.slot }}</span>
+                <template v-if="slot.data">
+                  <span class="slot-details">
+                    {{ formatDate(slot.data.timestamp) }}<br>
+                    Pixels: {{ formatNumber(slot.data.pixels) }}<br>
+                    Frames: {{ slot.data.completedFrames }}
+                  </span>
+                </template>
+                <span v-else class="slot-empty">EMPTY</span>
+              </div>
+            </div>
+          </div>
+          <div class="slot-actions">
+            <button class="retro-button" @click="$emit('save', selectedSlot)" :disabled="!selectedSlot">
+              <span class="action-text">SAVE TO SLOT</span>
+            </button>
+            <button class="retro-button" @click="$emit('load', selectedSlot)" 
+              :disabled="!selectedSlot || !hasDataInSelectedSlot">
+              <span class="action-text">LOAD FROM SLOT</span>
+            </button>
+            <button class="retro-button warning" @click="confirmDelete" 
+              :disabled="!selectedSlot || !hasDataInSelectedSlot">
+              <span class="action-text">DELETE SLOT</span>
+            </button>
+          </div>
+        </div>
+        <div class="file-actions">
+          <button class="retro-button" @click="$emit('export')">
+            <span class="action-text">EXPORT SAVE</span>
           </button>
-          <button class="retro-button">
-            <span class="action-text">LOAD GAME</span>
+          <input type="file" ref="fileInput" @change="handleFileImport" accept=".json" style="display: none">
+          <button class="retro-button" @click="triggerFileInput">
+            <span class="action-text">IMPORT SAVE</span>
           </button>
-          <button class="retro-button warning">
-            <span class="action-text">DELETE SAVE</span>
-          </button>
-          <button class="retro-button danger">
+          <button class="retro-button danger" @click="confirmReset">
             <span class="action-text">HARD RESET</span>
           </button>
         </div>
@@ -65,7 +103,7 @@
       <div class="settings-section">
         <h3 class="section-title">ABOUT</h3>
         <p class="about-text">
-          Commodore Pixel Renderer <strong>v0.0.2</strong><br> <!-- TODO: dynamically insert latest version number, in the meantime don't forget to update-->
+          Commodore Pixel Renderer <strong>v0.0.3</strong><br> <!-- TODO: dynamically insert latest version number, in the meantime don't forget to update-->
           A retro-style incremental game
           <br>
           By <a href="https://github.com/D-Heger" target="_blank">D-Heger 🔗</a>
@@ -83,11 +121,93 @@
         </p>
       </div>
     </div>
+
+    <!-- Confirmation Dialog -->
+    <div v-if="showConfirmation" class="confirmation-overlay">
+      <div class="confirmation-dialog crt-panel">
+        <h3>{{ confirmationMessage }}</h3>
+        <div class="confirmation-actions">
+          <button class="retro-button danger" @click="handleConfirm">
+            <span class="action-text">CONFIRM</span>
+          </button>
+          <button class="retro-button" @click="cancelConfirmation">
+            <span class="action-text">CANCEL</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-defineEmits(['open-changelog'])
+import { ref, computed } from 'vue';
+import { formatNumber } from '../../utils/numbers';
+
+const props = defineProps({
+  saveSlots: {
+    type: Array,
+    required: true
+  }
+});
+
+const emit = defineEmits(['save', 'load', 'delete', 'export', 'import', 'reset', 'open-changelog']);
+
+// Declare selectedSlot ref properly
+const selectedSlot = ref(null);
+const showConfirmation = ref(false);
+const confirmationMessage = ref('');
+const confirmationAction = ref(null);
+const fileInput = ref(null);
+
+const hasDataInSelectedSlot = computed(() => {
+  if (!selectedSlot.value) return false;
+  const slot = props.saveSlots.find(s => s.slot === selectedSlot.value);
+  return slot && slot.data !== null;
+});
+
+const selectSlot = (slot) => {
+  console.log('Selecting slot:', slot); // Debug log
+  selectedSlot.value = slot;
+};
+
+const formatDate = (timestamp) => {
+  return new Date(timestamp).toLocaleString();
+};
+
+const triggerFileInput = () => {
+  fileInput.value.click();
+};
+
+const handleFileImport = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    emit('import', file);
+  }
+  event.target.value = ''; // Reset the input
+};
+
+const confirmDelete = () => {
+  confirmationMessage.value = 'Are you sure you want to delete this save?';
+  confirmationAction.value = () => emit('delete', selectedSlot.value);
+  showConfirmation.value = true;
+};
+
+const confirmReset = () => {
+  confirmationMessage.value = 'WARNING: This will delete ALL saves and reset ALL progress. Are you sure?';
+  confirmationAction.value = () => emit('reset');
+  showConfirmation.value = true;
+};
+
+const handleConfirm = () => {
+  if (confirmationAction.value) {
+    confirmationAction.value();
+  }
+  showConfirmation.value = false;
+};
+
+const cancelConfirmation = () => {
+  showConfirmation.value = false;
+};
 </script>
 
 <style scoped>
@@ -214,5 +334,107 @@ defineEmits(['open-changelog'])
 .changelog-button {
   margin-top: 1rem;
   width: 100%;
+}
+
+.save-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.slot-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.5rem;
+}
+
+.save-slot {
+  border: 2px solid var(--button-border);
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  z-index: 1;
+  background-color: var(--button-bg);
+}
+
+.save-slot.selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
+  background-color: rgba(51, 255, 51, 0.1);
+  transform: translateY(-2px);
+}
+
+.save-slot:hover {
+  border-color: var(--primary);
+  background-color: rgba(51, 255, 51, 0.05);
+  transform: translateY(-1px);
+}
+
+.save-slot:active {
+  transform: translateY(0);
+}
+
+.slot-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  pointer-events: none; /* Ensure clicks go to the parent */
+}
+
+.slot-number {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+
+.slot-details {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.slot-empty {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.slot-actions, .file-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmation-dialog {
+  padding: 2rem;
+  max-width: 400px;
+  text-align: center;
+  border: var(--panel-border);
+}
+
+.confirmation-dialog h3 {
+  color: var(--warning);
+  margin-bottom: 2rem;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 </style>

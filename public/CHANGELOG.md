@@ -6,19 +6,6 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## Unreleased
 
-- Save/Load game state
-  - Saved game state includes all upgrades, settings, and progress
-  - Ability to save the game state at any time and automatically
-  - Save state should be exportable as a file
-  - Serve 5 save slots for the user
-  - Load game state from a file or one of the slots
-  - Loaded game state should restore all upgrades, settings, and progress including correct render progress as well as completed frames
-- Delete specific save state from the save slots
-- Hard reset game state
-  - Reset all upgrades, settings, and progress
-  - Reset the game state to the initial state
-  - Option to confirm the reset action
-  - Reset should also remove every saved game state
 - Additional themes including Amiga and ZX
 - Sound FX and Music
 - Support both English and German language
@@ -28,6 +15,23 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Different Images to Render
 - Optional filters in upgrade menu
 - More CRT effects
+
+## 0.0.3 - 24.03.2025
+
+### Added
+
+- Comprehensive save/load game state system
+  - Added 5 save slots for storing game states
+  - Implemented automatic saving functionality
+  - Added ability to export save states as files
+  - Added feature to load game states from files or save slots
+  - Save states now preserve all upgrades, settings, progress and completed frames
+- Game state management features
+  - Added ability to delete specific save states from slots
+  - Implemented hard reset functionality
+    - Complete reset of all upgrades, settings, and progress
+    - Option to confirm reset action
+    - Reset now removes all saved game states
 
 ## 0.0.2 - 23.03.2025
 
