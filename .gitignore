@@ -1,0 +1,44 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+package-lock.json
+yarn.lock
+.pnpm-store/
+
+# Build outputs
+dist
+dist-ssr
+coverage
+
+# Local development
+*.local
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Vue dev tools
+.vue-devtools
+
+# User-specific files
+*.sublime-project
+*.sublime-workspace
+.history
+.vercel

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "basic-click",
+    "name": "Basic Click",
+    "description": "Increases the number of clicks per second by 1",
+    "cost": "5",
+    "costFactor": "1.2",
+    "type": "click",
+    "value": "1"
+  },
+  {
+    "id": "basic-cpu",
+    "name": "Basic CPU",
+    "description": "Increases rendering speed by 0.1 Hz",
+    "cost": "10",
+    "costFactor": "1.5",
+    "type": "rate",
+    "value": "0.1"
+  },
+  {
+    "id": "memory-upgrade",
+    "name": "Memory Upgrade",
+    "description": "Doubles the effectiveness of your CPU",
+    "cost": "100",
+    "costFactor": "3",
+    "type": "multiplier",
+    "value": "1"
+  },
+  {
+    "id": "advanced-cpu",
+    "name": "Advanced CPU",
+    "description": "Increases rendering speed by 0.5 Hz",
+    "cost": "50",
+    "costFactor": "2",
+    "type": "rate",
+    "value": "0.5"
+  },
+  {
+    "id": "cooling-system",
+    "name": "Cooling System",
+    "description": "Improves CPU efficiency by 50%",
+    "cost": "200",
+    "costFactor": "2.5",
+    "type": "multiplier",
+    "value": "0.5"
+  }
+]
