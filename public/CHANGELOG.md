@@ -7,11 +7,21 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 ## Unreleased
 
 - Save/Load game state
-- Delete specific save state
-- Hard reset game
+  - Saved game state includes all upgrades, settings, and progress
+  - Ability to save the game state at any time and automatically
+  - Save state should be exportable as a file
+  - Serve 5 save slots for the user
+  - Load game state from a file or one of the slots
+  - Loaded game state should restore all upgrades, settings, and progress including correct render progress as well as completed frames
+- Delete specific save state from the save slots
+- Hard reset game state
+  - Reset all upgrades, settings, and progress
+  - Reset the game state to the initial state
+  - Option to confirm the reset action
+  - Reset should also remove every saved game state
 - Additional themes including Amiga and ZX
 - Sound FX and Music
-- Support both english and german language
+- Support both English and German language
 - More Upgrades
 - Potentially more upgrade paths
 - Prestige System
