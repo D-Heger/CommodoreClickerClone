@@ -15,6 +15,11 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Different Images to Render
 - Optional filters in upgrade menu
 - More CRT effects
+- UI improvements 
+  - Stats display needs to be reworked
+  - Improve mobile user experience 
+- Improved rendering performance? (to allow for higher auto clicker values ;) )
+- Code Cleanup!!!
 
 ## 0.0.3 - 24.03.2025
 
