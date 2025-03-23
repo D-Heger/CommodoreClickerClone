@@ -12,6 +12,10 @@ A retro-style incremental game inspired by the Commodore computers of the 1980s.
 - Optimized for large numbers with Decimal.js
 - (hopefully) Fully responsive design
 
+## Screenshots
+
+![Main Game](public/screenshot_main_page.png)
+
 ## Getting Started
 
 ### Prerequisites
