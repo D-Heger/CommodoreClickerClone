@@ -8,7 +8,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/D-Heger/Commodore-Pixel-Renderer"
+    "url": "https://github.com/D-Heger/CommodoreClickerClone"
   },
   "scripts": {
     "dev": "vite",

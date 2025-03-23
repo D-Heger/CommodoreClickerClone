@@ -70,7 +70,7 @@
           <br>
           By <a href="https://github.com/D-Heger" target="_blank">D-Heger 🔗</a>
           <br>
-          <a href="https://github.com/D-Heger/Commodore-Pixel-Renderer" target="_blank">View on GitHub 🔗</a>
+          <a href="https://github.com/D-Heger/CommodoreClickerClone" target="_blank">View on GitHub 🔗</a>
         </p>
       </div>
     </div>

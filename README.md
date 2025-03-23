@@ -24,7 +24,7 @@ A retro-style incremental game inspired by the Commodore computers of the 1980s.
 1. Clone the repository
 
     ```bash
-    git clone https://github.com/D-Heger/Commodore-Pixel-Renderer.git
+    git clone https://github.com/D-Heger/CommodoreClickerClone.git
     cd Commodore-Pixel-Renderer
     ```
 
