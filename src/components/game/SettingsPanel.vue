@@ -15,6 +15,15 @@
           @confirm-reset="confirmReset"
         />
       </div>
+      
+      <div class="settings-section">
+        <h3 class="section-title">GAME SETTINGS</h3>
+        <p class="section-description">
+          Adjust the game settings to your preference.
+          <br>
+          <strong>Note: These settings do nothing yet.</strong>
+        </p>
+      </div>
 
       <SettingsOptions
         :currentTheme="settings.theme"

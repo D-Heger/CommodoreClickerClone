@@ -21,10 +21,13 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
   - [ ] Refactor upgrade panel
   - [ ] Refactor changelog popup
   - [ ] Refactor pixel canvas
+  - [ ] Refactor main app component
 - Actually implement settings and their effects
   - Additional themes including Amiga and ZX
   - Sound FX and Music
   - Support both English and German language
+  - Implement functionality for saving and loading settings
+- Implement autoloading of last save state upon game start (maybe with a confirmation dialog)
 
 ## 0.0.3 - 24.03.2025
 
