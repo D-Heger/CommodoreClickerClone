@@ -47,10 +47,18 @@ defineEmits(['open-changelog']);
 
 .about-text a {
   color: var(--primary);
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .changelog-button {
   margin-top: 1rem;
   width: 100%;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
 }
 </style>

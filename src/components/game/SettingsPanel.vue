@@ -104,13 +104,16 @@ const confirmReset = () => {
 .settings-panel {
   height: 100%;
   padding: 1.5rem 1rem;
-  overflow: scroll;
+  overflow-y: auto;
+  position: relative;
 }
 
 .settings-list {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding-bottom: 200px;
+  padding-bottom: 2rem;
+  position: relative;
+  z-index: 1;
 }
 </style>
