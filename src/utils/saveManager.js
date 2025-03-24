@@ -4,19 +4,11 @@ const SAVE_VERSION = '1';
 // Maximum number of save slots
 const MAX_SAVE_SLOTS = 5;
 
-// Structure for settings (placeholder for future settings)
-const defaultSettings = {
-  theme: 'C64',
-  soundFx: true,
-  music: true,
-  language: 'ENGLISH'
-};
-
 // Structure for a save file
 const createSaveData = (gameState) => ({
   version: SAVE_VERSION,
   timestamp: Date.now(),
-  settings: { ...defaultSettings },
+  settings: gameState.settings,
   pixels: gameState.pixels,
   totalPixels: gameState.totalPixels,
   spentPixels: gameState.spentPixels,
@@ -116,4 +108,24 @@ export const resetAllData = () => {
   for (let i = 1; i <= MAX_SAVE_SLOTS; i++) {
     deleteSaveSlot(i);
   }
+};
+
+// Find the latest save across all slots
+export const findLatestSave = () => {
+  let latestSave = null;
+  let latestTimestamp = 0;
+
+  for (let i = 1; i <= MAX_SAVE_SLOTS; i++) {
+    try {
+      const saveData = loadFromSlot(i);
+      if (saveData && saveData.timestamp > latestTimestamp) {
+        latestTimestamp = saveData.timestamp;
+        latestSave = { slot: i, data: saveData };
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return latestSave;
 };

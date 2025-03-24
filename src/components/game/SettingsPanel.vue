@@ -44,7 +44,6 @@ import SettingsOptions from './SettingsOptions.vue';
 import AboutSection from './AboutSection.vue';
 import ConfirmationDialog from './ConfirmationDialog.vue';
 import { useConfirmation } from '../../utils/useConfirmation';
-import { DEFAULT_SETTINGS } from '../../utils/settingsConfig';
 import { ref } from 'vue';
 
 const emit = defineEmits(['save', 'load', 'delete', 'export', 'import', 'reset', 'open-changelog', 'update-settings']);
@@ -55,6 +54,10 @@ const props = defineProps({
     type: Array,
     required: true,
     default: () => []
+  },
+  settings: {
+    type: Object,
+    required: true
   }
 });
 
@@ -67,12 +70,8 @@ const {
   cancelConfirmation
 } = useConfirmation();
 
-// Default settings
-const settings = ref({ ...DEFAULT_SETTINGS });
-
 const updateSetting = (key, value) => {
-  settings.value[key] = value;
-  emit('update-settings', settings.value);
+  emit('update-settings', { ...props.settings, [key]: value });
 };
 
 const confirmDelete = (slotId) => {

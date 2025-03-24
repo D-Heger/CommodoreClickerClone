@@ -31,6 +31,11 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## 0.0.4 - 24.03.2025
 
+### Added
+
+- Settings are now saved as well
+- Implemented Autoloading of the latest save
+
 ### Changed
 
 - Now sanitizing changelog

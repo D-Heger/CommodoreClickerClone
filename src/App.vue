@@ -10,8 +10,17 @@
 
     <main>
       <div class="settings-container crt-panel" :class="{ 'show': showSettingsPanel }">
-        <SettingsPanel :save-slots="saveSlots" @open-changelog="openChangelog" @save="handleSave" @load="handleLoad"
-          @delete="handleDelete" @export="handleExport" @import="handleImport" @reset="handleReset" />
+        <SettingsPanel 
+          :save-slots="saveSlots" 
+          :settings="settings"
+          @open-changelog="openChangelog" 
+          @save="handleSave" 
+          @load="handleLoad"
+          @delete="handleDelete" 
+          @export="handleExport" 
+          @import="handleImport" 
+          @reset="handleReset"
+          @update-settings="updateSettings" />
       </div>
 
       <div class="content-area">
@@ -37,6 +46,8 @@
     </main>
 
     <ChangelogPopup :show="showChangelog" :changelog="changelogContent" @close="closeChangelog" />
+    <ConfirmationDialog :show="showConfirmation" :message="confirmationMessage" @confirm="handleConfirm"
+      @cancel="cancelConfirmation" />
   </div>
 </template>
 
@@ -47,6 +58,7 @@ import PixelCanvas from './components/game/PixelCanvas.vue'
 import UpgradesPanel from './components/game/UpgradesPanel.vue'
 import SettingsPanel from './components/game/SettingsPanel.vue'
 import ChangelogPopup from './components/game/ChangelogPopup.vue'
+import ConfirmationDialog from './components/game/ConfirmationDialog.vue'
 import { toDecimal, formatNumber, add, multiply } from './utils/numbers'
 import {
   loadUpgrades,
@@ -60,9 +72,12 @@ import {
   deleteSaveSlot,
   exportSave,
   importSave,
-  resetAllData
+  resetAllData,
+  findLatestSave
 } from './utils/saveManager'
 import upgradesData from './assets/upgrades.json'
+import { validateSettings, DEFAULT_SETTINGS } from './utils/settingsConfig'
+import { useConfirmation } from './utils/useConfirmation'
 
 // Game state
 const pixels = ref('0')
@@ -70,6 +85,7 @@ const totalPixels = ref('0')
 const spentPixels = ref('0')
 const lastUpdate = ref(Date.now())
 const upgrades = ref([])
+const settings = ref({ ...DEFAULT_SETTINGS })
 const showUpgradesPanel = ref(false)
 const showSettingsPanel = ref(false)
 const showChangelog = ref(false)
@@ -90,7 +106,8 @@ const initializeSaveSlots = () => {
         data: saveData ? {
           timestamp: saveData.timestamp,
           pixels: saveData.pixels,
-          completedFrames: saveData.completedFrames
+          completedFrames: saveData.completedFrames,
+          settings: saveData.settings
         } : null
       };
     } catch {
@@ -107,7 +124,8 @@ const handleSave = async (slot) => {
       totalPixels: totalPixels.value,
       spentPixels: spentPixels.value,
       upgrades: upgrades.value,
-      completedFrames: completedCanvases.value
+      completedFrames: completedCanvases.value,
+      settings: settings.value
     }
 
     await saveToSlot(slot, gameState)
@@ -137,6 +155,11 @@ const handleLoad = async (slot) => {
       }
     })
 
+    // Restore settings
+    if (saveData.settings) {
+      settings.value = validateSettings(saveData.settings)
+    }
+
     // Update canvas state
     if (saveData.completedFrames) {
       completedCanvases.value = saveData.completedFrames
@@ -162,7 +185,8 @@ const handleExport = () => {
       totalPixels: totalPixels.value,
       spentPixels: spentPixels.value,
       upgrades: upgrades.value,
-      completedFrames: completedCanvases.value
+      completedFrames: completedCanvases.value,
+      settings: settings.value
     }
     exportSave(gameState)
   } catch (error) {
@@ -173,7 +197,6 @@ const handleExport = () => {
 const handleImport = async (file) => {
   try {
     const saveData = await importSave(file)
-    // Use same logic as load, but with imported data
     pixels.value = saveData.pixels
     totalPixels.value = saveData.totalPixels
     spentPixels.value = saveData.spentPixels
@@ -186,6 +209,11 @@ const handleImport = async (file) => {
         upgrade.purchased = savedUpgrade.purchased
       }
     })
+
+    // Restore settings from import
+    if (saveData.settings) {
+      settings.value = validateSettings(saveData.settings)
+    }
 
     if (saveData.completedFrames) {
       completedCanvases.value = saveData.completedFrames
@@ -203,6 +231,7 @@ const handleReset = () => {
     spentPixels.value = '0'
     upgrades.value = loadUpgrades(upgradesData)
     completedCanvases.value = 0
+    settings.value = { ...DEFAULT_SETTINGS }
 
     // Clear all saves
     resetAllData()
@@ -214,6 +243,11 @@ const handleReset = () => {
 
 // Add completedCanvases ref for tracking completed frames
 const completedCanvases = ref(0)
+
+// Settings update handler
+const updateSettings = (newSettings) => {
+  settings.value = validateSettings(newSettings)
+}
 
 // Panel visibility toggles
 const toggleUpgradesPanel = () => {
@@ -321,12 +355,32 @@ const autoSave = () => {
   handleSave(1)
 }
 
+// Autoload
+const attemptAutoload = () => {
+  const latestSave = findLatestSave();
+  if (latestSave) {
+    confirm(
+      `Would you like to load your latest save?\n\nSave from: ${new Date(latestSave.data.timestamp).toLocaleString()}\nPixels: ${formatNumber(latestSave.data.pixels)}\nCompleted Frames: ${latestSave.data.completedFrames}`,
+      () => handleLoad(latestSave.slot)
+    );
+  }
+};
+
+const {
+  showConfirmation,
+  confirmationMessage,
+  confirm,
+  handleConfirm,
+  cancelConfirmation
+} = useConfirmation();
+
 onMounted(() => {
   upgrades.value = loadUpgrades(upgradesData)
   lastUpdate.value = Date.now()
   animationFrameId = requestAnimationFrame(tick)
   loadChangelog() // Show changelog on initial load
   initializeSaveSlots() // Initialize save slots
+  attemptAutoload() // Attempt to load latest save
 
   // Start autosave
   autosaveInterval = setInterval(autoSave, AUTOSAVE_INTERVAL)

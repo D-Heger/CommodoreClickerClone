@@ -16,7 +16,8 @@
             <span class="slot-details">
               {{ formatDate(slot.data.timestamp) }}<br />
               Pixels: {{ formatNumber(slot.data.pixels) }}<br />
-              Frames: {{ slot.data.completedFrames }}
+              Frames: {{ slot.data.completedFrames }}<br />
+              Language: {{ slot.data.settings?.language || 'ENGLISH' }}
             </span>
           </template>
           <span v-else class="slot-empty">EMPTY</span>
