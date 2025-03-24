@@ -31,6 +31,11 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## 0.0.4 - 24.03.2025
 
+### Changed
+
+- Now sanitizing changelog
+- Improved code formatting
+
 ### Fixed
 
 - Fixed a bug where the About Section was not interactable anymore

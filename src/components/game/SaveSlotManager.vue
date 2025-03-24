@@ -3,21 +3,24 @@
     <div class="slot-list">
       <p>
         <span class="setting-label">SAVES</span>
-        <br>
+        <br />
         Select a save slot to save or load your game data.
-        <br>
+        <br />
         Slot 1 is reserved for auto-saves, it WILL be overwritten.
       </p>
-      <div v-for="slot in saveSlots" :key="slot.slot" 
-          class="save-slot" 
-          :class="{ 'selected': selectedSlot === slot.slot }"
-          @click="selectSlot(slot.slot)">
+      <div
+        v-for="slot in saveSlots"
+        :key="slot.slot"
+        class="save-slot"
+        :class="{ 'selected': selectedSlot === slot.slot }"
+        @click="selectSlot(slot.slot)"
+      >
         <div class="slot-info">
           <span class="slot-number">SLOT {{ slot.slot }}</span>
           <template v-if="slot.data">
             <span class="slot-details">
-              {{ formatDate(slot.data.timestamp) }}<br>
-              Pixels: {{ formatNumber(slot.data.pixels) }}<br>
+              {{ formatDate(slot.data.timestamp) }}<br />
+              Pixels: {{ formatNumber(slot.data.pixels) }}<br />
               Frames: {{ slot.data.completedFrames }}
             </span>
           </template>
@@ -25,26 +28,34 @@
         </div>
       </div>
     </div>
-    
+
     <div class="slot-actions">
-      <button class="retro-button" @click="$emit('save', selectedSlot)" :disabled="!selectedSlot">
+      <button class="retro-button" :disabled="!selectedSlot" @click="$emit('save', selectedSlot)">
         <span class="action-text">SAVE TO SLOT</span>
       </button>
-      <button class="retro-button" @click="$emit('load', selectedSlot)" 
-        :disabled="!selectedSlot || !hasDataInSelectedSlot">
+      <button
+        class="retro-button"
+        :disabled="!selectedSlot || !hasDataInSelectedSlot"
+        @click="$emit('load', selectedSlot)"
+      >
         <span class="action-text">LOAD FROM SLOT</span>
       </button>
-      <button class="retro-button warning" @click="onDelete" 
-        :disabled="!selectedSlot || !hasDataInSelectedSlot">
+      <button class="retro-button warning" :disabled="!selectedSlot || !hasDataInSelectedSlot" @click="onDelete">
         <span class="action-text">DELETE SLOT</span>
       </button>
     </div>
-    
+
     <div class="file-actions">
       <button class="retro-button" @click="$emit('export')">
         <span class="action-text">EXPORT SAVE</span>
       </button>
-      <input type="file" ref="fileInput" @change="handleFileImport" accept=".json" style="display: none">
+      <input
+        ref="fileInput"
+        type="file"
+        accept=".json"
+        style="display: none"
+        @change="handleFileImport"
+      />
       <button class="retro-button" @click="triggerFileInput">
         <span class="action-text">IMPORT SAVE</span>
       </button>
@@ -172,7 +183,8 @@ const onReset = () => {
   font-style: italic;
 }
 
-.slot-actions, .file-actions {
+.slot-actions,
+.file-actions {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

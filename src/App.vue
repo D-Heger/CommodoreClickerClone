@@ -1,16 +1,23 @@
 <template>
   <div class="game-container">
     <header>
-      <h1 class="retro-title">Commodore Pixel Renderer</h1>
-      <StatsDisplay :pixels="formattedPixels" :computerSpeed="formattedSpeed" :clickPower="formattedClickPower"
-        :totalPixels="formattedTotalPixels" :spentPixels="formattedSpentPixels" />
+      <h1 class="retro-title">
+        Commodore Pixel Renderer
+      </h1>
+      <StatsDisplay
+        :pixels="formattedPixels"
+        :computer-speed="formattedSpeed"
+        :click-power="formattedClickPower"
+        :total-pixels="formattedTotalPixels"
+        :spent-pixels="formattedSpentPixels"
+      />
     </header>
 
     <main>
       <div class="settings-container crt-panel" :class="{ 'show': showSettingsPanel }">
         <SettingsPanel 
+          :save-slots="saveSlots"
           @open-changelog="openChangelog"
-          :saveSlots="saveSlots"
           @save="handleSave"
           @load="handleLoad"
           @delete="handleDelete"
@@ -21,18 +28,28 @@
       </div>
 
       <div class="content-area">
-        <button class="side-panel-button settings-button" @click="toggleSettingsPanel"
-          :class="{ 'panel-open': showSettingsPanel }">
-          {{ showSettingsPanel ? '<' : '>' }} </button>
+        <button
+          class="side-panel-button settings-button"
+          :class="{ 'panel-open': showSettingsPanel }"
+          @click="toggleSettingsPanel"
+        >
+          {{ showSettingsPanel ? '<' : '>' }}
+        </button>
 
-            <div class="render-area">
-              <PixelCanvas :availablePixels="pixels" :spentPixels="spentPixels" />
-              <button class="render-button retro-button" @click="renderPixel">RENDER PIXEL</button>
-            </div>
+        <div class="render-area">
+          <PixelCanvas :available-pixels="pixels" :spent-pixels="spentPixels" />
+          <button class="render-button retro-button" @click="renderPixel">
+            RENDER PIXEL
+          </button>
+        </div>
 
-            <button class="side-panel-button upgrades-button" @click="toggleUpgradesPanel"
-              :class="{ 'panel-open': showUpgradesPanel }">
-              {{ showUpgradesPanel ? '>' : '<' }} </button>
+        <button
+          class="side-panel-button upgrades-button"
+          :class="{ 'panel-open': showUpgradesPanel }"
+          @click="toggleUpgradesPanel"
+        >
+          {{ showUpgradesPanel ? '>' : '<' }}
+        </button>
       </div>
 
       <div class="upgrades-container crt-panel" :class="{ 'show': showUpgradesPanel }">
@@ -64,7 +81,6 @@ import {
   deleteSaveSlot,
   exportSave,
   importSave,
-  listSaveSlots,
   resetAllData
 } from './utils/saveManager'
 import upgradesData from './assets/upgrades.json'

@@ -1,7 +1,9 @@
 <template>
   <div class="settings-options">
     <div class="settings-section">
-      <h3 class="section-title">DISPLAY</h3>
+      <h3 class="section-title">
+        DISPLAY
+      </h3>
       <div class="setting-item">
         <span class="setting-label">THEME</span>
         <div class="setting-control">
@@ -10,7 +12,8 @@
             :key="theme"
             class="option-button" 
             :class="{ 'selected': currentTheme === theme }"
-            @click="$emit('theme-change', theme)">
+            @click="$emit('theme-change', theme)"
+          >
             {{ theme }}
           </button>
         </div>
@@ -18,7 +21,9 @@
     </div>
 
     <div class="settings-section">
-      <h3 class="section-title">AUDIO</h3>
+      <h3 class="section-title">
+        AUDIO
+      </h3>
       <div class="setting-item">
         <span class="setting-label">SOUND FX</span>
         <div class="setting-control">
@@ -27,7 +32,8 @@
             :key="option.value"
             class="option-button" 
             :class="{ 'selected': soundFx === option.value }"
-            @click="$emit('sound-fx-change', option.value)">
+            @click="$emit('sound-fx-change', option.value)"
+          >
             {{ option.label }}
           </button>
         </div>
@@ -40,7 +46,8 @@
             :key="option.value"
             class="option-button" 
             :class="{ 'selected': music === option.value }"
-            @click="$emit('music-change', option.value)">
+            @click="$emit('music-change', option.value)"
+          >
             {{ option.label }}
           </button>
         </div>
@@ -48,7 +55,9 @@
     </div>
 
     <div class="settings-section">
-      <h3 class="section-title">LANGUAGE</h3>
+      <h3 class="section-title">
+        LANGUAGE
+      </h3>
       <div class="setting-item">
         <span class="setting-label">LANGUAGE</span>
         <div class="setting-control">
@@ -57,7 +66,8 @@
             :key="lang.code"
             class="option-button" 
             :class="{ 'selected': currentLanguage === lang.code }"
-            @click="$emit('language-change', lang.code)">
+            @click="$emit('language-change', lang.code)"
+          >
             {{ lang.label }}
           </button>
         </div>
@@ -68,25 +78,6 @@
 
 <script setup>
 import { THEMES, LANGUAGES, TOGGLE_OPTIONS } from '../../utils/settingsConfig';
-
-const props = defineProps({
-  currentTheme: {
-    type: String,
-    default: 'C64'
-  },
-  soundFx: {
-    type: Boolean,
-    default: true
-  },
-  music: {
-    type: Boolean,
-    default: true
-  },
-  currentLanguage: {
-    type: String,
-    default: 'ENGLISH'
-  }
-});
 
 defineEmits(['theme-change', 'sound-fx-change', 'music-change', 'language-change']);
 

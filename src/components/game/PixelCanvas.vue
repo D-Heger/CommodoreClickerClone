@@ -1,6 +1,6 @@
 <template>
   <div class="pixel-canvas">
-    <canvas ref="canvas" :width="400" :height="300"></canvas>
+    <canvas ref="canvas" :width="400" :height="300" />
     <div class="progress">
       {{ renderedPixels }}/{{ totalPixels }} pixels rendered
       <span v-if="completedCanvases > 0" class="canvas-count">
@@ -54,7 +54,7 @@ const createCheckerPattern = (width, height, hueOffset = 0) => {
   const pattern = new Uint8ClampedArray(width * height * 4)
   const tileSize = 8
   let pixelIndex = 0
-  
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const isEvenTile = (Math.floor(x / tileSize) + Math.floor(y / tileSize)) % 2 === 0
@@ -62,12 +62,12 @@ const createCheckerPattern = (width, height, hueOffset = 0) => {
       const saturation = 30
       const lightness = isEvenTile ? 90 : 80
       const [r, g, b] = hslToRgb(hue % 360, saturation, lightness)
-      
+
       pattern[pixelIndex] = r
       pattern[pixelIndex + 1] = g
       pattern[pixelIndex + 2] = b
       pattern[pixelIndex + 3] = 255
-      
+
       pixelIndex += 4
     }
   }
@@ -77,14 +77,14 @@ const createCheckerPattern = (width, height, hueOffset = 0) => {
 // Canvas rendering functions
 const initializeCanvas = () => {
   if (!canvas.value) return
-  
+
   ctx.value = canvas.value.getContext('2d')
   const { width, height } = canvas.value
-  
+
   imageData.value = ctx.value.createImageData(width, height)
   const pattern = createCheckerPattern(width, height)
   totalPixels.value = (width * height)
-  
+
   // Initialize with black pixels
   for (let i = 0; i < pattern.length; i += 4) {
     imageData.value.data[i] = 0
@@ -92,22 +92,22 @@ const initializeCanvas = () => {
     imageData.value.data[i + 2] = 0
     imageData.value.data[i + 3] = 255
   }
-  
+
   imageData.value.pattern = pattern
   updateCanvas()
 }
 
 const drawCursor = () => {
   if (!ctx.value || !canvas.value) return
-  
+
   const { width } = canvas.value
   const currentY = Math.floor(renderedPixels.value / width)
   const currentX = renderedPixels.value % width
-  
+
   ctx.value.strokeStyle = getComputedStyle(document.documentElement)
     .getPropertyValue('--secondary').trim()
   ctx.value.lineWidth = 2
-  
+
   if (Math.floor(Date.now() / 500) % 2 === 0) {
     ctx.value.strokeRect(currentX, currentY, 1, 1)
   }
@@ -115,15 +115,15 @@ const drawCursor = () => {
 
 const renderPixels = (totalAvailable) => {
   if (!imageData.value || !canvas.value) return
-  
+
   const canvasTotal = canvas.value.width * canvas.value.height
-  
+
   // Calculate how many complete canvases we have rendered
   const newCompletedCanvases = Math.floor(totalAvailable / canvasTotal)
-  
+
   // Calculate pixels to render in the current canvas
   const pixelsInCurrentCanvas = totalAvailable % canvasTotal
-  
+
   // If we've completed a new canvas, update the hue shift more dramatically
   if (newCompletedCanvases > completedCanvases.value) {
     // For each new completed canvas, use a more noticeable hue shift
@@ -131,17 +131,17 @@ const renderPixels = (totalAvailable) => {
     completedCanvases.value = newCompletedCanvases
     isComplete.value = false
   }
-  
+
   // Update the total rendered pixels
   totalRenderedPixels.value = totalAvailable
-  
+
   // Apply current pattern
   const currentPattern = createCheckerPattern(
-    canvas.value.width, 
-    canvas.value.height, 
+    canvas.value.width,
+    canvas.value.height,
     hueShift.value
   )
-  
+
   // Fill the entire canvas with the new colored pattern
   for (let i = 0; i < imageData.value.data.length; i += 4) {
     imageData.value.data[i] = currentPattern[i]
@@ -149,7 +149,7 @@ const renderPixels = (totalAvailable) => {
     imageData.value.data[i + 2] = currentPattern[i + 2]
     // Alpha channel stays at 255
   }
-  
+
   // Then blank out the unrendered pixels by setting RGB values to 0 (keeping alpha at 255)
   for (let i = pixelsInCurrentCanvas * 4; i < imageData.value.data.length; i += 4) {
     imageData.value.data[i] = 0
@@ -157,14 +157,14 @@ const renderPixels = (totalAvailable) => {
     imageData.value.data[i + 2] = 0
     // Alpha channel stays at 255
   }
-  
+
   // Update rendered pixels for the current canvas
   renderedPixels.value = pixelsInCurrentCanvas
-  
+
   // Check if the current canvas is complete
   const wasComplete = isComplete.value
   isComplete.value = pixelsInCurrentCanvas >= canvasTotal
-  
+
   if (!wasComplete && isComplete.value) {
     startColorCycle()
   } else if (wasComplete && !isComplete.value) {
@@ -175,7 +175,7 @@ const renderPixels = (totalAvailable) => {
       cycleAnimationId.value = null
     }
   }
-  
+
   updateCanvas()
 }
 
@@ -194,24 +194,24 @@ const animate = () => {
 const startColorCycle = () => {
   const cyclePalette = () => {
     if (!isComplete.value) return
-    
+
     hueShift.value = (hueShift.value + 0.5) % 360
     const newPattern = createCheckerPattern(
       canvas.value.width,
       canvas.value.height,
       hueShift.value
     )
-    
+
     for (let i = 0; i < imageData.value.data.length; i += 4) {
       imageData.value.data[i] = newPattern[i]
       imageData.value.data[i + 1] = newPattern[i + 1]
       imageData.value.data[i + 2] = newPattern[i + 2]
     }
-    
+
     updateCanvas()
     cycleAnimationId.value = requestAnimationFrame(cyclePalette)
   }
-  
+
   cyclePalette()
 }
 

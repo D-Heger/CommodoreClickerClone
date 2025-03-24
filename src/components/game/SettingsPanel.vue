@@ -1,12 +1,16 @@
 <template>
   <div class="settings-panel">
-    <h2 class="retro-title">SETTINGS</h2>
+    <h2 class="retro-title">
+      SETTINGS
+    </h2>
 
     <div class="settings-list">
       <div class="settings-section">
-        <h3 class="section-title">GAME DATA</h3>
+        <h3 class="section-title">
+          GAME DATA
+        </h3>
         <SaveSlotManager
-          :saveSlots="saveSlots"
+          :save-slots="saveSlots"
           @save="$emit('save', $event)"
           @load="$emit('load', $event)"
           @export="$emit('export')"
@@ -15,30 +19,30 @@
           @confirm-reset="confirmReset"
         />
       </div>
-      
+
       <div class="settings-section">
-        <h3 class="section-title">GAME SETTINGS</h3>
+        <h3 class="section-title">
+          GAME SETTINGS
+        </h3>
         <p class="section-description">
           Adjust the game settings to your preference.
-          <br>
+          <br />
           <strong>Note: These settings do nothing yet.</strong>
         </p>
       </div>
 
       <SettingsOptions
-        :currentTheme="settings.theme"
-        :soundFx="settings.soundFx"
+        :current-theme="settings.theme"
+        :sound-fx="settings.soundFx"
         :music="settings.music"
-        :currentLanguage="settings.language"
+        :current-language="settings.language"
         @theme-change="updateSetting('theme', $event)"
         @sound-fx-change="updateSetting('soundFx', $event)"
         @music-change="updateSetting('music', $event)"
         @language-change="updateSetting('language', $event)"
       />
 
-      <AboutSection 
-        @open-changelog="$emit('open-changelog')"
-      />
+      <AboutSection @open-changelog="$emit('open-changelog')" />
     </div>
 
     <ConfirmationDialog
@@ -59,22 +63,15 @@ import { useConfirmation } from '../../utils/useConfirmation';
 import { DEFAULT_SETTINGS } from '../../utils/settingsConfig';
 import { ref } from 'vue';
 
-const props = defineProps({
-  saveSlots: {
-    type: Array,
-    required: true
-  }
-});
-
 const emit = defineEmits(['save', 'load', 'delete', 'export', 'import', 'reset', 'open-changelog', 'update-settings']);
 
 // Use the confirmation composable
-const { 
-  showConfirmation, 
-  confirmationMessage, 
+const {
+  showConfirmation,
+  confirmationMessage,
   confirm,
-  handleConfirm, 
-  cancelConfirmation 
+  handleConfirm,
+  cancelConfirmation
 } = useConfirmation();
 
 // Default settings

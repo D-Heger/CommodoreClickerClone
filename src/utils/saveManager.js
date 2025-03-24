@@ -1,5 +1,3 @@
-import { toDecimal } from './numbers';
-
 // Save data structure version for future compatibility
 const SAVE_VERSION = '1';
 

@@ -1,22 +1,31 @@
 <template>
   <div class="upgrades-panel">
-    <h2 class="retro-title">UPGRADES</h2>
+    <h2 class="retro-title">
+      UPGRADES
+    </h2>
 
     <div class="upgrades-list">
-      <div v-for="upgrade in upgrades" :key="upgrade.id" class="upgrade-item"
-        :class="{ 'affordable': canAffordUpgrade(upgrade) }">
+      <div
+        v-for="upgrade in upgrades"
+        :key="upgrade.id"
+        class="upgrade-item"
+        :class="{ 'affordable': canAffordUpgrade(upgrade) }"
+      >
         <div class="upgrade-info">
           <h3>{{ upgrade.name }} <span class="level-badge">LVL {{ upgrade.level }}</span></h3>
           <p>{{ upgrade.description }}</p>
-          <span class="upgrade-type" :class="{
-            'type-rate': upgrade.type === 'rate',
-            'type-multiplier': upgrade.type === 'multiplier',
-            'type-click': upgrade.type === 'click'
-          }">
+          <span
+            class="upgrade-type"
+            :class="{
+              'type-rate': upgrade.type === 'rate',
+              'type-multiplier': upgrade.type === 'multiplier',
+              'type-click': upgrade.type === 'click'
+            }"
+          >
             {{ upgrade.type === 'rate' ? 'SPEED+' : (upgrade.type === 'multiplier' ? 'MULTIx' : 'CLICK+') }}
           </span>
         </div>
-        <button @click="$emit('purchase', upgrade.id)" :disabled="!canAffordUpgrade(upgrade)" class="retro-button">
+        <button :disabled="!canAffordUpgrade(upgrade)" class="retro-button" @click="$emit('purchase', upgrade.id)">
           <span class="price">{{ formatNumber(calculateUpgradeCost(upgrade)) }}</span>
           <span class="buy-text">BUY</span>
         </button>
@@ -26,8 +35,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { toDecimal, formatNumber, gte } from '../../utils/numbers'
+import { formatNumber, gte } from '../../utils/numbers'
 import { calculateUpgradeCost } from '../../utils/upgradeManager'
 
 const props = defineProps({

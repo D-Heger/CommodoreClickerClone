@@ -1,24 +1,30 @@
 <template>
   <div v-if="show" class="changelog-overlay">
     <div class="changelog-popup crt-panel">
-      <h2 class="retro-title">CHANGELOG</h2>
+      <h2 class="retro-title">
+        CHANGELOG
+      </h2>
       <div class="changelog-content">
         <div v-if="!showFullChangelog">
           <h3>Latest Changes (v{{ latestVersion }})</h3>
           <div v-for="(section, type) in latestChanges" :key="type" class="changelog-section">
             <h4>{{ type }}</h4>
             <ul>
-              <li v-for="change in section" :key="change">{{ change }}</li>
+              <li v-for="change in section" :key="change">
+                {{ change }}
+              </li>
             </ul>
           </div>
         </div>
-        <div v-else v-html="parsedFullChangelog" class="full-changelog"></div>
+        <div v-else class="full-changelog" v-html="parsedFullChangelog" /> <!-- eslint-disable-line vue/no-v-html -->
       </div>
       <div class="changelog-actions">
         <button class="retro-button" @click="toggleFullChangelog">
           {{ showFullChangelog ? 'SHOW LATEST' : 'VIEW FULL CHANGELOG' }}
         </button>
-        <button class="retro-button" @click="close">CLOSE</button>
+        <button class="retro-button" @click="close">
+          CLOSE
+        </button>
       </div>
     </div>
   </div>
@@ -27,6 +33,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 
 const props = defineProps({
   show: {
@@ -43,7 +50,8 @@ const emit = defineEmits(['close'])
 const showFullChangelog = ref(false)
 
 const parsedFullChangelog = computed(() => {
-  return marked(props.changelog)
+  const html = marked(props.changelog)
+  return DOMPurify.sanitize(html)
 })
 
 const latestVersion = computed(() => {
@@ -65,9 +73,9 @@ const latestChanges = computed(() => {
   let inCurrentVersion = false
   let currentType = null
   let latestVersionFound = false
-  
+
   const lines = props.changelog.split('\n')
-  
+
   for (const line of lines) {
     // Start capturing at first version after Unreleased
     if (line.startsWith('## ') && !line.includes('Unreleased')) {
@@ -80,7 +88,7 @@ const latestChanges = computed(() => {
         break
       }
     }
-    
+
     if (inCurrentVersion) {
       if (line.startsWith('### ')) {
         currentType = line.slice(4).trim()
@@ -90,7 +98,7 @@ const latestChanges = computed(() => {
       }
     }
   }
-  
+
   return sections
 })
 

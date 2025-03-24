@@ -1,19 +1,21 @@
 <template>
   <div class="settings-section">
-    <h3 class="section-title">ABOUT</h3>
+    <h3 class="section-title">
+      ABOUT
+    </h3>
     <div class="about-content">
       <p class="about-text">
-        Commodore Pixel Renderer <strong>{{ version }}</strong><br>
+        Commodore Pixel Renderer <strong>{{ version }}</strong><br />
         A retro-style incremental game
-        <br>
+        <br />
         By <a href="https://github.com/D-Heger" target="_blank">D-Heger 🔗</a>
-        <br>
+        <br />
         <a href="https://github.com/D-Heger/CommodoreClickerClone" target="_blank">View on GitHub 🔗</a>
-        <br>
+        <br />
         <button class="retro-button changelog-button" @click="$emit('open-changelog')">
           <span class="action-text">VIEW CHANGELOG</span>
         </button>
-        <br>
+        <br />
         This project is a work in progress and is not affiliated with any official Commodore products.
         It is intended for educational and entertainment purposes only.
         Running this game may cause you to lose track of time and forget about your real life.
