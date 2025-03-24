@@ -4,52 +4,31 @@
       <h1 class="retro-title">
         Commodore Pixel Renderer
       </h1>
-      <StatsDisplay
-        :pixels="formattedPixels"
-        :computer-speed="formattedSpeed"
-        :click-power="formattedClickPower"
-        :total-pixels="formattedTotalPixels"
-        :spent-pixels="formattedSpentPixels"
-      />
+      <StatsDisplay :pixels="formattedPixels" :computer-speed="formattedSpeed" :click-power="formattedClickPower"
+        :total-pixels="formattedTotalPixels" :spent-pixels="formattedSpentPixels" />
     </header>
 
     <main>
       <div class="settings-container crt-panel" :class="{ 'show': showSettingsPanel }">
-        <SettingsPanel 
-          :save-slots="saveSlots"
-          @open-changelog="openChangelog"
-          @save="handleSave"
-          @load="handleLoad"
-          @delete="handleDelete"
-          @export="handleExport"
-          @import="handleImport"
-          @reset="handleReset"
-        />
+        <SettingsPanel :save-slots="saveSlots" @open-changelog="openChangelog" @save="handleSave" @load="handleLoad"
+          @delete="handleDelete" @export="handleExport" @import="handleImport" @reset="handleReset" />
       </div>
 
       <div class="content-area">
-        <button
-          class="side-panel-button settings-button"
-          :class="{ 'panel-open': showSettingsPanel }"
-          @click="toggleSettingsPanel"
-        >
-          {{ showSettingsPanel ? '<' : '>' }}
-        </button>
+        <button class="side-panel-button settings-button" :class="{ 'panel-open': showSettingsPanel }"
+          @click="toggleSettingsPanel">
+          {{ showSettingsPanel ? '<' : '>' }} </button>
 
-        <div class="render-area">
-          <PixelCanvas :available-pixels="pixels" :spent-pixels="spentPixels" />
-          <button class="render-button retro-button" @click="renderPixel">
-            RENDER PIXEL
-          </button>
-        </div>
+            <div class="render-area">
+              <PixelCanvas :available-pixels="pixels" :spent-pixels="spentPixels" />
+              <button class="render-button retro-button" @click="renderPixel">
+                RENDER PIXEL
+              </button>
+            </div>
 
-        <button
-          class="side-panel-button upgrades-button"
-          :class="{ 'panel-open': showUpgradesPanel }"
-          @click="toggleUpgradesPanel"
-        >
-          {{ showUpgradesPanel ? '>' : '<' }}
-        </button>
+            <button class="side-panel-button upgrades-button" :class="{ 'panel-open': showUpgradesPanel }"
+              @click="toggleUpgradesPanel">
+              {{ showUpgradesPanel ? '>' : '<' }} </button>
       </div>
 
       <div class="upgrades-container crt-panel" :class="{ 'show': showUpgradesPanel }">
@@ -69,11 +48,11 @@ import UpgradesPanel from './components/game/UpgradesPanel.vue'
 import SettingsPanel from './components/game/SettingsPanel.vue'
 import ChangelogPopup from './components/game/ChangelogPopup.vue'
 import { toDecimal, formatNumber, add, multiply } from './utils/numbers'
-import { 
-  loadUpgrades, 
-  purchaseUpgrade as buyUpgrade, 
+import {
+  loadUpgrades,
+  purchaseUpgrade as buyUpgrade,
   calculateTotalPixelGeneration,
-  calculateClickPower 
+  calculateClickPower
 } from './utils/upgradeManager'
 import {
   saveToSlot,
@@ -102,9 +81,11 @@ const saveSlots = ref([])
 // Initialize save slots
 const initializeSaveSlots = () => {
   // Create array of slots 1-5 with null data for empty slots
+  console.log('Initializing save slots...')
   saveSlots.value = Array.from({ length: 5 }, (_, i) => {
     const slot = i + 1;
     try {
+      console.log(`Loading save slot ${slot}...`)
       const saveData = loadFromSlot(slot);
       return {
         slot,
@@ -130,7 +111,7 @@ const handleSave = async (slot) => {
       upgrades: upgrades.value,
       completedFrames: completedCanvases.value
     }
-    
+
     await saveToSlot(slot, gameState)
     initializeSaveSlots() // Refresh slots display
   } catch (error) {
@@ -142,12 +123,12 @@ const handleLoad = async (slot) => {
   try {
     const saveData = await loadFromSlot(slot)
     if (!saveData) return
-    
+
     // Restore game state
     pixels.value = saveData.pixels
     totalPixels.value = saveData.totalPixels
     spentPixels.value = saveData.spentPixels
-    
+
     // Restore upgrades
     upgrades.value = loadUpgrades(upgradesData)
     saveData.upgrades.forEach(savedUpgrade => {
@@ -157,7 +138,7 @@ const handleLoad = async (slot) => {
         upgrade.purchased = savedUpgrade.purchased
       }
     })
-    
+
     // Update canvas state
     if (saveData.completedFrames) {
       completedCanvases.value = saveData.completedFrames
@@ -198,7 +179,7 @@ const handleImport = async (file) => {
     pixels.value = saveData.pixels
     totalPixels.value = saveData.totalPixels
     spentPixels.value = saveData.spentPixels
-    
+
     upgrades.value = loadUpgrades(upgradesData)
     saveData.upgrades.forEach(savedUpgrade => {
       const upgrade = upgrades.value.find(u => u.id === savedUpgrade.id)
@@ -207,7 +188,7 @@ const handleImport = async (file) => {
         upgrade.purchased = savedUpgrade.purchased
       }
     })
-    
+
     if (saveData.completedFrames) {
       completedCanvases.value = saveData.completedFrames
     }
@@ -224,7 +205,7 @@ const handleReset = () => {
     spentPixels.value = '0'
     upgrades.value = loadUpgrades(upgradesData)
     completedCanvases.value = 0
-    
+
     // Clear all saves
     resetAllData()
     initializeSaveSlots()
@@ -274,10 +255,10 @@ const renderPixel = () => {
 const purchaseUpgrade = (upgradeId) => {
   const upgradeIndex = upgrades.value.findIndex(u => u.id === upgradeId)
   if (upgradeIndex === -1) return
-  
+
   const upgrade = upgrades.value[upgradeIndex]
   const result = buyUpgrade(upgrade, pixels.value)
-  
+
   if (result.success) {
     pixels.value = result.newPixelsTotal
     spentPixels.value = add(spentPixels.value, result.spentPixels).toString()
@@ -348,7 +329,7 @@ onMounted(() => {
   animationFrameId = requestAnimationFrame(tick)
   loadChangelog() // Show changelog on initial load
   initializeSaveSlots() // Initialize save slots
-  
+
   // Start autosave
   autosaveInterval = setInterval(autoSave, AUTOSAVE_INTERVAL)
 })

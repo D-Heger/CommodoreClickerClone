@@ -9,15 +9,9 @@
         <h3 class="section-title">
           GAME DATA
         </h3>
-        <SaveSlotManager
-          :save-slots="saveSlots"
-          @save="$emit('save', $event)"
-          @load="$emit('load', $event)"
-          @export="$emit('export')"
-          @import="$emit('import', $event)"
-          @confirm-delete="confirmDelete"
-          @confirm-reset="confirmReset"
-        />
+        <SaveSlotManager :save-slots="saveSlots" @save="$emit('save', $event)" @load="$emit('load', $event)"
+          @export="$emit('export')" @import="$emit('import', $event)" @confirm-delete="confirmDelete"
+          @confirm-reset="confirmReset" />
       </div>
 
       <div class="settings-section">
@@ -31,26 +25,16 @@
         </p>
       </div>
 
-      <SettingsOptions
-        :current-theme="settings.theme"
-        :sound-fx="settings.soundFx"
-        :music="settings.music"
-        :current-language="settings.language"
-        @theme-change="updateSetting('theme', $event)"
-        @sound-fx-change="updateSetting('soundFx', $event)"
-        @music-change="updateSetting('music', $event)"
-        @language-change="updateSetting('language', $event)"
-      />
+      <SettingsOptions :current-theme="settings.theme" :sound-fx="settings.soundFx" :music="settings.music"
+        :current-language="settings.language" @theme-change="updateSetting('theme', $event)"
+        @sound-fx-change="updateSetting('soundFx', $event)" @music-change="updateSetting('music', $event)"
+        @language-change="updateSetting('language', $event)" />
 
       <AboutSection @open-changelog="$emit('open-changelog')" />
     </div>
 
-    <ConfirmationDialog
-      :show="showConfirmation"
-      :message="confirmationMessage"
-      @confirm="handleConfirm"
-      @cancel="cancelConfirmation"
-    />
+    <ConfirmationDialog :show="showConfirmation" :message="confirmationMessage" @confirm="handleConfirm"
+      @cancel="cancelConfirmation" />
   </div>
 </template>
 
@@ -109,7 +93,7 @@ const confirmReset = () => {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding-bottom: 2rem;
+  padding-bottom: 200px;
   position: relative;
   z-index: 1;
 }

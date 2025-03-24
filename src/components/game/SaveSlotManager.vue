@@ -8,13 +8,8 @@
         <br />
         Slot 1 is reserved for auto-saves, it WILL be overwritten.
       </p>
-      <div
-        v-for="slot in saveSlots"
-        :key="slot.slot"
-        class="save-slot"
-        :class="{ 'selected': selectedSlot === slot.slot }"
-        @click="selectSlot(slot.slot)"
-      >
+      <div v-for="slot in saveSlots" :key="slot.slot" class="save-slot"
+        :class="{ 'selected': selectedSlot === slot.slot }" @click="selectSlot(slot.slot)">
         <div class="slot-info">
           <span class="slot-number">SLOT {{ slot.slot }}</span>
           <template v-if="slot.data">
@@ -33,11 +28,8 @@
       <button class="retro-button" :disabled="!selectedSlot" @click="$emit('save', selectedSlot)">
         <span class="action-text">SAVE TO SLOT</span>
       </button>
-      <button
-        class="retro-button"
-        :disabled="!selectedSlot || !hasDataInSelectedSlot"
-        @click="$emit('load', selectedSlot)"
-      >
+      <button class="retro-button" :disabled="!selectedSlot || !hasDataInSelectedSlot"
+        @click="$emit('load', selectedSlot)">
         <span class="action-text">LOAD FROM SLOT</span>
       </button>
       <button class="retro-button warning" :disabled="!selectedSlot || !hasDataInSelectedSlot" @click="onDelete">
@@ -49,13 +41,7 @@
       <button class="retro-button" @click="$emit('export')">
         <span class="action-text">EXPORT SAVE</span>
       </button>
-      <input
-        ref="fileInput"
-        type="file"
-        accept=".json"
-        style="display: none"
-        @change="handleFileImport"
-      />
+      <input ref="fileInput" type="file" accept=".json" style="display: none" @change="handleFileImport" />
       <button class="retro-button" @click="triggerFileInput">
         <span class="action-text">IMPORT SAVE</span>
       </button>
@@ -76,6 +62,7 @@ const props = defineProps({
     required: true
   }
 });
+console.log("SaveSlotManager: " + props.saveSlots);
 
 const emit = defineEmits(['save', 'load', 'export', 'import', 'confirm-delete', 'confirm-reset']);
 

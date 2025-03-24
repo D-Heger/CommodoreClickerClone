@@ -7,13 +7,8 @@
       <div class="setting-item">
         <span class="setting-label">THEME</span>
         <div class="setting-control">
-          <button 
-            v-for="theme in themes" 
-            :key="theme"
-            class="option-button" 
-            :class="{ 'selected': currentTheme === theme }"
-            @click="$emit('theme-change', theme)"
-          >
+          <button v-for="theme in themes" :key="theme" class="option-button"
+            :class="{ 'selected': currentTheme === theme }" @click="$emit('theme-change', theme)">
             {{ theme }}
           </button>
         </div>
@@ -27,13 +22,8 @@
       <div class="setting-item">
         <span class="setting-label">SOUND FX</span>
         <div class="setting-control">
-          <button 
-            v-for="option in toggleOptions" 
-            :key="option.value"
-            class="option-button" 
-            :class="{ 'selected': soundFx === option.value }"
-            @click="$emit('sound-fx-change', option.value)"
-          >
+          <button v-for="option in toggleOptions" :key="option.value" class="option-button"
+            :class="{ 'selected': soundFx === option.value }" @click="$emit('sound-fx-change', option.value)">
             {{ option.label }}
           </button>
         </div>
@@ -41,13 +31,8 @@
       <div class="setting-item">
         <span class="setting-label">MUSIC</span>
         <div class="setting-control">
-          <button 
-            v-for="option in toggleOptions" 
-            :key="option.value"
-            class="option-button" 
-            :class="{ 'selected': music === option.value }"
-            @click="$emit('music-change', option.value)"
-          >
+          <button v-for="option in toggleOptions" :key="option.value" class="option-button"
+            :class="{ 'selected': music === option.value }" @click="$emit('music-change', option.value)">
             {{ option.label }}
           </button>
         </div>
@@ -61,13 +46,8 @@
       <div class="setting-item">
         <span class="setting-label">LANGUAGE</span>
         <div class="setting-control">
-          <button 
-            v-for="lang in languages" 
-            :key="lang.code"
-            class="option-button" 
-            :class="{ 'selected': currentLanguage === lang.code }"
-            @click="$emit('language-change', lang.code)"
-          >
+          <button v-for="lang in languages" :key="lang.code" class="option-button"
+            :class="{ 'selected': currentLanguage === lang.code }" @click="$emit('language-change', lang.code)">
             {{ lang.label }}
           </button>
         </div>

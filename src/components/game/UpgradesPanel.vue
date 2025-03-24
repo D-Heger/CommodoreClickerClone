@@ -5,23 +5,16 @@
     </h2>
 
     <div class="upgrades-list">
-      <div
-        v-for="upgrade in upgrades"
-        :key="upgrade.id"
-        class="upgrade-item"
-        :class="{ 'affordable': canAffordUpgrade(upgrade) }"
-      >
+      <div v-for="upgrade in upgrades" :key="upgrade.id" class="upgrade-item"
+        :class="{ 'affordable': canAffordUpgrade(upgrade) }">
         <div class="upgrade-info">
           <h3>{{ upgrade.name }} <span class="level-badge">LVL {{ upgrade.level }}</span></h3>
           <p>{{ upgrade.description }}</p>
-          <span
-            class="upgrade-type"
-            :class="{
-              'type-rate': upgrade.type === 'rate',
-              'type-multiplier': upgrade.type === 'multiplier',
-              'type-click': upgrade.type === 'click'
-            }"
-          >
+          <span class="upgrade-type" :class="{
+            'type-rate': upgrade.type === 'rate',
+            'type-multiplier': upgrade.type === 'multiplier',
+            'type-click': upgrade.type === 'click'
+          }">
             {{ upgrade.type === 'rate' ? 'SPEED+' : (upgrade.type === 'multiplier' ? 'MULTIx' : 'CLICK+') }}
           </span>
         </div>
