@@ -6,9 +6,6 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## Unreleased
 
-- Additional themes including Amiga and ZX
-- Sound FX and Music
-- Support both English and German language
 - More Upgrades
 - Potentially more upgrade paths
 - Prestige System
@@ -19,7 +16,15 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
   - Stats display needs to be reworked
   - Improve mobile user experience
 - Improved rendering performance? (to allow for higher auto clicker values ;) )
-- Code Cleanup!!!
+- [ ] Code Cleanup
+  - [x] Refactor settings panel
+  - [ ] Refactor upgrade panel
+  - [ ] Refactor changelog popup
+  - [ ] Refactor pixel canvas
+- Actually implement settings and their effects
+  - Additional themes including Amiga and ZX
+  - Sound FX and Music
+  - Support both English and German language
 
 ## 0.0.3 - 24.03.2025
 
