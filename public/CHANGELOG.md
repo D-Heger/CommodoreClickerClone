@@ -38,6 +38,16 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
     - Option to confirm reset action
     - Reset now removes all saved game states
 
+### Changed
+
+- Significantly improved code structure and organization
+  - Split SettingsPanel into modular components (SaveSlotManager, SettingsOptions, AboutSection, ConfirmationDialog)
+  - Extracted common CSS styles to theme.css for better reusability
+  - Created central configuration for settings options
+  - Implemented composable pattern for confirmation dialog logic
+- Reduced code duplication and enhanced maintainability
+- Improved separation of concerns across components
+
 ## 0.0.2 - 23.03.2025
 
 ### Added
