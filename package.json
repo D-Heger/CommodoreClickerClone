@@ -1,6 +1,6 @@
 {
   "name": "commodore-pixel-renderer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
   "description": "A retro-style incremental game inspired by the Commodore computer",

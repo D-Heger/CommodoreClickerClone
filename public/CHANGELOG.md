@@ -6,18 +6,55 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## Unreleased
 
-- Save/Load game state
-- Delete specific save state
-- Hard reset game
-- Additional themes including Amiga and ZX
-- Sound FX and Music
-- Support both english and german language
 - More Upgrades
 - Potentially more upgrade paths
 - Prestige System
 - Different Images to Render
 - Optional filters in upgrade menu
 - More CRT effects
+- UI improvements
+  - Stats display needs to be reworked
+  - Improve mobile user experience
+- Improved rendering performance? (to allow for higher auto clicker values ;) )
+- [ ] Code Cleanup
+  - [x] Refactor settings panel
+  - [ ] Refactor upgrade panel
+  - [ ] Refactor changelog popup
+  - [ ] Refactor pixel canvas
+  - [ ] Refactor main app component
+- Actually implement settings and their effects
+  - Additional themes including Amiga and ZX
+  - Sound FX and Music
+  - Support both English and German language
+  - Implement functionality for saving and loading settings
+- Implement autoloading of last save state upon game start (maybe with a confirmation dialog)
+
+## 0.0.3 - 24.03.2025
+
+### Added
+
+- Comprehensive save/load game state system
+  - Added 5 save slots for storing game states
+  - Implemented automatic saving functionality
+  - Added ability to export save states as files
+  - Added feature to load game states from files or save slots
+  - Save states now preserve all upgrades, settings, progress and completed frames
+- Game state management features
+  - Added ability to delete specific save states from slots
+  - Implemented hard reset functionality
+    - Complete reset of all upgrades, settings, and progress
+    - Option to confirm reset action
+    - Reset now removes all saved game states
+
+### Changed
+
+- Significantly improved code structure and organization
+  - Split SettingsPanel into modular components (SaveSlotManager, SettingsOptions, AboutSection, ConfirmationDialog)
+  - Extracted common CSS styles to theme.css for better reusability
+  - Created central configuration for settings options
+  - Implemented composable pattern for confirmation dialog logic
+- Reduced code duplication and enhanced maintainability
+- Improved separation of concerns across components
 
 ## 0.0.2 - 23.03.2025
 
