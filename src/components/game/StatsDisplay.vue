@@ -52,8 +52,9 @@ defineProps({
 .stats {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  padding: 0.5rem 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.5rem;
   border-radius: 4px;
   border: 2px solid var(--secondary);
 }
@@ -62,19 +63,44 @@ defineProps({
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-width: max-content;
 }
 
 .stat-label {
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
   color: var(--text-secondary);
 }
 
 .stat-value {
   font-family: var(--font-mono);
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
   color: var(--secondary);
-  width: 100px;
   display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .stats {
+    gap: 0.75rem;
+    padding: 0.5rem;
+    justify-content: space-around;
+  }
+  
+  .stat-item {
+    flex: 0 1 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .stat-item {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 </style>
