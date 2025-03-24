@@ -81,11 +81,9 @@ const saveSlots = ref([])
 // Initialize save slots
 const initializeSaveSlots = () => {
   // Create array of slots 1-5 with null data for empty slots
-  console.log('Initializing save slots...')
   saveSlots.value = Array.from({ length: 5 }, (_, i) => {
     const slot = i + 1;
     try {
-      console.log(`Loading save slot ${slot}...`)
       const saveData = loadFromSlot(slot);
       return {
         slot,

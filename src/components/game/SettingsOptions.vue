@@ -61,6 +61,25 @@ import { THEMES, LANGUAGES, TOGGLE_OPTIONS } from '../../utils/settingsConfig';
 
 defineEmits(['theme-change', 'sound-fx-change', 'music-change', 'language-change']);
 
+defineProps({
+  currentTheme: {
+    type: String,
+    required: true
+  },
+  soundFx: {
+    type: Boolean,
+    required: true
+  },
+  music: {
+    type: Boolean,
+    required: true
+  },
+  currentLanguage: {
+    type: String,
+    required: true
+  }
+});
+
 const themes = THEMES;
 const toggleOptions = TOGGLE_OPTIONS;
 const languages = LANGUAGES;

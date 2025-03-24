@@ -59,10 +59,11 @@ import { formatNumber } from '../../utils/numbers';
 const props = defineProps({
   saveSlots: {
     type: Array,
-    required: true
+    required: true,
+    validator: (value) => Array.isArray(value),
+    default: () => []
   }
 });
-console.log("SaveSlotManager: " + props.saveSlots);
 
 const emit = defineEmits(['save', 'load', 'export', 'import', 'confirm-delete', 'confirm-reset']);
 

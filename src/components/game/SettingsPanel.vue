@@ -49,6 +49,15 @@ import { ref } from 'vue';
 
 const emit = defineEmits(['save', 'load', 'delete', 'export', 'import', 'reset', 'open-changelog', 'update-settings']);
 
+// Add props definition
+const props = defineProps({
+  saveSlots: {
+    type: Array,
+    required: true,
+    default: () => []
+  }
+});
+
 // Use the confirmation composable
 const {
   showConfirmation,
