@@ -40,10 +40,12 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 - Now sanitizing changelog
 - Improved code formatting
+- Improved handling of really big numbers
 
 ### Fixed
 
 - Fixed a bug where the About Section was not interactable anymore
+- Fixed a bug where upgrade costs could reach 'Infinity'
 
 ## 0.0.3 - 24.03.2025
 

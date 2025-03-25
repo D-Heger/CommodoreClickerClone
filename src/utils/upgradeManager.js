@@ -1,5 +1,5 @@
 import { validateUpgrade } from './upgradeSchema';
-import { toDecimal, add, multiply, subtract, gte } from './numbers';
+import { toDecimal, add, multiply, subtract, gte, power } from './numbers';
 
 // Default initial state for the pixel multiplier
 const DEFAULT_MULTIPLIER = '1';
@@ -24,7 +24,7 @@ export function loadUpgrades(upgradesData) {
 export function calculateUpgradeCost(upgrade) {
   return multiply(
     upgrade.cost,
-    upgrade.level > 0 ? Math.pow(toDecimal(upgrade.costFactor).toNumber(), upgrade.level) : '1'
+    upgrade.level > 0 ? power(upgrade.costFactor, upgrade.level).toString() : '1'
   ).toString();
 }
 
