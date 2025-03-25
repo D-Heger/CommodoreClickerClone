@@ -1,5 +1,5 @@
 import { validateUpgrade } from './upgradeSchema';
-import { toDecimal, add, multiply, subtract, gte, power } from './numbers';
+import { add, multiply, subtract, gte, power } from './numbers';
 
 // Default initial state for the pixel multiplier
 const DEFAULT_MULTIPLIER = '1';
@@ -69,7 +69,7 @@ export function calculatePixelRate(upgrades) {
 // Calculate the current multiplier based on all multiplier upgrades
 export function calculatePixelMultiplier(upgrades) {
   return upgrades
-    .filter(upgrade => upgrade.type === 'multiplier' && upgrade.level > 0)
+    .filter(upgrade => upgrade.type === 'rate_multiplier' && upgrade.level > 0)
     .reduce((total, upgrade) => {
       const upgradeContribution = multiply(
         upgrade.value, 
@@ -89,9 +89,29 @@ export function calculateClickPower(upgrades) {
     }, '1'); // Base click power is 1
 }
 
+// Calculate the click multiplier from click multiplier upgrades
+export function calculateClickMultiplier(upgrades) {
+  return upgrades
+    .filter(upgrade => upgrade.type === 'click_multiplier' && upgrade.level > 0)
+    .reduce((total, upgrade) => {
+      const upgradeContribution = multiply(
+        upgrade.value, 
+        upgrade.level.toString()
+      );
+      return multiply(total, add('1', upgradeContribution)).toString();
+    }, DEFAULT_MULTIPLIER);
+}
+
 // Calculate the total pixel generation rate
 export function calculateTotalPixelGeneration(upgrades) {
   const rate = calculatePixelRate(upgrades);
   const multiplier = calculatePixelMultiplier(upgrades);
   return multiply(rate, multiplier).toString();
+}
+
+// Calculate the total click power
+export function calculateTotalClickPower(upgrades) {
+  const clickPower = calculateClickPower(upgrades);
+  const clickMultiplier = calculateClickMultiplier(upgrades);
+  return multiply(clickPower, clickMultiplier).toString();
 }

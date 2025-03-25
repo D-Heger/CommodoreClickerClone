@@ -13,7 +13,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Optional filters in upgrade menu
 - More CRT effects
 - UI improvements
-  - Stats display needs to be reworked
+  - Stats display needs to be reworked (partially done)
   - Improve mobile user experience
 - Improved rendering performance? (to allow for higher auto clicker values ;) )
 - [ ] Code Cleanup
@@ -26,8 +26,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
   - Additional themes including Amiga and ZX
   - Sound FX and Music
   - Support both English and German language
-  - Implement functionality for saving and loading settings
-- Implement autoloading of last save state upon game start (maybe with a confirmation dialog)
+- Offline generation (maybe only through upgrades)
 
 ## 0.0.4 - 24.03.2025
 
@@ -41,11 +40,12 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Now sanitizing changelog
 - Improved code formatting
 - Improved handling of really big numbers
+- Improved Sats Panel UI
 
 ### Fixed
 
 - Fixed a bug where the About Section was not interactable anymore
-- Fixed a bug where upgrade costs could reach 'Infinity'
+- Fixed a bug where upgrade costs could reach 'Infinity' (Now up to at least one quadrillion levels should work)
 
 ## 0.0.3 - 24.03.2025
 

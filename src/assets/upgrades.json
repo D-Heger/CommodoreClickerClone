@@ -20,11 +20,12 @@
   {
     "id": "memory-upgrade",
     "name": "Memory Upgrade",
-    "description": "Doubles the effectiveness of your CPU",
+    "description": "Doubles the efficiency of your CPU",
     "cost": "100",
     "costFactor": "3",
-    "type": "multiplier",
-    "value": "1"
+    "type": "rate_multiplier",
+    "value": "1",
+    "maxLevel": 1
   },
   {
     "id": "advanced-cpu",
@@ -38,10 +39,11 @@
   {
     "id": "cooling-system",
     "name": "Cooling System",
-    "description": "Improves CPU efficiency by 50%",
+    "description": "Improves CPU efficiency by 200%",
     "cost": "200",
     "costFactor": "2.5",
-    "type": "multiplier",
-    "value": "0.5"
+    "type": "rate_multiplier",
+    "value": "2",
+    "maxLevel": 1
   }
 ]

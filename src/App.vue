@@ -64,7 +64,7 @@ import {
   loadUpgrades,
   purchaseUpgrade as buyUpgrade,
   calculateTotalPixelGeneration,
-  calculateClickPower
+  calculateTotalClickPower
 } from './utils/upgradeManager'
 import {
   saveToSlot,
@@ -270,7 +270,7 @@ const closeChangelog = () => {
 
 // Computed properties
 const computerSpeed = computed(() => calculateTotalPixelGeneration(upgrades.value))
-const clickPower = computed(() => calculateClickPower(upgrades.value))
+const clickPower = computed(() => calculateTotalClickPower(upgrades.value))
 const formattedPixels = computed(() => formatNumber(pixels.value))
 const formattedSpeed = computed(() => formatNumber(computerSpeed.value))
 const formattedClickPower = computed(() => formatNumber(clickPower.value))
