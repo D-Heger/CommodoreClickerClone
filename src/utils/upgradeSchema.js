@@ -10,11 +10,27 @@ export const upgradeSchema = {
     id: { type: 'string' },
     name: { type: 'string' },
     description: { type: 'string' },
-    cost: { type: 'string' }, // Using string for precision with Decimal.js
-    costFactor: { type: 'string' }, // Cost multiplier for each purchase
-    type: { type: 'string', enum: ['click', 'click_multiplier', 'click_automation', 'click_autobuy', 'click_critical', 'click_critical_multiplier', 'rate', 'rate_multiplier', 'rate_autobuy'] },
-    value: { type: 'string' }, // Using string for precision with Decimal.js
-    maxLevel: { type: 'number', default: Infinity } // Optional max level
+    cost: { type: 'string' },
+    costFactor: { type: 'string' },
+    type: {
+      type: 'string',
+      enum: [
+        // click upgrades
+        'click', 
+        'click_multiplier', 
+        'click_automation',  
+        'click_critical', 
+        'click_critical_multiplier', 
+        // rate upgrades
+        'rate', 
+        'rate_multiplier',
+        // autobuyers //TODO: implement autobuyers
+        'click_autobuy', 
+        'rate_autobuy'
+      ] 
+    },
+    value: { type: 'string' },
+    maxLevel: { type: 'number', default: Infinity }
   }
 }
 
@@ -24,11 +40,11 @@ const validateSchema = ajv.compile(upgradeSchema);
 // Helper function to validate an upgrade against the schema
 export function validateUpgrade(upgrade) {
   const isValid = validateSchema(upgrade);
-  
+
   if (!isValid) {
     console.error('Invalid upgrade:', validateSchema.errors);
     return false;
   }
-  
+
   return true;
 }
