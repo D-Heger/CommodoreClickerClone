@@ -54,7 +54,8 @@ const getTypeClass = (type) => {
     'click_multiplier': 'type-multiplier',
     'click_automation': 'type-automation',
     'click_autobuy': 'type-autobuy',
-    'click_critical': 'type-critical'
+    'click_critical': 'type-critical',
+    'click_critical_multiplier': 'type-multiplier'
   }
   
   return typeClasses[type] || 'type-default'
@@ -65,12 +66,13 @@ const getTypeLabel = (type) => {
   const typeLabels = {
     'rate': 'SPEED+',
     'rate_multiplier': 'MULTIx',
-    'rate_autobuy': 'AUTO-BUY',
+    'rate_autobuy': 'AUTO BUY',
     'click': 'CLICK+',
-    'click_multiplier': 'CLICK-MULTIx',
-    'click_automation': 'AUTO-CLICK',
-    'click_autobuy': 'CLICK-AUTO-BUY',
-    'click_critical': 'CRIT+'
+    'click_multiplier': 'CLICK MULTIx',
+    'click_automation': 'AUTO CLICK',
+    'click_autobuy': 'CLICK AUTO BUY',
+    'click_critical': 'CLICK CRIT%+',
+    'click_critical_multiplier': 'CLICK CRIT MULTIx'
   }
   
   return typeLabels[type] || type.toUpperCase()

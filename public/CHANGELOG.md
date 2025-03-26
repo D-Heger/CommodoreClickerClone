@@ -34,6 +34,8 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 - Settings are now saved as well
 - Implemented Autoloading of the latest save
+- More cool upgrade types!
+- Fancy 'popup' on critical hits
 
 ### Changed
 
@@ -46,6 +48,10 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 - Fixed a bug where the About Section was not interactable anymore
 - Fixed a bug where upgrade costs could reach 'Infinity' (Now up to at least one quadrillion levels should work)
+
+### Removed
+
+- Total Pixel count on the Pixel Canvas
 
 ## 0.0.3 - 24.03.2025
 

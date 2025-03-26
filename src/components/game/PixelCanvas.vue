@@ -4,7 +4,7 @@
     <div class="progress">
       {{ renderedPixels }}/{{ totalPixels }} pixels rendered
       <span v-if="completedCanvases > 0" class="canvas-count">
-        (Frame #{{ completedCanvases + 1 }}, Total: {{ totalRenderedPixels }})
+        (Frame #{{ completedCanvases + 1 }})
       </span>
     </div>
   </div>
@@ -23,7 +23,6 @@ const totalPixels = ref(0)
 const hueShift = ref(0)
 const isComplete = ref(false)
 const completedCanvases = ref(0)
-const totalRenderedPixels = ref(0)
 
 // Animation IDs for cleanup
 const cursorAnimationId = ref(null)
@@ -131,9 +130,6 @@ const renderPixels = (totalAvailable) => {
     completedCanvases.value = newCompletedCanvases
     isComplete.value = false
   }
-
-  // Update the total rendered pixels
-  totalRenderedPixels.value = totalAvailable
 
   // Apply current pattern
   const currentPattern = createCheckerPattern(

@@ -1,5 +1,23 @@
 [
   {
+    "id": "critTest",
+    "name": "Critical Test",
+    "description": "Increases the chance of a critical hit by 100%",
+    "cost": "10",
+    "costFactor": "1.5",
+    "type": "click_critical",
+    "value": "0.1"
+  },
+  {
+    "id": "critMultTest",
+    "name": "Critical Multiplier Test",
+    "description": "Increases the critical hit multiplier by 10",
+    "cost": "10",
+    "costFactor": "1.5",
+    "type": "click_critical_multiplier",
+    "value": "10"
+  },
+  {
     "id": "basic-click",
     "name": "Basic Click",
     "description": "Increases the number of clicks per second by 1",

@@ -48,6 +48,11 @@
     <ChangelogPopup :show="showChangelog" :changelog="changelogContent" @close="closeChangelog" />
     <ConfirmationDialog :show="showConfirmation" :message="confirmationMessage" @confirm="handleConfirm"
       @cancel="cancelConfirmation" />
+    <CriticalHitPopup 
+      :show="showCriticalHit" 
+      :multiplier="criticalMultiplier" 
+      :hits="criticalHits"
+      @hide="hideCriticalPopup" />
   </div>
 </template>
 
@@ -59,12 +64,14 @@ import UpgradesPanel from './components/game/UpgradesPanel.vue'
 import SettingsPanel from './components/game/SettingsPanel.vue'
 import ChangelogPopup from './components/game/ChangelogPopup.vue'
 import ConfirmationDialog from './components/game/ConfirmationDialog.vue'
+import CriticalHitPopup from './components/game/CriticalHitPopup.vue'
 import { toDecimal, formatNumber, add, multiply } from './utils/numbers'
 import {
   loadUpgrades,
   purchaseUpgrade as buyUpgrade,
   calculateTotalPixelGeneration,
-  calculateTotalClickPower
+  calculateTotalClickPower,
+  applyClickWithCritical
 } from './utils/upgradeManager'
 import {
   saveToSlot,
@@ -90,6 +97,16 @@ const showUpgradesPanel = ref(false)
 const showSettingsPanel = ref(false)
 const showChangelog = ref(false)
 const changelogContent = ref('')
+
+// Critical hit state
+const showCriticalHit = ref(false)
+const criticalMultiplier = ref('1')
+const criticalHits = ref(0)
+
+// Function to handle critical hit popup
+const hideCriticalPopup = () => {
+  showCriticalHit.value = false
+}
 
 // Save system state
 const saveSlots = ref([])
@@ -279,9 +296,19 @@ const formattedSpentPixels = computed(() => formatNumber(spentPixels.value))
 
 // Game mechanics
 const renderPixel = () => {
-  const pixelsToAdd = clickPower.value
+  const clickResult = applyClickWithCritical(upgrades.value)
+  const pixelsToAdd = clickResult.clickPower
+
+  // Update pixels
   pixels.value = add(pixels.value, pixelsToAdd).toString()
   totalPixels.value = add(totalPixels.value, pixelsToAdd).toString()
+
+  // Show critical hit popup if applicable
+  if (clickResult.critical.happened) {
+    criticalMultiplier.value = clickResult.critical.multiplier
+    criticalHits.value = clickResult.critical.hits
+    showCriticalHit.value = true
+  }
 }
 
 const purchaseUpgrade = (upgradeId) => {
