@@ -160,33 +160,57 @@ const handleLoad = async (slot) => {
   try {
     const saveData = await loadFromSlot(slot)
     if (!saveData) return
-
-    // Restore game state
-    pixels.value = saveData.pixels
-    totalPixels.value = saveData.totalPixels
-    spentPixels.value = saveData.spentPixels
-
-    // Restore upgrades
-    upgrades.value = loadUpgrades(upgradesData)
-    saveData.upgrades.forEach(savedUpgrade => {
-      const upgrade = upgrades.value.find(u => u.id === savedUpgrade.id)
-      if (upgrade) {
-        upgrade.level = savedUpgrade.level
-        upgrade.purchased = savedUpgrade.purchased
-      }
-    })
-
-    // Restore settings
-    if (saveData.settings) {
-      settings.value = validateSettings(saveData.settings)
-    }
-
-    // Update canvas state
-    if (saveData.completedFrames) {
-      completedCanvases.value = saveData.completedFrames
+    
+    // Check save version compatibility based on semantic versioning
+    if (saveData.compatibility === 'warning') {
+      confirm(
+        `WARNING: This save file (version ${saveData.version}) may not be fully compatible with the current game version. ` +
+        `Minor version differences were detected, which might affect some game features. ` +
+        `Loading it might cause unexpected behavior. Do you want to continue?`,
+        () => applyLoadedSaveData(saveData)
+      )
+    } else if (saveData.compatibility === 'incompatible') {
+      confirm(
+        `CRITICAL WARNING: This save file (version ${saveData.version}) is NOT compatible with the current game version. ` +
+        `Major version differences were detected, which indicates breaking changes. ` +
+        `Loading it will likely cause data corruption or game errors. ` +
+        `Do you still want to attempt loading this save?`,
+        () => applyLoadedSaveData(saveData)
+      )
+    } else {
+      // Compatible - load without warning
+      applyLoadedSaveData(saveData)
     }
   } catch (error) {
     console.error('Failed to load game:', error)
+  }
+}
+
+// Helper function to apply loaded save data
+const applyLoadedSaveData = (saveData) => {
+  // Restore game state
+  pixels.value = saveData.pixels
+  totalPixels.value = saveData.totalPixels
+  spentPixels.value = saveData.spentPixels
+
+  // Restore upgrades
+  upgrades.value = loadUpgrades(upgradesData)
+  saveData.upgrades.forEach(savedUpgrade => {
+    const upgrade = upgrades.value.find(u => u.id === savedUpgrade.id)
+    if (upgrade) {
+      upgrade.level = savedUpgrade.level
+      upgrade.purchased = savedUpgrade.purchased
+    }
+  })
+
+  // Restore settings
+  if (saveData.settings) {
+    settings.value = validateSettings(saveData.settings)
+  }
+
+  // Update canvas state
+  if (saveData.completedFrames) {
+    completedCanvases.value = saveData.completedFrames
   }
 }
 
@@ -218,29 +242,54 @@ const handleExport = () => {
 const handleImport = async (file) => {
   try {
     const saveData = await importSave(file)
-    pixels.value = saveData.pixels
-    totalPixels.value = saveData.totalPixels
-    spentPixels.value = saveData.spentPixels
-
-    upgrades.value = loadUpgrades(upgradesData)
-    saveData.upgrades.forEach(savedUpgrade => {
-      const upgrade = upgrades.value.find(u => u.id === savedUpgrade.id)
-      if (upgrade) {
-        upgrade.level = savedUpgrade.level
-        upgrade.purchased = savedUpgrade.purchased
-      }
-    })
-
-    // Restore settings from import
-    if (saveData.settings) {
-      settings.value = validateSettings(saveData.settings)
-    }
-
-    if (saveData.completedFrames) {
-      completedCanvases.value = saveData.completedFrames
+    
+    // Check save version compatibility based on semantic versioning
+    if (saveData.compatibility === 'warning') {
+      confirm(
+        `WARNING: This imported save file (version ${saveData.version}) may not be fully compatible with the current game version. ` +
+        `Minor version differences were detected, which might affect some game features. ` +
+        `Importing it might cause unexpected behavior. Do you want to continue?`,
+        () => applyImportedSaveData(saveData)
+      )
+    } else if (saveData.compatibility === 'incompatible') {
+      confirm(
+        `CRITICAL WARNING: This imported save file (version ${saveData.version}) is NOT compatible with the current game version. ` +
+        `Major version differences were detected, which indicates breaking changes. ` +
+        `Importing it will likely cause data corruption or game errors. ` +
+        `Do you still want to attempt importing this save?`,
+        () => applyImportedSaveData(saveData)
+      )
+    } else {
+      // Compatible - import without warning
+      applyImportedSaveData(saveData)
     }
   } catch (error) {
     console.error('Failed to import save:', error)
+  }
+}
+
+// Helper function to apply imported save data
+const applyImportedSaveData = (saveData) => {
+  pixels.value = saveData.pixels
+  totalPixels.value = saveData.totalPixels
+  spentPixels.value = saveData.spentPixels
+
+  upgrades.value = loadUpgrades(upgradesData)
+  saveData.upgrades.forEach(savedUpgrade => {
+    const upgrade = upgrades.value.find(u => u.id === savedUpgrade.id)
+    if (upgrade) {
+      upgrade.level = savedUpgrade.level
+      upgrade.purchased = savedUpgrade.purchased
+    }
+  })
+
+  // Restore settings from import
+  if (saveData.settings) {
+    settings.value = validateSettings(saveData.settings)
+  }
+
+  if (saveData.completedFrames) {
+    completedCanvases.value = saveData.completedFrames
   }
 }
 
@@ -416,10 +465,16 @@ const autoSave = () => {
 const attemptAutoload = () => {
   const latestSave = findLatestSave();
   if (latestSave) {
-    confirm(
-      `Would you like to load your latest save?\n\nSave from: ${new Date(latestSave.data.timestamp).toLocaleString()}\nPixels: ${formatNumber(latestSave.data.pixels)}\nCompleted Frames: ${latestSave.data.completedFrames}`,
-      () => handleLoad(latestSave.slot)
-    );
+    let message = `Would you like to load your latest save?\n\nSave from: ${new Date(latestSave.data.timestamp).toLocaleString()}\nPixels: ${formatNumber(latestSave.data.pixels)}\nCompleted Frames: ${latestSave.data.completedFrames}`;
+    
+    // Add version warning if needed based on compatibility level
+    if (latestSave.data.compatibility === 'warning') {
+      message += `\n\nWARNING: This save file (version ${latestSave.data.version}) may not be fully compatible with the current game version. Minor version differences were detected.`;
+    } else if (latestSave.data.compatibility === 'incompatible') {
+      message += `\n\nCRITICAL WARNING: This save file (version ${latestSave.data.version}) is NOT compatible with the current game version. Major version differences were detected which indicates breaking changes.`;
+    }
+    
+    confirm(message, () => handleLoad(latestSave.slot));
   }
 };
 

@@ -36,6 +36,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Implemented Autoloading of the latest save
 - More cool upgrade types!
 - Fancy 'popup' on critical hits
+- Save version compatibility checks
 
 ### Changed
 

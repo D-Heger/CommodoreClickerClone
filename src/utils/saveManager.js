@@ -1,6 +1,81 @@
-// Save data structure version for future compatibility
-const SAVE_VERSION = '0.0.4'; // TODO: Implement save version checking, throw a warning if the version is not compatible. Is useConfirmation applicable here?
-//XXX: Don't forget to update the version in the game when you change the save structure
+// Save data structure version for future compatibility using semantic versioning
+const SAVE_VERSION = '1.0.0';
+
+// Version compatibility check levels
+const VERSION_COMPATIBILITY = {
+  COMPATIBLE: 'compatible',
+  WARNING: 'warning',
+  INCOMPATIBLE: 'incompatible'
+};
+
+/**
+ * Parses a semantic version string into its components
+ * @param {string} version - Version string in format "major.minor.patch"
+ * @returns {Object} Object with major, minor, and patch numbers
+ */
+const parseVersion = (version) => {
+  try {
+    // Handle non-standard version formats gracefully
+    if (!version || typeof version !== 'string') {
+      return { major: 0, minor: 0, patch: 0 };
+    }
+    
+    const parts = version.split('.');
+    return {
+      major: parseInt(parts[0]) || 0,
+      minor: parseInt(parts[1]) || 0, 
+      patch: parseInt(parts[2]) || 0
+    };
+  } catch (error) {
+    console.error('Failed to parse version:', error);
+    return { major: 0, minor: 0, patch: 0 };
+  }
+};
+
+/**
+ * Checks if a save version is compatible with the current game version
+ * @param {string} saveVersion - The version of the save file
+ * @returns {string} Compatibility level from VERSION_COMPATIBILITY
+ */
+const checkVersionCompatibility = (saveVersion) => {
+  // Parse both versions
+  const currentVersion = parseVersion(SAVE_VERSION);
+  const savedVersion = parseVersion(saveVersion);
+  
+  // If versions are identical, they're fully compatible
+  if (saveVersion === SAVE_VERSION) {
+    return VERSION_COMPATIBILITY.COMPATIBLE;
+  }
+  
+  // Major version differences indicate breaking changes
+  if (savedVersion.major !== currentVersion.major) {
+    return VERSION_COMPATIBILITY.INCOMPATIBLE;
+  }
+  
+  // Minor version increases indicate new features but backward compatibility
+  if (savedVersion.minor < currentVersion.minor) {
+    return VERSION_COMPATIBILITY.WARNING;
+  }
+  
+  // If save has newer minor version than game, it might have data the game doesn't understand
+  if (savedVersion.minor > currentVersion.minor) {
+    return VERSION_COMPATIBILITY.WARNING;
+  }
+  
+  // Patch differences are generally compatible
+  if (savedVersion.patch !== currentVersion.patch) {
+    // Patch level differences are typically for bug fixes and are compatible
+    return VERSION_COMPATIBILITY.COMPATIBLE;
+  }
+  
+  // Fallback - should never reach here
+  return VERSION_COMPATIBILITY.COMPATIBLE;
+};
+
+//XXX: Don't forget to update the version in the game when you change the save structure.
+// - Increment MAJOR version when you make incompatible API changes
+// - Increment MINOR version when you add functionality in a backward compatible manner
+// - Increment PATCH version when you make backward compatible bug fixes
 
 // Maximum number of save slots
 const MAX_SAVE_SLOTS = 5;
@@ -43,7 +118,18 @@ export const loadFromSlot = (slot) => {
     return null;
   }
 
-  return JSON.parse(saveData);
+  const parsedSave = JSON.parse(saveData);
+  
+  // Add version compatibility check
+  if (parsedSave.version) {
+    parsedSave.compatibility = checkVersionCompatibility(parsedSave.version);
+  } else {
+    // If no version is found, treat as potentially incompatible
+    parsedSave.compatibility = VERSION_COMPATIBILITY.WARNING;
+    parsedSave.version = 'unknown';
+  }
+  
+  return parsedSave;
 };
 
 // Delete a save slot
@@ -97,6 +183,9 @@ export const importSave = async (file) => {
     if (!saveData.version || !saveData.pixels || !saveData.upgrades) {
       throw new Error('Invalid save file format');
     }
+    
+    // Add version compatibility check
+    saveData.compatibility = checkVersionCompatibility(saveData.version);
     
     return saveData;
   } catch (error) {
