@@ -71,7 +71,8 @@ import {
   purchaseUpgrade as buyUpgrade,
   calculateTotalPixelGeneration,
   calculateTotalClickPower,
-  applyClickWithCritical
+  applyClickWithCritical,
+  calculateAutoClickRate
 } from './utils/upgradeManager'
 import {
   saveToSlot,
@@ -97,6 +98,9 @@ const showUpgradesPanel = ref(false)
 const showSettingsPanel = ref(false)
 const showChangelog = ref(false)
 const changelogContent = ref('')
+
+// Time accumulator for auto-clicking
+const autoClickAccumulator = ref(0)
 
 // Critical hit state
 const showCriticalHit = ref(false)
@@ -288,6 +292,7 @@ const closeChangelog = () => {
 // Computed properties
 const computerSpeed = computed(() => calculateTotalPixelGeneration(upgrades.value))
 const clickPower = computed(() => calculateTotalClickPower(upgrades.value))
+const autoClickAmount = computed(() => calculateAutoClickRate(upgrades.value))
 const formattedPixels = computed(() => formatNumber(pixels.value))
 const formattedSpeed = computed(() => formatNumber(computerSpeed.value))
 const formattedClickPower = computed(() => formatNumber(clickPower.value))
@@ -295,13 +300,16 @@ const formattedTotalPixels = computed(() => formatNumber(totalPixels.value))
 const formattedSpentPixels = computed(() => formatNumber(spentPixels.value))
 
 // Game mechanics
+const updatePixels = (pixelsToAdd) => {
+  pixels.value = add(pixels.value, pixelsToAdd).toString()
+  totalPixels.value = add(totalPixels.value, pixelsToAdd).toString()
+}
+
 const renderPixel = () => {
   const clickResult = applyClickWithCritical(upgrades.value)
   const pixelsToAdd = clickResult.clickPower
 
-  // Update pixels
-  pixels.value = add(pixels.value, pixelsToAdd).toString()
-  totalPixels.value = add(totalPixels.value, pixelsToAdd).toString()
+  updatePixels(pixelsToAdd)  
 
   // Show critical hit popup if applicable
   if (clickResult.critical.happened) {
@@ -353,15 +361,31 @@ const openChangelog = async () => {
 }
 
 // Automatic pixel generation
-const updatePixels = () => {
-  const now = Date.now()
-  const deltaTime = (now - lastUpdate.value) / 1000
-  lastUpdate.value = now
-
+const autoGeneratePixels = (deltaTime) => {
   if (toDecimal(computerSpeed.value).greaterThan(0)) {
     const pixelsToAdd = multiply(computerSpeed.value, deltaTime.toString())
-    pixels.value = add(pixels.value, pixelsToAdd).toString()
-    totalPixels.value = add(totalPixels.value, pixelsToAdd).toString()
+    updatePixels(pixelsToAdd)
+  }
+}
+
+// Automatic clicking
+// Uses an accumulator to perform discrete clicks at the specified rate
+const autoClick = (deltaTime) => {
+  if (toDecimal(autoClickAmount.value).greaterThan(0)) {
+    // Add elapsed time to accumulator
+    autoClickAccumulator.value += deltaTime
+    
+    // Calculate the time interval between clicks (in seconds)
+    const clickInterval = 1 / parseFloat(autoClickAmount.value)
+    
+    // Perform clicks when enough time has accumulated
+    while (autoClickAccumulator.value >= clickInterval) {
+      // Subtract the click interval from the accumulator
+      autoClickAccumulator.value -= clickInterval
+      
+      // Add a full click's worth of pixels
+      updatePixels(clickPower.value)
+    }
   }
 }
 
@@ -369,7 +393,13 @@ const updatePixels = () => {
 let animationFrameId = null
 
 const tick = () => {
-  updatePixels()
+  const now = Date.now()
+  const deltaTime = (now - lastUpdate.value) / 1000
+  lastUpdate.value = now
+  
+  autoGeneratePixels(deltaTime)
+  autoClick(deltaTime)
+  
   animationFrameId = requestAnimationFrame(tick)
 }
 

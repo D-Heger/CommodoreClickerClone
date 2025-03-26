@@ -141,7 +141,6 @@ export function calculateClickCriticalMultiplier(upgrades) {
 
 // Apply critical hit chance calculation to a click and return the adjusted click power
 // along with information about the critical hit for displaying a popup
-// TODO: implement the popup
 export function applyClickWithCritical(upgrades) {
   // Calculate the base click power without criticals
   const baseClickPower = calculateTotalClickPower(upgrades);
@@ -205,4 +204,14 @@ export function applyClickWithCritical(upgrades) {
       hits: criticalHits
     }
   };
+}
+
+// Calculate how often the autoclicker should click per second
+export function calculateAutoClickRate(upgrades) {
+  return upgrades
+    .filter(upgrade => upgrade.type === 'click_automation' && upgrade.level > 0)
+    .reduce((total, upgrade) => {
+      const upgradeContribution = multiply(upgrade.value, upgrade.level.toString());
+      return add(total, upgradeContribution).toString();
+    }, '0'); // Start with 0 clicks per second if no autoclicker upgrades
 }
