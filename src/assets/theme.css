@@ -14,8 +14,14 @@
   --button-border: #444;
   --warning: #ffcc33;
   --danger: #ff3333;
-  --multiplier: #3377ff;
-  --click: #ff33cc;
+  /* Upgrade Type Colors*/
+  --type-rate: var(--secondary);
+  --type-multiplier: #3377ff;
+  --type-click: #ff33cc;
+  --type-automation: #ff9900;
+  --type-autobuy: #9900cc;
+  --type-critical: #ff3366;
+  --type-default: #999999;
 
   /* Typography */
   --font-mono: 'VT323', monospace;

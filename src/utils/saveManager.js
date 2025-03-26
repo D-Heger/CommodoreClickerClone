@@ -1,5 +1,6 @@
 // Save data structure version for future compatibility
-const SAVE_VERSION = '1';
+const SAVE_VERSION = '0.0.4'; // TODO: Implement save version checking, throw a warning if the version is not compatible. Is useConfirmation applicable here?
+//XXX: Don't forget to update the version in the game when you change the save structure
 
 // Maximum number of save slots
 const MAX_SAVE_SLOTS = 5;

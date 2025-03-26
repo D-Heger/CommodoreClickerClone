@@ -10,12 +10,8 @@
         <div class="upgrade-info">
           <h3>{{ upgrade.name }} <span class="level-badge">LVL {{ upgrade.level }}</span></h3>
           <p>{{ upgrade.description }}</p>
-          <span class="upgrade-type" :class="{
-            'type-rate': upgrade.type === 'rate',
-            'type-multiplier': upgrade.type === 'multiplier',
-            'type-click': upgrade.type === 'click'
-          }">
-            {{ upgrade.type === 'rate' ? 'SPEED+' : (upgrade.type === 'multiplier' ? 'MULTIx' : 'CLICK+') }}
+          <span class="upgrade-type" :class="getTypeClass(upgrade.type)">
+            {{ getTypeLabel(upgrade.type) }}
           </span>
         </div>
         <button :disabled="!canAffordUpgrade(upgrade)" class="retro-button" @click="$emit('purchase', upgrade.id)">
@@ -46,6 +42,38 @@ const props = defineProps({
 const canAffordUpgrade = (upgrade) => {
   const cost = calculateUpgradeCost(upgrade)
   return gte(props.pixels, cost)
+}
+
+// Get the CSS class for an upgrade type
+const getTypeClass = (type) => {
+  const typeClasses = {
+    'rate': 'type-rate',
+    'rate_multiplier': 'type-multiplier',
+    'rate_autobuy': 'type-autobuy',
+    'click': 'type-click',
+    'click_multiplier': 'type-multiplier',
+    'click_automation': 'type-automation',
+    'click_autobuy': 'type-autobuy',
+    'click_critical': 'type-critical'
+  }
+  
+  return typeClasses[type] || 'type-default'
+}
+
+// Get the display label for an upgrade type
+const getTypeLabel = (type) => {
+  const typeLabels = {
+    'rate': 'SPEED+',
+    'rate_multiplier': 'MULTIx',
+    'rate_autobuy': 'AUTO-BUY',
+    'click': 'CLICK+',
+    'click_multiplier': 'CLICK-MULTIx',
+    'click_automation': 'AUTO-CLICK',
+    'click_autobuy': 'CLICK-AUTO-BUY',
+    'click_critical': 'CRIT+'
+  }
+  
+  return typeLabels[type] || type.toUpperCase()
 }
 
 defineEmits(['purchase'])
@@ -141,15 +169,31 @@ defineEmits(['purchase'])
 }
 
 .type-rate {
-  background-color: var(--secondary);
+  background-color: var(--type-rate);
 }
 
 .type-multiplier {
-  background-color: var(--multiplier);
+  background-color: var(--type-multiplier);
 }
 
 .type-click {
-  background-color: var(--click);
+  background-color: var(--type-click);
+}
+
+.type-automation {
+  background-color: var(--type-automation);
+}
+
+.type-autobuy {
+  background-color: var(--type-autobuy);
+}
+
+.type-critical {
+  background-color: var(--type-critical);
+}
+
+.type-default {
+  background-color: var(--type-default);
 }
 
 .price {

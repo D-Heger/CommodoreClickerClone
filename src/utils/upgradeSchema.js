@@ -12,7 +12,7 @@ export const upgradeSchema = {
     description: { type: 'string' },
     cost: { type: 'string' }, // Using string for precision with Decimal.js
     costFactor: { type: 'string' }, // Cost multiplier for each purchase
-    type: { type: 'string', enum: ['click', 'click_multiplier', 'click_automation', 'click_autobuy', 'click_critical', 'rate', 'rate_multiplier', 'rate_autobuy'] },
+    type: { type: 'string', enum: ['click', 'click_multiplier', 'click_automation', 'click_autobuy', 'click_critical', 'click_critical_multiplier', 'rate', 'rate_multiplier', 'rate_autobuy'] },
     value: { type: 'string' }, // Using string for precision with Decimal.js
     maxLevel: { type: 'number', default: Infinity } // Optional max level
   }
