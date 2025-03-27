@@ -4,8 +4,94 @@
       UPGRADES
     </h2>
 
+    <!-- Filter controls -->
+    <div class="filter-controls">
+      <div class="filter-section">
+        <div class="filter-toggle" @click="toggleFiltersVisible">
+          <span class="filter-icon">{{ filtersVisible ? '▼' : '▶' }}</span>
+          <span class="filter-label">FILTERS</span>
+          <span class="filter-count" v-if="hasActiveFilters">({{ activeFilterCount }})</span>
+        </div>
+        
+        <div class="filter-options" v-if="filtersVisible">
+          <!-- Filter by affordability -->
+          <button 
+            class="filter-button" 
+            :class="{ active: filters.onlyAffordable }" 
+            @click="toggleFilter('onlyAffordable')">
+            AFFORDABLE
+          </button>
+          
+          <!-- Filter by max level -->
+          <button 
+            class="filter-button" 
+            :class="{ active: filters.onlyMaxLevel }" 
+            @click="toggleFilter('onlyMaxLevel')">
+            MAX LEVEL
+          </button>
+          
+          <!-- Type filters -->
+          <div class="filter-group">
+            <span class="filter-group-label">TYPES:</span>
+            <div class="filter-buttons">
+              <button 
+                class="filter-button type-click" 
+                :class="{ active: filters.types.click }" 
+                @click="toggleTypeFilter('click')">
+                CLICK+
+              </button>
+              <button 
+                class="filter-button type-multiplier" 
+                :class="{ active: filters.types.clickMulti }" 
+                @click="toggleTypeFilter('clickMulti')">
+                MULTI×
+              </button>
+              <button 
+                class="filter-button type-automation" 
+                :class="{ active: filters.types.clickAuto }" 
+                @click="toggleTypeFilter('clickAuto')">
+                AUTO
+              </button>
+              <button 
+                class="filter-button type-critical" 
+                :class="{ active: filters.types.clickCrit }" 
+                @click="toggleTypeFilter('clickCrit')">
+                CRIT%
+              </button>
+              <button 
+                class="filter-button type-multiplier" 
+                :class="{ active: filters.types.clickCritMult }" 
+                @click="toggleTypeFilter('clickCritMult')">
+                CRIT×
+              </button>
+              <button 
+                class="filter-button type-rate" 
+                :class="{ active: filters.types.rate }" 
+                @click="toggleTypeFilter('rate')">
+                RATE+
+              </button>
+              <button 
+                class="filter-button type-multiplier" 
+                :class="{ active: filters.types.rateMulti }" 
+                @click="toggleTypeFilter('rateMulti')">
+                RATE×
+              </button>
+            </div>
+          </div>
+          
+          <!-- Reset filters -->
+          <button 
+            class="filter-button reset-button" 
+            @click="resetFilters"
+            :disabled="!hasActiveFilters">
+            RESET ALL
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="upgrades-list">
-      <div v-for="upgrade in upgrades" :key="upgrade.id" class="upgrade-item"
+      <div v-for="upgrade in filteredUpgrades" :key="upgrade.id" class="upgrade-item"
         :class="{ 
           'affordable': canAffordUpgrade(upgrade) && !isMaxLevel(upgrade),
           'max-level': isMaxLevel(upgrade)
@@ -27,11 +113,18 @@
           </template>
         </button>
       </div>
+      
+      <!-- No results message -->
+      <div v-if="filteredUpgrades.length === 0" class="no-results">
+        <p>NO MATCHING UPGRADES FOUND</p>
+        <button class="filter-button reset-button" @click="resetFilters">RESET FILTERS</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
 import { formatNumber, gte } from '../../utils/numbers'
 import { calculateUpgradeCost } from '../../utils/upgradeManager'
 
@@ -44,6 +137,104 @@ const props = defineProps({
     type: Array,
     required: true
   }
+})
+
+// Filter state
+const filtersVisible = ref(false)
+const filters = ref({
+  onlyAffordable: false,
+  onlyMaxLevel: false,
+  types: {
+    click: false,
+    clickMulti: false,
+    clickAuto: false,
+    clickCrit: false, 
+    clickCritMult: false,
+    rate: false,
+    rateMulti: false
+  }
+})
+
+// Toggle filter visibility
+const toggleFiltersVisible = () => {
+  filtersVisible.value = !filtersVisible.value
+}
+
+// Toggle individual filters
+const toggleFilter = (filterName) => {
+  filters.value[filterName] = !filters.value[filterName]
+}
+
+// Toggle type filters
+const toggleTypeFilter = (typeFilter) => {
+  filters.value.types[typeFilter] = !filters.value.types[typeFilter]
+}
+
+// Reset all filters
+const resetFilters = () => {
+  filters.value.onlyAffordable = false
+  filters.value.onlyMaxLevel = false
+  Object.keys(filters.value.types).forEach(key => {
+    filters.value.types[key] = false
+  })
+}
+
+// Check if any filter is active
+const hasActiveFilters = computed(() => {
+  return filters.value.onlyAffordable || 
+    filters.value.onlyMaxLevel || 
+    Object.values(filters.value.types).some(value => value)
+})
+
+// Count active filters
+const activeFilterCount = computed(() => {
+  let count = 0
+  if (filters.value.onlyAffordable) count++
+  if (filters.value.onlyMaxLevel) count++
+  Object.values(filters.value.types).forEach(value => {
+    if (value) count++
+  })
+  return count
+})
+
+// Map type filters to actual upgrade types
+const typeFilterMap = {
+  click: ['click'],
+  clickMulti: ['click_multiplier'],
+  clickAuto: ['click_automation'],
+  clickCrit: ['click_critical'],
+  clickCritMult: ['click_critical_multiplier'],
+  rate: ['rate'],
+  rateMulti: ['rate_multiplier']
+}
+
+// Get filtered upgrades
+const filteredUpgrades = computed(() => {
+  // Start with all upgrades
+  let result = [...props.upgrades]
+  
+  // Apply "affordable" filter if enabled
+  if (filters.value.onlyAffordable) {
+    result = result.filter(upgrade => canAffordUpgrade(upgrade))
+  }
+  
+  // Apply "max level" filter if enabled
+  if (filters.value.onlyMaxLevel) {
+    result = result.filter(upgrade => isMaxLevel(upgrade))
+  }
+  
+  // Apply type filters if any are selected
+  const activeTypeFilters = Object.entries(filters.value.types)
+    .filter(([_, isActive]) => isActive)
+    .map(([filterName]) => filterName)
+  
+  if (activeTypeFilters.length > 0) {
+    // Get all upgrade types to include
+    const includedTypes = activeTypeFilters.flatMap(filter => typeFilterMap[filter])
+    result = result.filter(upgrade => includedTypes.includes(upgrade.type))
+  }
+  
+  return result
 })
 
 // Check if the player can afford an upgrade
@@ -105,6 +296,165 @@ defineEmits(['purchase'])
   flex-direction: column;
 }
 
+/* Filter controls styling */
+.filter-controls {
+  margin-bottom: 1rem;
+  border: 1px solid var(--button-border);
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 4px;
+}
+
+.filter-section {
+  padding: 0.5rem;
+}
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  user-select: none;
+}
+
+.filter-icon {
+  color: var(--secondary);
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+  width: 1rem;
+  text-align: center;
+}
+
+.filter-label {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--secondary);
+}
+
+.filter-count {
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--warning);
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-top: 1px solid var(--button-border);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.filter-button {
+  background-color: var(--button-bg);
+  border: 1px solid var(--button-border);
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 3px;
+}
+
+.filter-button:hover {
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+
+.filter-button.active {
+  background-color: var(--secondary);
+  color: black;
+  border-color: var(--secondary);
+}
+
+.filter-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.filter-button.reset-button {
+  margin-top: 0.5rem;
+  color: var(--warning);
+  border-color: var(--warning);
+  align-self: flex-end;
+}
+
+.filter-button.reset-button:hover:not(:disabled) {
+  background-color: var(--warning);
+  color: black;
+}
+
+/* Apply type-specific colors to filter buttons */
+.filter-button.type-click {
+  border-color: var(--type-click);
+}
+
+.filter-button.type-click.active {
+  background-color: var(--type-click);
+}
+
+.filter-button.type-multiplier {
+  border-color: var(--type-multiplier);
+}
+
+.filter-button.type-multiplier.active {
+  background-color: var (--type-multiplier);
+}
+
+.filter-button.type-automation {
+  border-color: var(--type-automation);
+}
+
+.filter-button.type-automation.active {
+  background-color: var(--type-automation);
+}
+
+.filter-button.type-critical {
+  border-color: var(--type-critical);
+}
+
+.filter-button.type-critical.active {
+  background-color: var(--type-critical);
+}
+
+.filter-button.type-rate {
+  border-color: var(--type-rate);
+}
+
+.filter-button.type-rate.active {
+  background-color: var(--type-rate);
+}
+
+/* No results message */
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Existing styles */
 .upgrades-list {
   display: flex;
   flex-direction: column;
@@ -140,12 +490,12 @@ defineEmits(['purchase'])
   transform: scale(1.02);
   transition: all 0.2s;
   cursor: pointer;
+}
 
-  &:hover {
-    background-color: rgba(51, 255, 51, 0.1);
-    box-shadow: 0 0 20px rgba(51, 255, 51, 0.5);
-    transform: scale(1.05);
-  }
+.upgrade-item.affordable:hover {
+  background-color: rgba(51, 255, 51, 0.1);
+  box-shadow: 0 0 20px rgba(51, 255, 51, 0.5);
+  transform: scale(1.05);
 }
 
 .upgrade-item.max-level {

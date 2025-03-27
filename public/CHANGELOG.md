@@ -40,6 +40,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Implemented Autoloading of the latest save
 - Fancy 'popup' on critical hits
 - Save version compatibility checks
+- Added filters in the Upgrades panel
 
 ### Changed
 
