@@ -520,11 +520,14 @@ onUnmounted(() => {
 header {
   text-align: center;
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 15;
 }
 
 main {
   display: flex;
   position: relative;
+  margin-top: 1rem;
 }
 
 .content-area {
@@ -559,7 +562,6 @@ main {
   box-shadow: none;
 }
 
-/* Side panel button base styles */
 .side-panel-button {
   position: absolute;
   top: 50%;
@@ -582,7 +584,6 @@ main {
   background-color: #333;
 }
 
-/* Settings button specifics */
 .settings-button {
   left: 0;
   transition-property: left, background-color;
@@ -592,7 +593,6 @@ main {
   left: 300px;
 }
 
-/* Upgrades button specifics */
 .upgrades-button {
   right: 0;
   transition-property: right, background-color;
@@ -602,7 +602,6 @@ main {
   right: 300px;
 }
 
-/* Side panel containers */
 .settings-container,
 .upgrades-container {
   position: fixed;
@@ -611,7 +610,7 @@ main {
   height: 100vh;
   background-color: var(--background-dark);
   transition: 0.3s ease;
-  padding: 60px 0;
+  padding-top: 60px;
   z-index: 5;
   overflow: hidden;
 }
@@ -626,6 +625,8 @@ main {
   right: -320px;
   box-shadow: -3px 0 10px rgba(0, 0, 0, 0.5);
   border-left: var(--panel-border);
+  padding-top: 80px;
+  overflow-y: auto;
 }
 
 .settings-container.show {

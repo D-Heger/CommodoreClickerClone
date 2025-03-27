@@ -6,7 +6,10 @@
 
     <div class="upgrades-list">
       <div v-for="upgrade in upgrades" :key="upgrade.id" class="upgrade-item"
-        :class="{ 'affordable': canAffordUpgrade(upgrade) }">
+        :class="{ 
+          'affordable': canAffordUpgrade(upgrade) && !isMaxLevel(upgrade),
+          'max-level': isMaxLevel(upgrade)
+        }">
         <div class="upgrade-info">
           <h3>{{ upgrade.name }} <span class="level-badge">LVL {{ upgrade.level }}</span></h3>
           <p>{{ upgrade.description }}</p>
@@ -14,9 +17,14 @@
             {{ getTypeLabel(upgrade.type) }}
           </span>
         </div>
-        <button :disabled="!canAffordUpgrade(upgrade)" class="retro-button" @click="$emit('purchase', upgrade.id)">
-          <span class="price">{{ formatNumber(calculateUpgradeCost(upgrade)) }}</span>
-          <span class="buy-text">BUY</span>
+        <button :disabled="!canAffordUpgrade(upgrade) || isMaxLevel(upgrade)" class="retro-button" @click="$emit('purchase', upgrade.id)">
+          <template v-if="isMaxLevel(upgrade)">
+            <span class="max-text">MAX</span>
+          </template>
+          <template v-else>
+            <span class="price">{{ formatNumber(calculateUpgradeCost(upgrade)) }}</span>
+            <span class="buy-text">BUY</span>
+          </template>
         </button>
       </div>
     </div>
@@ -42,6 +50,11 @@ const props = defineProps({
 const canAffordUpgrade = (upgrade) => {
   const cost = calculateUpgradeCost(upgrade)
   return gte(props.pixels, cost)
+}
+
+// Check if an upgrade is at maximum level
+const isMaxLevel = (upgrade) => {
+  return upgrade.maxLevel !== undefined && upgrade.level >= upgrade.maxLevel
 }
 
 // Get the CSS class for an upgrade type
@@ -88,7 +101,8 @@ defineEmits(['purchase'])
 .upgrades-panel {
   height: 100%;
   padding: 1.5rem 1rem;
-  overflow: scroll;
+  display: flex;
+  flex-direction: column;
 }
 
 .upgrades-list {
@@ -132,6 +146,12 @@ defineEmits(['purchase'])
     box-shadow: 0 0 20px rgba(51, 255, 51, 0.5);
     transform: scale(1.05);
   }
+}
+
+.upgrade-item.max-level {
+  border-color: var(--warning);
+  box-shadow: 0 0 10px rgba(255, 204, 51, 0.3);
+  cursor: not-allowed;
 }
 
 .upgrade-info {
@@ -208,5 +228,16 @@ defineEmits(['purchase'])
   color: var(--warning);
   font-family: var(--font-mono);
   font-size: 1.1rem;
+}
+
+.max-text {
+  color: var(--warning);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 </style>
