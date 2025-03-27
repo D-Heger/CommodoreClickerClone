@@ -6,7 +6,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## Unreleased
 
-- More Upgrades
+- Even more Upgrades
 - Potentially more upgrade paths
 - Prestige System
 - Different Images to Render
@@ -28,7 +28,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
   - Support both English and German language
 - Offline generation (maybe only through upgrades)
 
-## 0.0.4 - 24.03.2025
+## 0.0.4 - 27.03.2025
 
 ### WARNING: UPDATE BRINGS SAVE-BREAKING CHANGES
 
