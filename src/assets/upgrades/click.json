@@ -1,0 +1,83 @@
+[
+  {
+    "id": "punch_card",
+    "name": "Punch Card System",
+    "description": "Early data processing technology. +1 pixel per click.",
+    "cost": "10",
+    "costFactor": "1.2",
+    "type": "click",
+    "value": "1"
+  },
+  {
+    "id": "mechanical_relay",
+    "name": "Mechanical Relay Switch",
+    "description": "Install reliable mechanical relay switches to improve manual pixel input. +2 pixels per click.",
+    "cost": "25",
+    "costFactor": "1.3",
+    "type": "click",
+    "value": "2"
+  },
+  {
+    "id": "vacuum_tube",
+    "name": "Vacuum Tube Circuit",
+    "description": "Early electronic component for faster calculations. +3 pixels per click.",
+    "cost": "75",
+    "costFactor": "1.4",
+    "type": "click",
+    "value": "3"
+  },
+  {
+    "id": "ceramic_keycaps",
+    "name": "Ceramic Keycaps",
+    "description": "Premium ceramic keycaps reduce finger fatigue. +5 pixels per click.",
+    "cost": "200",
+    "costFactor": "1.5",
+    "type": "click",
+    "value": "5"
+  },
+  {
+    "id": "transistor_array",
+    "name": "Transistor Array",
+    "description": "Solid-state technology replaces vacuum tubes. +10 pixels per click.",
+    "cost": "750",
+    "costFactor": "1.6",
+    "type": "click",
+    "value": "10"
+  },
+  {
+    "id": "integrated_circuit",
+    "name": "Integrated Circuit",
+    "description": "Multiple transistors on a single chip. +25 pixels per click.",
+    "cost": "2500",
+    "costFactor": "1.7",
+    "type": "click",
+    "value": "25"
+  },
+  {
+    "id": "mechanical_keyboard",
+    "name": "IBM Model M Keyboard",
+    "description": "Legendary mechanical keyboard with buckling springs. +50 pixels per click.",
+    "cost": "10000",
+    "costFactor": "1.8",
+    "type": "click",
+    "value": "50"
+  },
+  {
+    "id": "optical_sensor",
+    "name": "Optical Mouse Sensor",
+    "description": "Precise optical tracking technology. +100 pixels per click.",
+    "cost": "50000",
+    "costFactor": "1.9",
+    "type": "click",
+    "value": "100"
+  },
+  {
+    "id": "neural_interface",
+    "name": "Neural Interface",
+    "description": "Direct brain-to-computer connection. +500 pixels per click.",
+    "cost": "250000",
+    "costFactor": "2.0",
+    "type": "click",
+    "value": "500"
+  }
+]

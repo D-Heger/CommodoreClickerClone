@@ -83,7 +83,8 @@ import {
   resetAllData,
   findLatestSave
 } from './utils/saveManager'
-import upgradesData from './assets/upgrades.json'
+// Import the upgrades from the new modular structure
+import upgradesData from './assets/upgrades'
 import { validateSettings, DEFAULT_SETTINGS } from './utils/settingsConfig'
 import { useConfirmation } from './utils/useConfirmation'
 

@@ -1,0 +1,152 @@
+[
+  {
+    "id": "magnetic_core",
+    "name": "Magnetic Core Memory",
+    "description": "Early random-access memory technology. Multiplies pixel generation by 1.2x.",
+    "cost": "250",
+    "costFactor": "1.7",
+    "type": "rate_multiplier",
+    "value": "0.2",
+    "maxLevel": 1
+  },
+  {
+    "id": "dram_chip",
+    "name": "DRAM Memory Chip",
+    "description": "Dynamic Random Access Memory improves processing efficiency. Multiplies pixel generation by 1.5x.",
+    "cost": "600",
+    "costFactor": "1.8",
+    "type": "rate_multiplier",
+    "value": "0.5",
+    "maxLevel": 1
+  },
+  {
+    "id": "vic_ii",
+    "name": "VIC-II Graphics Chip",
+    "description": "Video Interface Controller from the C64. Multiplies pixel generation by 2x.",
+    "cost": "1500",
+    "costFactor": "1.9",
+    "type": "rate_multiplier",
+    "value": "1.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "sid_chip",
+    "name": "SID Sound Chip",
+    "description": "Sound Interface Device enhances system performance. Multiplies pixel generation by 2.5x.",
+    "cost": "3500",
+    "costFactor": "2.0",
+    "type": "rate_multiplier",
+    "value": "1.5",
+    "maxLevel": 1
+  },
+  {
+    "id": "parallel_processing",
+    "name": "Parallel Processing Unit",
+    "description": "Process multiple pixel operations simultaneously. Multiplies pixel generation by 3x.",
+    "cost": "8000",
+    "costFactor": "2.1",
+    "type": "rate_multiplier",
+    "value": "2.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "risc_architecture",
+    "name": "RISC Architecture",
+    "description": "Reduced Instruction Set Computing for efficiency. Multiplies pixel generation by 5x.",
+    "cost": "20000",
+    "costFactor": "2.2",
+    "type": "rate_multiplier",
+    "value": "4.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "superscalar",
+    "name": "Superscalar Architecture",
+    "description": "Multiple instruction pipelines in parallel. Multiplies pixel generation by 10x.",
+    "cost": "50000",
+    "costFactor": "2.3",
+    "type": "rate_multiplier",
+    "value": "9.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "dual_core",
+    "name": "Dual Core Processor",
+    "description": "Two processing cores on a single chip. Multiplies pixel generation by 20x.",
+    "cost": "120000",
+    "costFactor": "2.4",
+    "type": "rate_multiplier",
+    "value": "19.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "quad_core",
+    "name": "Quad Core Processor",
+    "description": "Four processing cores working in tandem. Multiplies pixel generation by 50x.",
+    "cost": "300000",
+    "costFactor": "2.5",
+    "type": "rate_multiplier",
+    "value": "49.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "octa_core",
+    "name": "Octa-Core Processor",
+    "description": "Eight processing cores for extreme performance. Multiplies pixel generation by 100x.",
+    "cost": "750000",
+    "costFactor": "2.6",
+    "type": "rate_multiplier",
+    "value": "99.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "quantum_computing",
+    "name": "Quantum Computing Array",
+    "description": "Harnesses quantum mechanics for unparalleled processing power. Multiplies pixel generation by 1000x.",
+    "cost": "2000000",
+    "costFactor": "2.7",
+    "type": "rate_multiplier",
+    "value": "999.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "neural_network",
+    "name": "Neural Network Processor",
+    "description": "Artificial intelligence for advanced pixel generation. Multiplies pixel generation by 5000x.",
+    "cost": "5000000",
+    "costFactor": "2.8",
+    "type": "rate_multiplier",
+    "value": "4999.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "holographic_display",
+    "name": "Holographic Display",
+    "description": "Advanced display technology for immersive pixel rendering. Multiplies pixel generation by 10000x.",
+    "cost": "10000000",
+    "costFactor": "2.9",
+    "type": "rate_multiplier",
+    "value": "9999.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "dark_matter_processor",
+    "name": "Dark Matter Processor",
+    "description": "Utilizes dark matter for unimaginable processing speeds. Multiplies pixel generation by 100000x.",
+    "cost": "25000000",
+    "costFactor": "3.0",
+    "type": "rate_multiplier",
+    "value": "99999.0",
+    "maxLevel": 1
+  },
+  {
+    "id": "dyson_sphere",
+    "name": "Dyson Sphere",
+    "description": "A megastructure that captures energy from a star. Multiplies pixel generation by 1000000x.",
+    "cost": "50000000",
+    "costFactor": "3.1",
+    "type": "rate_multiplier",
+    "value": "999999.0",
+    "maxLevel": 1
+  }
+]

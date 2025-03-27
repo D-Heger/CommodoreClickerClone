@@ -30,11 +30,14 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## 0.0.4 - 24.03.2025
 
+### WARNING: UPDATE BRINGS SAVE-BREAKING CHANGES
+
 ### Added
 
+- You like upgrades? Get ready for a _LOT_ more of them!
+- More cool upgrade types!
 - Settings are now saved as well
 - Implemented Autoloading of the latest save
-- More cool upgrade types!
 - Fancy 'popup' on critical hits
 - Save version compatibility checks
 
