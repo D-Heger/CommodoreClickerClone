@@ -47,6 +47,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Improved code formatting
 - Improved handling of really big numbers
 - Improved Sats Panel UI
+- Improved Upgrades Panel UI
 
 ### Fixed
 

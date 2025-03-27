@@ -4,8 +4,20 @@
       <h1 class="retro-title">
         Commodore Pixel Renderer
       </h1>
-      <StatsDisplay :pixels="formattedPixels" :computer-speed="formattedSpeed" :click-power="formattedClickPower"
-        :total-pixels="formattedTotalPixels" :spent-pixels="formattedSpentPixels" />
+      <StatsDisplay 
+        :pixels="formattedPixels" 
+        :computer-speed="formattedSpeed" 
+        :click-power="formattedClickPower"
+        :total-pixels="formattedTotalPixels" 
+        :spent-pixels="formattedSpentPixels"
+        :click-multiplier="formattedClickMultiplier"
+        :click-critical-chance="formattedClickCriticalChance"
+        :click-crit-multiplier="formattedClickCritMultiplier"
+        :auto-rate="formattedAutoRate" 
+        :rate-multiplier="formattedRateMultiplier"
+        :auto-clicks="formattedAutoClicks"
+        :completed-frames="formattedCompletedFrames"
+      />
     </header>
 
     <main>
@@ -72,7 +84,13 @@ import {
   calculateTotalPixelGeneration,
   calculateTotalClickPower,
   applyClickWithCritical,
-  calculateAutoClickRate
+  calculateAutoClickRate,
+  calculateClickPower,
+  calculateClickMultiplier,
+  calculateClickCriticalChance,
+  calculateClickCriticalMultiplier,
+  calculatePixelRate,
+  calculatePixelMultiplier
 } from './utils/upgradeManager'
 import {
   saveToSlot,
@@ -348,6 +366,25 @@ const formattedSpeed = computed(() => formatNumber(computerSpeed.value))
 const formattedClickPower = computed(() => formatNumber(clickPower.value))
 const formattedTotalPixels = computed(() => formatNumber(totalPixels.value))
 const formattedSpentPixels = computed(() => formatNumber(spentPixels.value))
+
+// New computed properties for detailed stats
+const rawClickPower = computed(() => calculateClickPower(upgrades.value))
+const rawClickMultiplier = computed(() => calculateClickMultiplier(upgrades.value))
+const clickCriticalChance = computed(() => calculateClickCriticalChance(upgrades.value))
+const clickCritMultiplier = computed(() => calculateClickCriticalMultiplier(upgrades.value))
+const rawAutoRate = computed(() => calculatePixelRate(upgrades.value))
+const rawRateMultiplier = computed(() => calculatePixelMultiplier(upgrades.value))
+const formattedClickMultiplier = computed(() => formatNumber(rawClickMultiplier.value))
+const formattedClickCriticalChance = computed(() => {
+  // Format as percentage with 2 decimal places
+  const percentage = (parseFloat(clickCriticalChance.value) * 100).toFixed(2);
+  return percentage;
+})
+const formattedClickCritMultiplier = computed(() => formatNumber(clickCritMultiplier.value))
+const formattedAutoRate = computed(() => formatNumber(rawAutoRate.value))
+const formattedRateMultiplier = computed(() => formatNumber(rawRateMultiplier.value))
+const formattedAutoClicks = computed(() => formatNumber(autoClickAmount.value))
+const formattedCompletedFrames = computed(() => formatNumber(completedCanvases.value.toString()))
 
 // Game mechanics
 const updatePixels = (pixelsToAdd) => {
