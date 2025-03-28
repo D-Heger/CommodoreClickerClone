@@ -560,16 +560,16 @@ onUnmounted(() => {
 
 header {
   text-align: center;
-  padding: clamp(0.3rem, 1.5vh, 0.8rem);
+  padding: var(--space-xs);
   position: relative;
-  z-index: 15;
+  z-index: var(--z-header);
   max-width: min(800px, 95vw);
   margin: 0 auto;
 }
 
 header h1.retro-title {
   font-size: clamp(1.2rem, 3vw, 1.8rem);
-  margin: 0 0 clamp(0.3rem, 1.5vh, 0.8rem) 0;
+  margin: 0 0 var(--space-xs) 0;
   padding: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -587,7 +587,7 @@ main {
   flex: 1;
   position: relative;
   margin: 0 clamp(30px, 4vw, 50px);
-  transition: all 0.3s ease;
+  transition: margin var(--transition-speed) var(--transition-timing);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -601,8 +601,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(0.5rem, 2vh, 1rem);
-  padding: clamp(1rem, 4vh, 2rem);
+  gap: var(--space-md);
+  padding: var(--space-lg);
   max-width: min(800px, 90vw);
   max-height: 100%;
 }
@@ -623,15 +623,20 @@ main {
   transform: translateY(-50%);
   background-color: var(--button-bg);
   color: var(--secondary);
-  border: 2px solid var(--secondary);
+  border: var(--thin-border);
   font-family: var(--font-mono);
   font-size: clamp(1rem, 1.5vw, 1.5rem);
   cursor: pointer;
-  z-index: 10;
-  transition: all 0.3s ease;
+  z-index: var(--z-nav);
+  transition: 
+    left var(--transition-speed) var(--transition-timing),
+    right var(--transition-speed) var(--transition-timing),
+    background-color var(--transition-speed-fast) ease,
+    color var(--transition-speed-fast) ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .settings-button {
@@ -654,6 +659,16 @@ main {
   right: clamp(320px, 25vw, 400px);
 }
 
+.side-panel-button:hover {
+  background-color: var(--button-hover-bg);
+  color: var(--primary);
+}
+
+.side-panel-button.panel-open {
+  background-color: var(--background-dark);
+  color: var(--primary);
+}
+
 .settings-container,
 .upgrades-container {
   position: fixed;
@@ -661,35 +676,36 @@ main {
   height: 100vh;
   width: clamp(320px, 25vw, 400px);
   background-color: var(--background-dark);
-  transition: transform 0.3s ease;
-  z-index: 15;
+  transition: transform var(--transition-speed) var(--transition-timing);
+  z-index: var(--z-panel);
   overflow-y: auto;
+  box-shadow: none;
 }
 
 .settings-container {
   left: 0;
   transform: translateX(-100%);
-  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.5);
   border-right: var(--panel-border);
 }
 
 .upgrades-container {
   right: 0;
   transform: translateX(100%);
-  box-shadow: -3px 0 10px rgba(0, 0, 0, 0.5);
   border-left: var(--panel-border);
 }
 
 .settings-container.show {
   transform: translateX(0);
+  box-shadow: var(--shadow-medium);
 }
 
 .upgrades-container.show {
   transform: translateX(0);
+  box-shadow: var(--shadow-medium);
 }
 
 /* Media Queries */
-@media (max-width: 1024px) {
+@media (max-width: var(--breakpoint-large)) {
   .content-area.left-panel-open,
   .content-area.right-panel-open {
     margin: 0 clamp(30px, 4vw, 50px);
@@ -715,7 +731,7 @@ main {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-small)) {
   .game-container {
     padding: 8px;
   }

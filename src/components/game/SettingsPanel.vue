@@ -99,47 +99,44 @@ const confirmReset = () => {
 }
 
 .retro-title {
-  padding: clamp(0.8rem, 2vh, 1rem);
+  padding: var(--space-md);
   margin: 0;
   background-color: var(--background-dark);
-  border-bottom: 2px solid var(--button-border);
+  border-bottom: var(--thin-border);
   position: sticky;
   top: 0;
-  z-index: 5;
+  z-index: var(--z-sticky);
+  transition: background-color var(--transition-speed-fast) ease;
 }
 
 .settings-list {
   flex: 1;
-  padding: clamp(0.8rem, 2vh, 1rem);
+  padding: var(--space-md);
   overflow-y: auto;
 }
 
 .settings-section {
-  padding: clamp(0.8rem, 2vh, 1rem);
-  border: 2px solid var(--button-border);
-  background-color: rgba(20, 20, 20, 0.95);
+  padding: var(--space-md);
+  border: var(--thin-border);
+  background-color: var(--panel-bg);
   border-radius: 4px;
   position: relative;
-  margin-bottom: clamp(0.8rem, 2vh, 1rem);
+  margin-bottom: var(--space-md);
+  transition: transform var(--transition-speed) var(--transition-timing-smooth), 
+              box-shadow var(--transition-speed) ease;
 }
 
-.settings-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent 0%, rgba(51, 255, 51, 0.05) 50%, transparent 100%);
-  z-index: 0;
+.settings-section:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
 }
 
 .section-title {
   font-size: clamp(0.8rem, 2.5vw, 1rem);
-  margin-bottom: clamp(0.8rem, 2vh, 1rem);
-  padding-bottom: clamp(0.3rem, 1vh, 0.5rem);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-xs);
   position: relative;
-  z-index: 1;
+  z-index: var(--z-content);
 }
 
 .section-description {
@@ -148,27 +145,27 @@ const confirmReset = () => {
   color: var(--text-secondary);
   margin: 0.5rem 0;
   position: relative;
-  z-index: 1;
+  z-index: var(--z-content);
 }
 
 /* Mobile optimizations */
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-small)) {
   .settings-panel {
-    padding: 0.8rem 0.5rem;
+    padding: var(--space-xs) var(--space-xs);
   }
 
   .settings-section {
-    padding: 0.6rem;
+    padding: var(--space-xs);
   }
 
   .section-title {
-    padding-bottom: 0.3rem;
-    margin-bottom: 0.6rem;
+    padding-bottom: var(--space-xs);
+    margin-bottom: var(--space-sm);
   }
 
   .section-description {
     font-size: 0.75rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: var(--space-xs);
   }
 }
 </style>

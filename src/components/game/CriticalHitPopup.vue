@@ -54,11 +54,12 @@ watch(() => props.show, (isVisible) => {
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.9);
-  border: 2px solid var(--type-critical);
+  background-color: var(--panel-bg);
+  border: var(--thin-border);
+  border-color: var(--type-critical);
   border-radius: 4px;
-  padding: 0.5rem 1rem;
-  z-index: 100;
+  padding: var(--space-xs) var(--space-md);
+  z-index: var(--z-tooltip);
   min-width: 120px;
   box-shadow: 0 0 10px var(--type-critical);
   animation: pulse 0.5s ease-in-out infinite alternate;

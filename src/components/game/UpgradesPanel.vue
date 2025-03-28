@@ -293,9 +293,6 @@ defineEmits(['purchase'])
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
 .upgrades-panel {
   height: 100vh;
   position: relative;
@@ -306,24 +303,31 @@ defineEmits(['purchase'])
 
 /* Filter controls styling */
 .filter-controls {
-  padding: clamp(0.8rem, 2vh, 1rem);
+  padding: var(--space-md);
   background-color: var(--background-dark);
   border-bottom: 2px solid var(--button-border);
   position: sticky;
   top: 0;
   z-index: 5;
+  transition: background-color var(--transition-speed-fast) ease;
 }
 
 .filter-section {
-  padding: clamp(0.4rem, 1vh, 0.5rem);
+  padding: var(--space-xs);
 }
 
 .filter-toggle {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: clamp(0.4rem, 1vh, 0.5rem);
+  padding: var(--space-xs);
   user-select: none;
+  transition: transform var(--transition-speed-fast) var(--transition-timing-smooth);
+}
+
+.filter-toggle:hover {
+  transform: translateX(2px);
+  color: var(--primary);
 }
 
 .filter-icon {
@@ -332,6 +336,7 @@ defineEmits(['purchase'])
   font-size: clamp(0.7rem, 1.8vw, 0.8rem);
   width: 1rem;
   text-align: center;
+  transition: transform var(--transition-speed-fast) var(--transition-timing-spring);
 }
 
 .filter-label {
@@ -349,108 +354,24 @@ defineEmits(['purchase'])
 .filter-options {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.4rem, 1vh, 0.5rem);
+  gap: var(--space-xs);
   margin-top: 0.5rem;
-  padding: clamp(0.4rem, 1vh, 0.5rem);
+  padding: var(--space-xs);
   border-top: 1px solid var(--button-border);
+  animation: slide-down var(--transition-speed-fast) var(--transition-timing) forwards;
+  transform-origin: top;
+  overflow: hidden;
 }
 
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.3rem, 0.8vh, 0.5rem);
-}
-
-.filter-group-label {
-  font-size: clamp(0.65rem, 1.6vw, 0.7rem);
-  color: var(--text-secondary);
-}
-
-.filter-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(0.2rem, 0.5vw, 0.3rem);
-}
-
-.filter-button {
-  background-color: var(--button-bg);
-  border: 1px solid var(--button-border);
-  color: var(--text-secondary);
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  padding: 0.3rem 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-radius: 3px;
-}
-
-.filter-button:hover {
-  border-color: var(--secondary);
-  color: var(--secondary);
-}
-
-.filter-button.active {
-  background-color: var(--secondary);
-  color: black;
-  border-color: var(--secondary);
-}
-
-.filter-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.filter-button.reset-button {
-  margin-top: 0.5rem;
-  color: var(--warning);
-  border-color: var(--warning);
-  align-self: flex-end;
-}
-
-.filter-button.reset-button:hover:not(:disabled) {
-  background-color: var(--warning);
-  color: black;
-}
-
-/* Apply type-specific colors to filter buttons */
-.filter-button.type-click {
-  border-color: var(--type-click);
-}
-
-.filter-button.type-click.active {
-  background-color: var(--type-click);
-}
-
-.filter-button.type-multiplier {
-  border-color: var(--type-multiplier);
-}
-
-.filter-button.type-multiplier.active {
-  background-color: var (--type-multiplier);
-}
-
-.filter-button.type-automation {
-  border-color: var(--type-automation);
-}
-
-.filter-button.type-automation.active {
-  background-color: var(--type-automation);
-}
-
-.filter-button.type-critical {
-  border-color: var(--type-critical);
-}
-
-.filter-button.type-critical.active {
-  background-color: var(--type-critical);
-}
-
-.filter-button.type-rate {
-  border-color: var(--type-rate);
-}
-
-.filter-button.type-rate.active {
-  background-color: var(--type-rate);
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
 }
 
 /* No results message */
@@ -467,37 +388,31 @@ defineEmits(['purchase'])
 /* Existing styles */
 .upgrades-list {
   flex: 1;
-  padding: clamp(0.8rem, 2vh, 1rem);
+  padding: var(--space-md);
   overflow-y: auto;
 }
 
 .upgrade-item {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.5rem, 1.5vh, 0.8rem);
-  padding: clamp(0.6rem, 1.5vh, 0.8rem);
+  gap: var(--space-sm);
+  padding: var(--space-sm);
   border: 2px solid var(--button-border);
-  background-color: rgba(20, 20, 20, 0.95);
+  background-color: var(--panel-bg);
   transition: all 0.2s;
   position: relative;
   min-height: clamp(90px, 20vh, 120px);
-  margin-bottom: clamp(1rem, 3vh, 1.5rem); /* Added margin for spacing between items */
+  margin-bottom: var(--space-lg);
 }
 
-.upgrade-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent 0%, rgba(51, 255, 51, 0.05) 50%, transparent 100%);
-  z-index: 0;
+/* Using the common gradient from theme.css via panel-gradient class */
+.upgrade-item {
+  position: relative;
 }
 
 .upgrade-item.affordable {
   border-color: var(--primary);
-  box-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
+  box-shadow: var(--shadow-light);
   transform: scale(1.02);
   transition: all 0.2s;
   cursor: pointer;
@@ -505,7 +420,7 @@ defineEmits(['purchase'])
 
 .upgrade-item.affordable:hover {
   background-color: rgba(51, 255, 51, 0.1);
-  box-shadow: 0 0 20px rgba(51, 255, 51, 0.5);
+  box-shadow: var(--shadow-medium);
   transform: scale(1.05);
 }
 
@@ -529,7 +444,7 @@ defineEmits(['purchase'])
 }
 
 .level-badge {
-  background-color: #333;
+  background-color: var(--button-bg);
   color: var(--primary);
   padding: 0.1rem 0.4rem;
   font-size: 0.8rem;
@@ -607,8 +522,8 @@ button:disabled {
   width: 100%;
 }
 
-/* Mobile optimizations */
-@media (max-width: 480px) {
+/* Mobile optimizations - using CSS variables for breakpoints */
+@media (max-width: var(--breakpoint-small)) {
   .upgrades-panel {
     padding: 0.8rem 0.5rem;
   }

@@ -110,7 +110,7 @@ const onReset = () => {
 .save-slots {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.8rem, 2vh, 1rem);
+  gap: var(--space-md);
   position: relative;
   z-index: 1;
 }
@@ -118,17 +118,17 @@ const onReset = () => {
 .slot-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
-  gap: clamp(0.3rem, 1vh, 0.5rem);
+  gap: var(--space-xs);
 }
 
 .save-slot {
   border: 2px solid var(--button-border);
-  padding: clamp(0.4rem, 1.5vh, 0.5rem);
+  padding: var(--space-xs);
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
   z-index: 1;
-  background-color: rgba(34, 34, 34, 0.95);
+  background-color: var(--panel-bg);
   min-height: clamp(90px, 20vh, 120px);
   display: flex;
   flex-direction: column;
@@ -136,7 +136,7 @@ const onReset = () => {
 
 .save-slot.selected {
   border-color: var(--primary);
-  box-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
+  box-shadow: var(--shadow-light);
   background-color: rgba(51, 255, 51, 0.1);
   transform: translateY(-2px);
 }
@@ -183,7 +183,7 @@ const onReset = () => {
 .file-actions {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.4rem, 1vh, 0.5rem);
+  gap: var(--space-xs);
 }
 
 .slot-actions button,
@@ -191,10 +191,16 @@ const onReset = () => {
   width: 100%;
 }
 
-/* Mobile optimizations */
-@media (max-width: 480px) {
+/* Responsive styles using CSS variables */
+@media (max-width: var(--breakpoint-medium)) {
   .save-slots {
-    gap: 0.6rem;
+    gap: var(--space-sm);
+  }
+}
+
+@media (max-width: var(--breakpoint-small)) {
+  .save-slots {
+    gap: var(--space-xs);
   }
 
   .slot-list {
@@ -203,11 +209,10 @@ const onReset = () => {
 
   .save-slot {
     min-height: 80px;
-    padding: 0.3rem;
+    padding: var(--space-xs);
   }
 
   .slot-info {
-    font-size: 0.75rem;
     gap: 0.2rem;
   }
 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="changelog-overlay">
+  <div v-if="show" class="overlay">
     <div class="changelog-popup crt-panel">
       <h2 class="retro-title">
         CHANGELOG
@@ -113,89 +113,130 @@ const close = () => {
 </script>
 
 <style scoped>
-.changelog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
 .changelog-popup {
   width: 90%;
   max-width: 600px;
   max-height: 80vh;
-  padding: 2rem;
+  padding: var(--space-lg);
   border: var(--panel-border);
+  background-color: var(--panel-bg);
+  position: relative;
+  z-index: var(--z-popup);
+  border-radius: 4px;
 }
 
 .changelog-content {
-  margin: 1.5rem 0;
+  margin: var(--space-md) 0;
   max-height: calc(80vh - 200px);
   overflow-y: auto;
   font-family: var(--font-mono);
   color: var(--text-secondary);
+  padding-right: var(--space-xs);
 }
 
 .changelog-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-md);
 }
 
 .changelog-section h4 {
   color: var(--primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-display);
+  font-size: clamp(0.8rem, 2.2vw, 1rem);
 }
 
 .changelog-section ul {
   list-style-type: none;
-  padding-left: 1rem;
+  padding-left: var(--space-sm);
+  margin: 0;
 }
 
 .changelog-section li {
-  margin-bottom: 0.3rem;
+  margin-bottom: var(--space-xs);
+  position: relative;
 }
 
 .changelog-section li::before {
   content: '>';
   color: var(--primary);
-  margin-right: 0.5rem;
+  margin-right: var(--space-xs);
+  position: absolute;
+  left: -var(--space-sm);
 }
 
 .changelog-actions {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
 }
 
+/* Styling for the rendered markdown content */
 .full-changelog :deep(h1),
 .full-changelog :deep(h2),
 .full-changelog :deep(h3) {
   color: var(--primary);
-  margin: 1rem 0;
+  margin: var(--space-sm) 0;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
 }
 
 .full-changelog :deep(ul) {
   list-style-type: none;
-  padding-left: 1rem;
+  padding-left: var(--space-sm);
+  margin: var(--space-xs) 0;
 }
 
 .full-changelog :deep(li) {
-  margin-bottom: 0.3rem;
+  margin-bottom: var(--space-xs);
+  position: relative;
 }
 
 .full-changelog :deep(li::before) {
   content: '>';
   color: var(--primary);
-  margin-right: 0.5rem;
+  margin-right: var(--space-xs);
+  position: absolute;
+  left: -var(--space-sm);
 }
 
 .full-changelog :deep(a) {
   color: var(--secondary);
+  text-decoration: none;
+}
+
+.full-changelog :deep(a:hover) {
+  text-decoration: underline;
+  color: var(--primary);
+}
+
+/* Mobile optimizations */
+@media (max-width: var(--breakpoint-medium)) {
+  .changelog-popup {
+    padding: var(--space-md);
+    max-height: 85vh;
+  }
+  
+  .changelog-content {
+    max-height: calc(85vh - 180px);
+  }
+  
+  .changelog-actions {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+}
+
+@media (max-width: var(--breakpoint-small)) {
+  .changelog-popup {
+    padding: var(--space-sm);
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .changelog-content {
+    max-height: calc(90vh - 160px);
+    margin: var(--space-sm) 0;
+  }
 }
 </style>

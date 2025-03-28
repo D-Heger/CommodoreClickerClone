@@ -89,9 +89,9 @@ const languages = LANGUAGES;
 .settings-options {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.8rem, 2vh, 1rem);
+  gap: var(--space-md);
   position: relative;
-  z-index: 1;
+  z-index: var(--z-base);
 }
 
 .setting-label {
@@ -103,8 +103,8 @@ const languages = LANGUAGES;
 .setting-control {
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(0.3rem, 0.8vh, 0.5rem);
-  margin-top: clamp(0.3rem, 0.8vh, 0.5rem);
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
 }
 
 .option-button {
@@ -132,14 +132,14 @@ const languages = LANGUAGES;
 }
 
 /* Mobile optimizations */
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-small)) {
   .settings-options {
-    gap: 0.6rem;
+    gap: var(--space-sm);
   }
 
   .setting-control {
-    gap: 0.2rem;
-    margin-top: 0.3rem;
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
   }
 
   .option-button {

@@ -159,12 +159,12 @@ defineProps({
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: clamp(0.3rem, 1vw, 0.5rem);
-  padding: clamp(0.3rem, 1vh, 0.4rem);
+  gap: var(--space-xs);
+  padding: var(--space-xs);
   border-radius: 4px;
   border: 2px solid var(--secondary);
   position: relative;
-  background-color: rgba(12, 12, 12, 0.95);
+  background-color: var(--panel-bg);
   max-width: min(800px, 95vw);
   margin: 0 auto;
 }
@@ -207,7 +207,7 @@ defineProps({
   top: calc(100% + 5px);
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(12, 12, 12, 0.95);
+  background: var(--panel-bg);
   border: 2px solid var(--secondary);
   padding: 0;
   border-radius: 4px;
@@ -223,19 +223,19 @@ defineProps({
 .detailed-stats.open {
   max-height: min(80vh, 500px);
   opacity: 1;
-  padding: clamp(0.8rem, 2vh, 1rem);
+  padding: var(--space-md);
 }
 
 .stats-grid {
   display: flex;
   flex-direction: row;
-  gap: clamp(1rem, 2vh, 1.5rem);
+  gap: var(--space-md);
   overflow-x: auto;
 }
 
 .stat-group {
   border: 1px solid var(--secondary);
-  padding: clamp(0.8rem, 2vh, 1rem);
+  padding: var(--space-md);
   border-radius: 4px;
   background-color: var(--background-dark);
   min-width: 250px;
@@ -244,7 +244,7 @@ defineProps({
 
 .stat-group h3 {
   margin-top: 0;
-  margin-bottom: clamp(0.8rem, 2vh, 1rem);
+  margin-bottom: var(--space-md);
   color: var(--secondary);
   font-size: clamp(0.8rem, 2vw, 0.9rem);
   text-align: center;
@@ -271,28 +271,29 @@ defineProps({
   display: inline-block;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
+/* Responsive adjustments using CSS variables for breakpoints */
+@media (max-width: var(--breakpoint-large)) {
   .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 0.8rem;
+    gap: var(--space-sm);
+  }
+  
+  .stat-group {
+    padding: var(--space-sm);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-medium)) {
   .stats {
-    gap: 0.75rem;
-    padding: 0.5rem 1.5rem 0.5rem 0.5rem;
-  }
-  
-  .stat-item {
-    flex: 0 1 auto;
-    font-size: 0.9rem;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
   }
   
   .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
+    flex-direction: column;
+  }
+  
+  .stat-group {
+    min-width: auto;
   }
 
   .detailed-stats.open {
@@ -300,10 +301,10 @@ defineProps({
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-small)) {
   .stats {
-    gap: 0.5rem;
-    padding: 0.4rem 1.2rem 0.4rem 0.4rem;
+    gap: var(--space-xs);
+    padding: var(--space-xs) 1.2rem var(--space-xs) var(--space-xs);
   }
   
   .stat-item {
@@ -319,6 +320,10 @@ defineProps({
 
   .detailed-stats.open {
     max-height: min(95vh, 1000px);
+  }
+  
+  .stat-group {
+    padding: var(--space-sm);
   }
 }
 </style>

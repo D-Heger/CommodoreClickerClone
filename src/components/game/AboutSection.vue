@@ -39,28 +39,46 @@ defineEmits(['open-changelog']);
 </script>
 
 <style scoped>
+.about-content {
+  position: relative;
+  z-index: var(--z-content);
+}
+
 .about-text {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
   color: var(--text-secondary);
   text-align: center;
-  z-index: 1;
+  line-height: 1.4;
+  margin: var(--space-xs) 0;
 }
 
 .about-text a {
   color: var(--primary);
   position: relative;
-  z-index: 10;
+  z-index: var(--z-content);
+  pointer-events: auto;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.about-text a:hover {
+  text-decoration: underline;
+  color: var(--secondary);
+}
+
+.changelog-button {
+  margin: var(--space-sm) auto;
+  width: 100%;
+  position: relative;
+  z-index: var(--z-content);
   pointer-events: auto;
   cursor: pointer;
 }
 
-.changelog-button {
-  margin-top: 1rem;
-  width: 100%;
-  position: relative;
-  z-index: 10;
-  pointer-events: auto;
-  cursor: pointer;
+@media (max-width: var(--breakpoint-small)) {
+  .about-text {
+    font-size: 0.85rem;
+  }
 }
 </style>
