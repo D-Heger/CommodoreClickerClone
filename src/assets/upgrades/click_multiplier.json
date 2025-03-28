@@ -2,51 +2,51 @@
   {
     "id": "turbo_button",
     "name": "CPU Turbo Button",
-    "description": "Toggle between standard and turbo clock speeds. Multiplies click power by 1.5x.",
+    "description": "Toggle between standard and turbo clock speeds. Multiplies click power by 1.25x.",
     "cost": "400",
     "costFactor": "2.5",
     "type": "click_multiplier",
-    "value": "0.5",
+    "value": "0.25",
     "maxLevel": 5
   },
   {
     "id": "macro_command",
     "name": "Keyboard Macro Command",
-    "description": "Program repetitive actions into a single keystroke. Multiplies click power by 2x.",
+    "description": "Program repetitive actions into a single keystroke. Multiplies click power by 1.5x.",
     "cost": "1000",
     "costFactor": "3.0",
     "type": "click_multiplier",
-    "value": "1.0",
+    "value": "0.5",
     "maxLevel": 5
   },
   {
     "id": "asm_optimization",
     "name": "Assembly Optimization",
-    "description": "Hand-crafted assembly code for maximum efficiency. Multiplies click power by 3x.",
+    "description": "Hand-crafted assembly code for maximum efficiency. Multiplies click power by 2x.",
     "cost": "2500",
     "costFactor": "3.5",
     "type": "click_multiplier",
-    "value": "2.0",
+    "value": "1.0",
     "maxLevel": 5
   },
   {
     "id": "simd_instructions",
     "name": "SIMD Instructions",
-    "description": "Single Instruction, Multiple Data operations. Multiplies click power by 5x.",
+    "description": "Single Instruction, Multiple Data operations. Multiplies click power by 3x.",
     "cost": "7000",
     "costFactor": "4.0",
     "type": "click_multiplier",
-    "value": "4.0",
+    "value": "2.0",
     "maxLevel": 5
   },
   {
     "id": "gpu_acceleration",
     "name": "GPU Acceleration",
-    "description": "Offloads processing to the graphics card. Multiplies click power by 10x.",
+    "description": "Offloads processing to the graphics card. Multiplies click power by 5x.",
     "cost": "20000",
     "costFactor": "4.5",
     "type": "click_multiplier",
-    "value": "9.0",
+    "value": "4.0",
     "maxLevel": 5
   }
 ]

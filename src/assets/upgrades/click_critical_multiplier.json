@@ -2,51 +2,51 @@
   {
     "id": "cache_memory",
     "name": "L1 Cache Memory",
-    "description": "High-speed memory cache for crucial operations. Increases critical hit multiplier by 0.5x.",
+    "description": "High-speed memory cache for crucial operations. Increases critical hit multiplier by 0.35x.",
     "cost": "600",
     "costFactor": "5.3",
     "type": "click_critical_multiplier",
-    "value": "0.5",
-    "maxLevel": 5
+    "value": "0.35",
+    "maxLevel": 1
   },
   {
     "id": "pipelines",
     "name": "Instruction Pipelines",
-    "description": "Execute multiple instructions simultaneously. Increases critical hit multiplier by 1x.",
+    "description": "Execute multiple instructions simultaneously. Increases critical hit multiplier by 0.7x.",
     "cost": "1500",
     "costFactor": "7.6",
     "type": "click_critical_multiplier",
-    "value": "1.0",
-    "maxLevel": 5
+    "value": "0.7",
+    "maxLevel": 1
   },
   {
     "id": "branch_prediction",
     "name": "Branch Prediction",
-    "description": "Anticipates execution paths for optimization. Increases critical hit multiplier by 2x.",
+    "description": "Anticipates execution paths for optimization. Increases critical hit multiplier by 1.4x.",
     "cost": "4000",
     "costFactor": "9.0",
     "type": "click_critical_multiplier",
-    "value": "2.0",
-    "maxLevel": 5
+    "value": "1.4",
+    "maxLevel": 1
   },
   {
     "id": "speculative_execution",
     "name": "Speculative Execution",
-    "description": "Executes instructions before they're confirmed needed. Increases critical hit multiplier by 5x.",
+    "description": "Executes instructions before they're confirmed needed. Increases critical hit multiplier by 3.5x.",
     "cost": "10000",
     "costFactor": "11.5",
     "type": "click_critical_multiplier",
-    "value": "5.0",
-    "maxLevel": 5
+    "value": "3.5",
+    "maxLevel": 1
   },
   {
     "id": "predictive_algorithms",
     "name": "Predictive Algorithms",
-    "description": "Uses AI to predict optimal execution paths. Increases critical hit multiplier by 10x.",
+    "description": "Uses AI to predict optimal execution paths. Increases critical hit multiplier by 7x.",
     "cost": "25000",
     "costFactor": "14.0",
     "type": "click_critical_multiplier",
-    "value": "10.0",
-    "maxLevel": 5
+    "value": "7.0",
+    "maxLevel": 1
   }
 ]
