@@ -110,23 +110,28 @@ const onReset = () => {
 .save-slots {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: clamp(0.8rem, 2vh, 1rem);
+  position: relative;
+  z-index: 1;
 }
 
 .slot-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+  gap: clamp(0.3rem, 1vh, 0.5rem);
 }
 
 .save-slot {
   border: 2px solid var(--button-border);
-  padding: 0.5rem;
+  padding: clamp(0.4rem, 1.5vh, 0.5rem);
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
   z-index: 1;
-  background-color: var(--button-bg);
+  background-color: rgba(34, 34, 34, 0.95);
+  min-height: clamp(90px, 20vh, 120px);
+  display: flex;
+  flex-direction: column;
 }
 
 .save-slot.selected {
@@ -151,31 +156,68 @@ const onReset = () => {
   flex-direction: column;
   gap: 0.3rem;
   pointer-events: none;
+  flex: 1;
 }
 
 .slot-number {
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.8rem);
   color: var(--text-primary);
 }
 
-.slot-details {
+.slot-details,
+.slot-empty {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   color: var(--text-secondary);
+  line-height: 1.4;
 }
 
 .slot-empty {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  color: var(--text-secondary);
   font-style: italic;
+  align-self: center;
+  margin: auto 0;
 }
 
 .slot-actions,
 .file-actions {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: clamp(0.4rem, 1vh, 0.5rem);
+}
+
+.slot-actions button,
+.file-actions button {
+  width: 100%;
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .save-slots {
+    gap: 0.6rem;
+  }
+
+  .slot-list {
+    grid-template-columns: 1fr;
+  }
+
+  .save-slot {
+    min-height: 80px;
+    padding: 0.3rem;
+  }
+
+  .slot-info {
+    font-size: 0.75rem;
+    gap: 0.2rem;
+  }
+
+  .slot-number {
+    font-size: 0.65rem;
+  }
+
+  .slot-details,
+  .slot-empty {
+    font-size: 0.75rem;
+  }
 }
 </style>

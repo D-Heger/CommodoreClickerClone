@@ -39,7 +39,7 @@
   background-color: var(--background-dark);
   color: var(--text-primary);
   font-family: var(--font-mono);
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .crt-panel::before {
@@ -65,18 +65,18 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 3;
   pointer-events: none;
   box-shadow: inset 0 0 50px rgba(0, 30, 0, 0.7);
 }
 
 /* Common button styles */
 .retro-button {
-  padding: 0.7rem;
+  padding: clamp(0.5rem, 1.5vh, 0.7rem);
   background-color: var(--button-bg);
   color: var(--text-primary);
   font-family: var(--font-display);
-  font-size: 0.7rem;
+  font-size: clamp(0.65rem, 1.8vw, 0.7rem);
   border: none;
   border-top: 2px solid var(--button-border);
   border-left: 2px solid var(--button-border);
@@ -89,14 +89,15 @@
   justify-content: space-around;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
 }
 
-.retro-button:hover {
+.retro-button:hover:not(:disabled) {
   background-color: #333;
   transform: translateY(-2px);
 }
 
-.retro-button:active {
+.retro-button:active:not(:disabled) {
   background-color: #444;
   border-top: 2px solid var(--button-bg);
   border-left: 2px solid var(--button-bg);
@@ -110,18 +111,35 @@
   color: #666;
   border-color: #333;
   cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.retro-button.warning {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+.retro-button.danger {
+  color: var(--danger);
+  border-color: var(--danger);
 }
 
 /* Common section title */
 .retro-title {
   font-family: var(--font-display);
   text-align: center;
-  font-size: 1.8rem;
-  margin: 0 0 1.5rem 0;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  margin: 0 0 clamp(0.3rem, 1.5vh, 0.8rem) 0;
   color: var(--text-primary);
   text-shadow: var(--glow);
-  padding-bottom: 0.5rem;
+  padding-bottom: clamp(0.3rem, 1vh, 0.5rem);
   border-bottom: 2px solid var(--text-primary);
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* Blinking cursor animation */
@@ -143,12 +161,13 @@
 .settings-section {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: clamp(0.6rem, 1.5vh, 0.8rem);
   padding: 1rem;
   border: 2px solid var(--button-border);
   background-color: rgba(20, 20, 20, 0.8);
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
 .settings-section::before {
@@ -164,13 +183,14 @@
 
 .section-title {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
   margin: 0;
   color: var(--text-primary);
   border-bottom: 1px solid var(--text-primary);
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.5rem;
+  padding-bottom: clamp(0.3rem, 1vh, 0.5rem);
+  margin-bottom: clamp(0.5rem, 1.5vh, 0.8rem);
   z-index: 1;
+  position: relative;
 }
 
 .setting-label {
@@ -222,5 +242,35 @@
 
 .action-text {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+}
+
+/* Overlay styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Common section and panel gradients */
+.panel-gradient {
+  position: relative;
+}
+
+.panel-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 0%, rgba(51, 255, 51, 0.05) 50%, transparent 100%);
+  z-index: 0;
 }

@@ -153,39 +153,42 @@ defineProps({
 .stats-display {
   position: relative;
   width: 100%;
-  z-index: 20; /* Ensure stats stay above other elements */
+  z-index: 20;
 }
 
 .stats {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: clamp(0.3rem, 1vw, 0.5rem);
+  padding: clamp(0.3rem, 1vh, 0.4rem);
   border-radius: 4px;
   border: 2px solid var(--secondary);
   position: relative;
+  background-color: rgba(12, 12, 12, 0.95);
+  max-width: min(800px, 95vw);
+  margin: 0 auto;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  min-width: max-content;
+  gap: 0.3rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.8rem);
 }
 
 .stats-toggle-btn {
   position: absolute;
-  right: 10px;
+  right: clamp(3px, 0.8vw, 5px);
   top: 50%;
   transform: translateY(-50%);
   background: var(--button-bg);
   color: var(--secondary);
   border: 1px solid var(--secondary);
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  font-size: 12px;
+  width: clamp(16px, 2.5vw, 20px);
+  height: clamp(16px, 2.5vw, 20px);
+  font-size: clamp(8px, 1.2vw, 10px);
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -204,84 +207,126 @@ defineProps({
   top: calc(100% + 5px);
   left: 0;
   right: 0;
-  background: var(--background-dark);
+  background: rgba(12, 12, 12, 0.95);
   border: 2px solid var(--secondary);
-  padding: 1rem;
+  padding: 0;
   border-radius: 4px;
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  transition: all 0.3s ease;
+  z-index: 25;
+  width: min(800px, 95vw);
+  margin: 0 auto;
 }
 
 .detailed-stats.open {
-  max-height: 500px;
+  max-height: min(80vh, 500px);
   opacity: 1;
-  padding: 1rem;
+  padding: clamp(0.8rem, 2vh, 1rem);
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(0.8rem, 2vh, 1rem);
+  max-width: 100%;
 }
 
 .stat-group {
   border: 1px solid var(--secondary);
-  padding: 1rem;
+  padding: clamp(0.8rem, 2vh, 1rem);
   border-radius: 4px;
+  background-color: var(--background-dark);
+  min-width: 0;
+  flex: 1;
 }
 
 .stat-group h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.6rem, 1.5vh, 0.8rem);
   color: var(--secondary);
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 1.8vw, 0.85rem);
   text-align: center;
   border-bottom: 1px solid var(--secondary);
   padding-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stat-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: clamp(0.3rem, 0.8vh, 0.4rem);
+  min-width: 0;
 }
 
 .stat-label {
   font-family: var(--font-display);
-  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-size: clamp(0.6rem, 1.6vw, 0.75rem);
   color: var(--text-secondary);
+  white-space: nowrap;
 }
 
 .stat-value {
   font-family: var(--font-mono);
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-size: clamp(0.7rem, 1.8vw, 0.85rem);
   color: var(--secondary);
-  display: inline-block;
+  text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.8rem;
+  }
 }
 
 @media (max-width: 768px) {
   .stats {
     gap: 0.75rem;
-    padding: 0.5rem;
-    justify-content: space-around;
+    padding: 0.5rem 1.5rem 0.5rem 0.5rem;
   }
   
   .stat-item {
     flex: 0 1 auto;
+    font-size: 0.9rem;
   }
   
   .stats-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: clamp(0.6rem, 1.5vh, 0.8rem);
+  }
+
+  .stat-group {
+    padding: clamp(0.6rem, 1.5vh, 0.8rem);
+  }
+
+  .stat-row {
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-label {
+    font-size: clamp(0.55rem, 1.5vw, 0.7rem);
+  }
+
+  .stat-value {
+    font-size: clamp(0.65rem, 1.7vw, 0.8rem);
+  }
+
+  .detailed-stats.open {
+    max-height: min(90vh, 800px);
   }
 }
 
 @media (max-width: 480px) {
   .stats {
     gap: 0.5rem;
-    justify-content: space-between;
+    padding: 0.4rem 1.2rem 0.4rem 0.4rem;
   }
   
   .stat-item {
@@ -293,6 +338,10 @@ defineProps({
     height: 20px;
     font-size: 10px;
     right: 5px;
+  }
+
+  .detailed-stats.open {
+    max-height: min(95vh, 1000px);
   }
 }
 </style>

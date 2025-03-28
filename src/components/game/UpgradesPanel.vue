@@ -290,76 +290,79 @@ defineEmits(['purchase'])
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 .upgrades-panel {
-  height: 100%;
-  padding: 1.5rem 1rem;
+  height: 100vh;
+  position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 /* Filter controls styling */
 .filter-controls {
-  margin-bottom: 1rem;
-  border: 1px solid var(--button-border);
-  background-color: rgba(30, 30, 30, 0.9);
-  border-radius: 4px;
+  padding: clamp(0.8rem, 2vh, 1rem);
+  background-color: var(--background-dark);
+  border-bottom: 2px solid var(--button-border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
 
 .filter-section {
-  padding: 0.5rem;
+  padding: clamp(0.4rem, 1vh, 0.5rem);
 }
 
 .filter-toggle {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: clamp(0.4rem, 1vh, 0.5rem);
   user-select: none;
 }
 
 .filter-icon {
   color: var(--secondary);
   margin-right: 0.5rem;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.8rem);
   width: 1rem;
   text-align: center;
 }
 
 .filter-label {
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   color: var(--secondary);
 }
 
 .filter-count {
   margin-left: 0.5rem;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.8rem);
   color: var(--warning);
 }
 
 .filter-options {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: clamp(0.4rem, 1vh, 0.5rem);
   margin-top: 0.5rem;
-  padding: 0.5rem;
+  padding: clamp(0.4rem, 1vh, 0.5rem);
   border-top: 1px solid var(--button-border);
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: clamp(0.3rem, 0.8vh, 0.5rem);
 }
 
 .filter-group-label {
-  font-size: 0.7rem;
+  font-size: clamp(0.65rem, 1.6vw, 0.7rem);
   color: var(--text-secondary);
 }
 
 .filter-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem;
+  gap: clamp(0.2rem, 0.5vw, 0.3rem);
 }
 
 .filter-button {
@@ -456,21 +459,21 @@ defineEmits(['purchase'])
 
 /* Existing styles */
 .upgrades-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-bottom: 200px;
+  flex: 1;
+  padding: clamp(0.8rem, 2vh, 1rem);
+  overflow-y: auto;
 }
 
 .upgrade-item {
   display: flex;
   flex-direction: column;
-  padding: 0.8rem;
+  gap: clamp(0.5rem, 1.5vh, 0.8rem);
+  padding: clamp(0.6rem, 1.5vh, 0.8rem);
   border: 2px solid var(--button-border);
-  background-color: rgba(20, 20, 20, 0.8);
+  background-color: rgba(20, 20, 20, 0.95);
   transition: all 0.2s;
   position: relative;
-  overflow: hidden;
+  min-height: clamp(90px, 20vh, 120px);
 }
 
 .upgrade-item::before {
@@ -506,12 +509,12 @@ defineEmits(['purchase'])
 
 .upgrade-info {
   flex: 1;
-  z-index: 1;
+  min-height: 0;
 }
 
 .upgrade-info h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 3vw, 1.3rem);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -528,7 +531,7 @@ defineEmits(['purchase'])
 .upgrade-info p {
   margin: 0 0 0.7rem 0;
   color: var(--text-secondary);
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 .upgrade-type {
@@ -589,5 +592,40 @@ defineEmits(['purchase'])
 
 button:disabled {
   cursor: not-allowed;
+}
+
+.retro-button {
+  margin-top: auto;
+  width: 100%;
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .upgrades-panel {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .filter-buttons {
+    gap: 0.2rem;
+  }
+
+  .filter-button {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.65rem;
+  }
+
+  .upgrade-item {
+    min-height: 90px;
+  }
+
+  .level-badge {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.3rem;
+  }
+
+  .upgrade-type {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+  }
 }
 </style>

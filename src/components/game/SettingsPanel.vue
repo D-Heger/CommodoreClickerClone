@@ -91,18 +91,84 @@ const confirmReset = () => {
 
 <style scoped>
 .settings-panel {
-  height: 100%;
-  padding: 1.5rem 1rem;
-  overflow-y: auto;
+  height: 100vh;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.retro-title {
+  padding: clamp(0.8rem, 2vh, 1rem);
+  margin: 0;
+  background-color: var(--background-dark);
+  border-bottom: 2px solid var(--button-border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
 
 .settings-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-bottom: 200px;
+  flex: 1;
+  padding: clamp(0.8rem, 2vh, 1rem);
+  overflow-y: auto;
+}
+
+.settings-section {
+  padding: clamp(0.8rem, 2vh, 1rem);
+  border: 2px solid var(--button-border);
+  background-color: rgba(20, 20, 20, 0.95);
+  border-radius: 4px;
+  position: relative;
+  margin-bottom: clamp(0.8rem, 2vh, 1rem);
+}
+
+.settings-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 0%, rgba(51, 255, 51, 0.05) 50%, transparent 100%);
+  z-index: 0;
+}
+
+.section-title {
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  margin-bottom: clamp(0.8rem, 2vh, 1rem);
+  padding-bottom: clamp(0.3rem, 1vh, 0.5rem);
   position: relative;
   z-index: 1;
+}
+
+.section-description {
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .settings-panel {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .settings-section {
+    padding: 0.6rem;
+  }
+
+  .section-title {
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .section-description {
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+  }
 }
 </style>

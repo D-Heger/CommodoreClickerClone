@@ -235,29 +235,67 @@ onUnmounted(() => {
 
 <style scoped>
 .pixel-canvas {
-  width: 400px;
-  height: 300px;
-  border: 2px solid var(--button-border);
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: clamp(0.5rem, 2vh, 1rem);
+  border: var(--panel-border);
+  background-color: var(--background-dark);
+  position: relative;
+}
+
+.pixel-canvas::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 0%, rgba(51, 255, 51, 0.05) 50%, transparent 100%);
+  z-index: 0;
 }
 
 canvas {
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  max-height: 70vh;
+  max-width: min(70vh, 100%);
   image-rendering: pixelated;
+  background-color: var(--background-dark);
+  position: relative;
+  z-index: 1;
 }
 
 .progress {
   margin-top: 0.5rem;
   font-family: var(--font-mono);
   color: var(--secondary);
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
 }
 
 .canvas-count {
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 2.2vw, 0.9rem);
   color: var(--text-secondary);
   margin-left: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .pixel-canvas {
+    width: 100%;
+  }
+
+  .progress {
+    font-size: 0.75rem;
+  }
+
+  .canvas-count {
+    font-size: 0.7rem;
+  }
 }
 </style>

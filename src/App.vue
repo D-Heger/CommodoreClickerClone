@@ -35,7 +35,7 @@
           @update-settings="updateSettings" />
       </div>
 
-      <div class="content-area">
+      <div class="content-area" :class="{ 'left-panel-open': showSettingsPanel, 'right-panel-open': showUpgradesPanel }">
         <button class="side-panel-button settings-button" :class="{ 'panel-open': showSettingsPanel }"
           @click="toggleSettingsPanel">
           {{ showSettingsPanel ? '<' : '>' }} </button>
@@ -548,129 +548,186 @@ onUnmounted(() => {
 
 <style scoped>
 .game-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   font-family: var(--font-mono);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 header {
   text-align: center;
-  margin-bottom: 2rem;
+  padding: clamp(0.3rem, 1.5vh, 0.8rem);
   position: relative;
   z-index: 15;
+  max-width: min(800px, 95vw);
+  margin: 0 auto;
+}
+
+header h1.retro-title {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  margin: 0 0 clamp(0.3rem, 1.5vh, 0.8rem) 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 main {
   display: flex;
   position: relative;
-  margin-top: 1rem;
+  flex: 1;
+  min-height: 0; /* Important for flex layout */
 }
 
 .content-area {
   flex: 1;
   position: relative;
+  margin: 0 clamp(30px, 4vw, 50px);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0; /* Important for flex layout */
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .render-area {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  margin: 2rem 0;
+  gap: clamp(0.5rem, 2vh, 1rem);
+  padding: clamp(1rem, 4vh, 2rem);
+  max-width: min(800px, 90vw);
+  max-height: 100%;
 }
 
-.render-button {
-  margin-top: 1rem;
-  background-color: var(--secondary);
-  color: white;
-  border: 3px solid #333;
-  box-shadow: 3px 3px 0px #222;
-  font-size: 1.2em;
+.content-area.left-panel-open {
+  margin-left: clamp(320px, 25vw, 400px);
 }
 
-.render-button:hover {
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0px #222;
-}
-
-.render-button:active {
-  transform: translate(3px, 3px);
-  box-shadow: none;
+.content-area.right-panel-open {
+  margin-right: clamp(320px, 25vw, 400px);
 }
 
 .side-panel-button {
-  position: absolute;
+  position: fixed;
+  height: clamp(100px, 15vh, 150px);
+  width: clamp(24px, 3vw, 36px);
   top: 50%;
   transform: translateY(-50%);
-  width: 36px;
-  height: 80px;
   background-color: var(--button-bg);
   color: var(--secondary);
-  border: 3px solid var(--secondary);
-  border-radius: 8px;
+  border: 2px solid var(--secondary);
   font-family: var(--font-mono);
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
   cursor: pointer;
   z-index: 10;
   transition: all 0.3s ease;
-}
-
-.side-panel-button:hover {
-  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .settings-button {
   left: 0;
-  transition-property: left, background-color;
-}
-
-.settings-button.panel-open {
-  left: 300px;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
 }
 
 .upgrades-button {
   right: 0;
-  transition-property: right, background-color;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+}
+
+.settings-button.panel-open {
+  left: clamp(320px, 25vw, 400px);
 }
 
 .upgrades-button.panel-open {
-  right: 300px;
+  right: clamp(320px, 25vw, 400px);
 }
 
 .settings-container,
 .upgrades-container {
   position: fixed;
   top: 0;
-  width: 300px;
   height: 100vh;
+  width: clamp(320px, 25vw, 400px);
   background-color: var(--background-dark);
-  transition: 0.3s ease;
-  padding-top: 60px;
-  z-index: 5;
-  overflow: hidden;
+  transition: transform 0.3s ease;
+  z-index: 15;
+  overflow-y: auto;
 }
 
 .settings-container {
-  left: -320px;
+  left: 0;
+  transform: translateX(-100%);
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.5);
   border-right: var(--panel-border);
 }
 
 .upgrades-container {
-  right: -320px;
+  right: 0;
+  transform: translateX(100%);
   box-shadow: -3px 0 10px rgba(0, 0, 0, 0.5);
   border-left: var(--panel-border);
-  padding-top: 80px;
-  overflow-y: auto;
 }
 
 .settings-container.show {
-  left: 0;
+  transform: translateX(0);
 }
 
 .upgrades-container.show {
-  right: 0;
+  transform: translateX(0);
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .content-area.left-panel-open,
+  .content-area.right-panel-open {
+    margin: 0 clamp(30px, 4vw, 50px);
+  }
+  
+  .settings-container,
+  .upgrades-container {
+    width: min(320px, 90vw);
+  }
+  
+  .settings-button.panel-open {
+    left: min(320px, 90vw);
+  }
+  
+  .upgrades-button.panel-open {
+    right: min(320px, 90vw);
+  }
+
+  .side-panel-button {
+    height: clamp(80px, 12vh, 120px);
+    width: clamp(20px, 2.5vw, 30px);
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .game-container {
+    padding: 8px;
+  }
+  
+  .content-area {
+    margin: 0 25px;
+  }
+  
+  .side-panel-button {
+    height: 80px;
+    width: 24px;
+    font-size: 1rem;
+  }
 }
 </style>
