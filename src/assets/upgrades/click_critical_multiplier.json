@@ -6,7 +6,8 @@
     "cost": "600",
     "costFactor": "1.5",
     "type": "click_critical_multiplier",
-    "value": "0.5"
+    "value": "0.5",
+    "maxLevel": 1
   },
   {
     "id": "pipelines",
@@ -15,7 +16,8 @@
     "cost": "1500",
     "costFactor": "1.6",
     "type": "click_critical_multiplier",
-    "value": "1.0"
+    "value": "1.0",
+    "maxLevel": 1
   },
   {
     "id": "branch_prediction",
@@ -24,7 +26,8 @@
     "cost": "4000",
     "costFactor": "1.7",
     "type": "click_critical_multiplier",
-    "value": "2.0"
+    "value": "2.0",
+    "maxLevel": 1
   },
   {
     "id": "speculative_execution",
@@ -33,7 +36,8 @@
     "cost": "10000",
     "costFactor": "1.8",
     "type": "click_critical_multiplier",
-    "value": "5.0"
+    "value": "5.0",
+    "maxLevel": 1
   },
   {
     "id": "predictive_algorithms",
@@ -42,6 +46,7 @@
     "cost": "25000",
     "costFactor": "1.9",
     "type": "click_critical_multiplier",
-    "value": "10.0"
+    "value": "10.0",
+    "maxLevel": 1
   }
 ]
