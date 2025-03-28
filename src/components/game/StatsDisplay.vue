@@ -205,19 +205,19 @@ defineProps({
 .detailed-stats {
   position: absolute;
   top: calc(100% + 5px);
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background: rgba(12, 12, 12, 0.95);
   border: 2px solid var(--secondary);
   padding: 0;
   border-radius: 4px;
   max-height: 0;
+  width: 90vw;
+  max-width: 1200px;
   overflow: hidden;
   opacity: 0;
   transition: all 0.3s ease;
   z-index: 25;
-  width: min(800px, 95vw);
-  margin: 0 auto;
 }
 
 .detailed-stats.open {
@@ -227,10 +227,10 @@ defineProps({
 }
 
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: clamp(0.8rem, 2vh, 1rem);
-  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: clamp(1rem, 2vh, 1.5rem);
+  overflow-x: auto;
 }
 
 .stat-group {
@@ -238,44 +238,37 @@ defineProps({
   padding: clamp(0.8rem, 2vh, 1rem);
   border-radius: 4px;
   background-color: var(--background-dark);
-  min-width: 0;
+  min-width: 250px;
   flex: 1;
 }
 
 .stat-group h3 {
   margin-top: 0;
-  margin-bottom: clamp(0.6rem, 1.5vh, 0.8rem);
+  margin-bottom: clamp(0.8rem, 2vh, 1rem);
   color: var(--secondary);
-  font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   text-align: center;
   border-bottom: 1px solid var(--secondary);
   padding-bottom: 0.5rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .stat-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: clamp(0.3rem, 0.8vh, 0.4rem);
-  min-width: 0;
+  margin-bottom: 0.5rem;
 }
 
 .stat-label {
   font-family: var(--font-display);
-  font-size: clamp(0.6rem, 1.6vw, 0.75rem);
+  font-size: clamp(0.65rem, 1.8vw, 0.8rem);
   color: var(--text-secondary);
-  white-space: nowrap;
 }
 
 .stat-value {
   font-family: var(--font-mono);
-  font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
   color: var(--secondary);
-  text-align: right;
+  display: inline-block;
 }
 
 /* Responsive adjustments */
@@ -299,23 +292,7 @@ defineProps({
   
   .stats-grid {
     grid-template-columns: 1fr;
-    gap: clamp(0.6rem, 1.5vh, 0.8rem);
-  }
-
-  .stat-group {
-    padding: clamp(0.6rem, 1.5vh, 0.8rem);
-  }
-
-  .stat-row {
-    margin-bottom: 0.3rem;
-  }
-
-  .stat-label {
-    font-size: clamp(0.55rem, 1.5vw, 0.7rem);
-  }
-
-  .stat-value {
-    font-size: clamp(0.65rem, 1.7vw, 0.8rem);
+    gap: 0.8rem;
   }
 
   .detailed-stats.open {
