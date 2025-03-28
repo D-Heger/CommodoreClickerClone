@@ -4,80 +4,89 @@
     "name": "Punch Card System",
     "description": "Early data processing technology. +1 pixel per click.",
     "cost": "10",
-    "costFactor": "1.2",
+    "costFactor": "2.2",
     "type": "click",
-    "value": "1"
+    "value": "1",
+    "maxLevel": 15
   },
   {
     "id": "mechanical_relay",
     "name": "Mechanical Relay Switch",
     "description": "Install reliable mechanical relay switches to improve manual pixel input. +2 pixels per click.",
     "cost": "25",
-    "costFactor": "1.3",
+    "costFactor": "2.4",
     "type": "click",
-    "value": "2"
+    "value": "2",
+    "maxLevel": 15
   },
   {
     "id": "vacuum_tube",
     "name": "Vacuum Tube Circuit",
     "description": "Early electronic component for faster calculations. +3 pixels per click.",
     "cost": "75",
-    "costFactor": "1.4",
+    "costFactor": "2.6",
     "type": "click",
-    "value": "3"
+    "value": "3",
+    "maxLevel": 15
   },
   {
     "id": "ceramic_keycaps",
     "name": "Ceramic Keycaps",
     "description": "Premium ceramic keycaps reduce finger fatigue. +5 pixels per click.",
     "cost": "200",
-    "costFactor": "1.5",
+    "costFactor": "2.8",
     "type": "click",
-    "value": "5"
+    "value": "5",
+    "maxLevel": 15
   },
   {
     "id": "transistor_array",
     "name": "Transistor Array",
     "description": "Solid-state technology replaces vacuum tubes. +10 pixels per click.",
     "cost": "750",
-    "costFactor": "1.6",
+    "costFactor": "3.0",
     "type": "click",
-    "value": "10"
+    "value": "10",
+    "maxLevel": 15
   },
   {
     "id": "integrated_circuit",
     "name": "Integrated Circuit",
     "description": "Multiple transistors on a single chip. +25 pixels per click.",
     "cost": "2500",
-    "costFactor": "1.7",
+    "costFactor": "3.2",
     "type": "click",
-    "value": "25"
+    "value": "25",
+    "maxLevel": 15
   },
   {
     "id": "mechanical_keyboard",
     "name": "IBM Model M Keyboard",
     "description": "Legendary mechanical keyboard with buckling springs. +50 pixels per click.",
     "cost": "10000",
-    "costFactor": "1.8",
+    "costFactor": "3.4",
     "type": "click",
-    "value": "50"
+    "value": "50",
+    "maxLevel": 15
   },
   {
     "id": "optical_sensor",
     "name": "Optical Mouse Sensor",
     "description": "Precise optical tracking technology. +100 pixels per click.",
     "cost": "50000",
-    "costFactor": "1.9",
+    "costFactor": "3.6",
     "type": "click",
-    "value": "100"
+    "value": "100",
+    "maxLevel": 15
   },
   {
     "id": "neural_interface",
     "name": "Neural Interface",
     "description": "Direct brain-to-computer connection. +500 pixels per click.",
     "cost": "250000",
-    "costFactor": "2.0",
+    "costFactor": "3.8",
     "type": "click",
-    "value": "500"
+    "value": "500",
+    "maxLevel": 15
   }
 ]

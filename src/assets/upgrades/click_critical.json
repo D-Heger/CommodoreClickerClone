@@ -4,7 +4,7 @@
     "name": "Core Clock Optimization",
     "description": "Fine-tuning of processor timing. +5% critical click chance.",
     "cost": "200",
-    "costFactor": "1.4",
+    "costFactor": "5.2",
     "type": "click_critical",
     "value": "0.05",
     "maxLevel": 5
@@ -14,7 +14,7 @@
     "name": "Voltage Regulator",
     "description": "Stabilizes power delivery to the CPU. +10% critical click chance.",
     "cost": "500",
-    "costFactor": "1.5",
+    "costFactor": "6.4",
     "type": "click_critical",
     "value": "0.1",
     "maxLevel": 5
@@ -24,7 +24,7 @@
     "name": "CPU Overclocking",
     "description": "Run your processor beyond rated specifications. +15% critical click chance.",
     "cost": "1200",
-    "costFactor": "1.6",
+    "costFactor": "7.6",
     "type": "click_critical",
     "value": "0.15",
     "maxLevel": 5
@@ -34,7 +34,7 @@
     "name": "Copper Heat Sink",
     "description": "Improved thermal dissipation. +20% critical click chance.",
     "cost": "3000",
-    "costFactor": "1.7",
+    "costFactor": "8.8",
     "type": "click_critical",
     "value": "0.2",
     "maxLevel": 5
@@ -44,7 +44,7 @@
     "name": "CPU Cooling Fan",
     "description": "Active air cooling for the processor. +25% critical click chance.",
     "cost": "7500",
-    "costFactor": "1.8",
+    "costFactor": "10.0",
     "type": "click_critical",
     "value": "0.25",
     "maxLevel": 5
@@ -54,7 +54,7 @@
     "name": "Liquid Cooling System",
     "description": "Advanced thermal management. +50% critical click chance.",
     "cost": "20000",
-    "costFactor": "1.9",
+    "costFactor": "12.0",
     "type": "click_critical",
     "value": "0.5",
     "maxLevel": 5

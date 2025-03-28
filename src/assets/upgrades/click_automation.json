@@ -4,71 +4,79 @@
     "name": "Paper Tape Reader",
     "description": "Early automated input method. Auto-clicks once every 20 seconds.",
     "cost": "30",
-    "costFactor": "1.3",
+    "costFactor": "2.3",
     "type": "click_automation",
-    "value": "0.05"
+    "value": "0.05",
+    "maxLevel": 20
   },
   {
     "id": "basic_autoclick",
     "name": "BASIC Auto-Clicker",
     "description": "A simple program that automatically triggers pixel rendering. Auto-clicks once every 10 seconds.",
     "cost": "100",
-    "costFactor": "1.4",
+    "costFactor": "2.6",
     "type": "click_automation",
-    "value": "0.1"
+    "value": "0.1",
+    "maxLevel": 20
   },
   {
     "id": "batch_program",
     "name": "Batch Processing Program",
     "description": "Executes a sequence of commands automatically. Auto-clicks once every 5 seconds.",
     "cost": "300",
-    "costFactor": "1.5",
+    "costFactor": "2.9",
     "type": "click_automation",
-    "value": "0.2"
+    "value": "0.2",
+    "maxLevel": 20
   },
   {
     "id": "sprite_routine",
     "name": "Sprite Animation Routine",
     "description": "Uses hardware sprites for automated clicking. Auto-clicks once every 2 seconds.",
     "cost": "800",
-    "costFactor": "1.6",
+    "costFactor": "3.2",
     "type": "click_automation",
-    "value": "0.5"
+    "value": "0.5",
+    "maxLevel": 20
   },
   {
     "id": "assembly_loop",
     "name": "Assembly Language Loop",
     "description": "Highly optimized low-level code. Auto-clicks once per second.",
     "cost": "2000",
-    "costFactor": "1.7",
+    "costFactor": "3.5",
     "type": "click_automation",
-    "value": "1"
+    "value": "1",
+    "maxLevel": 20
   },
   {
     "id": "interrupt_handler",
     "name": "Interrupt Handler",
     "description": "Processes system interrupts to trigger clicks. Auto-clicks twice per second.",
     "cost": "5000",
-    "costFactor": "1.8",
+    "costFactor": "3.8",
     "type": "click_automation",
-    "value": "2"
+    "value": "2",
+    "maxLevel": 20
   },
   {
     "id": "multithreading",
     "name": "Multithreaded Execution",
     "description": "Parallel execution of clicking tasks. Auto-clicks 5 times per second.",
     "cost": "15000",
-    "costFactor": "1.9",
+    "costFactor": "4.1",
     "type": "click_automation",
-    "value": "5"
+    "value": "5",
+    "maxLevel": 20
   },
   {
     "id": "ai_algorithm",
     "name": "AI Clicking Algorithm",
     "description": "Self-improving click pattern recognition. Auto-clicks 10 times per second.",
     "cost": "50000",
-    "costFactor": "2.0",
+    "costFactor": "4.4",
     "type": "click_automation",
-    "value": "10"
+    "value": "10",
+    "maxLevel": 20
   }
 ]
