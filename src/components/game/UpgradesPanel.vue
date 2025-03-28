@@ -234,6 +234,13 @@ const filteredUpgrades = computed(() => {
     result = result.filter(upgrade => includedTypes.includes(upgrade.type))
   }
   
+  // Always sort upgrades by price from low to high regardless of filters
+  result.sort((a, b) => {
+    const costA = calculateUpgradeCost(a)
+    const costB = calculateUpgradeCost(b)
+    return parseFloat(costA) - parseFloat(costB)
+  })
+  
   return result
 })
 
@@ -474,6 +481,7 @@ defineEmits(['purchase'])
   transition: all 0.2s;
   position: relative;
   min-height: clamp(90px, 20vh, 120px);
+  margin-bottom: clamp(1rem, 3vh, 1.5rem); /* Added margin for spacing between items */
 }
 
 .upgrade-item::before {
