@@ -147,21 +147,21 @@ const close = () => {
 
 .changelog-section ul {
   list-style-type: none;
-  padding-left: var(--space-sm);
+  padding-left: var(--space-md);
   margin: 0;
 }
 
 .changelog-section li {
   margin-bottom: var(--space-xs);
+  padding-left: var(--space-sm);
   position: relative;
 }
 
 .changelog-section li::before {
   content: '>';
   color: var(--primary);
-  margin-right: var(--space-xs);
   position: absolute;
-  left: -var(--space-sm);
+  left: -4px;
 }
 
 .changelog-actions {
@@ -183,21 +183,21 @@ const close = () => {
 
 .full-changelog :deep(ul) {
   list-style-type: none;
-  padding-left: var(--space-sm);
+  padding-left: var(--space-md);
   margin: var(--space-xs) 0;
 }
 
 .full-changelog :deep(li) {
   margin-bottom: var(--space-xs);
+  padding-left: var(--space-sm);
   position: relative;
 }
 
 .full-changelog :deep(li::before) {
   content: '>';
   color: var(--primary);
-  margin-right: var(--space-xs);
   position: absolute;
-  left: -var(--space-sm);
+  left: -4px;
 }
 
 .full-changelog :deep(a) {
