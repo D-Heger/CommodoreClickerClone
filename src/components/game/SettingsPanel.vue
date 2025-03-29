@@ -91,18 +91,81 @@ const confirmReset = () => {
 
 <style scoped>
 .settings-panel {
-  height: 100%;
-  padding: 1.5rem 1rem;
-  overflow-y: auto;
+  height: 100vh;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.retro-title {
+  padding: var(--space-md);
+  margin: 0;
+  background-color: var(--background-dark);
+  border-bottom: var(--thin-border);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  transition: background-color var(--transition-speed-fast) ease;
 }
 
 .settings-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-bottom: 200px;
+  flex: 1;
+  padding: var(--space-md);
+  overflow-y: auto;
+}
+
+.settings-section {
+  padding: var(--space-md);
+  border: var(--thin-border);
+  background-color: var(--panel-bg);
+  border-radius: 4px;
   position: relative;
-  z-index: 1;
+  margin-bottom: var(--space-md);
+  transition: transform var(--transition-speed) var(--transition-timing-smooth), 
+              box-shadow var(--transition-speed) ease;
+}
+
+.settings-section:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
+}
+
+.section-title {
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-xs);
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.section-description {
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+  position: relative;
+  z-index: var(--z-content);
+}
+
+/* Mobile optimizations */
+@media (max-width: var(--breakpoint-small)) {
+  .settings-panel {
+    padding: var(--space-xs) var(--space-xs);
+  }
+
+  .settings-section {
+    padding: var(--space-xs);
+  }
+
+  .section-title {
+    padding-bottom: var(--space-xs);
+    margin-bottom: var(--space-sm);
+  }
+
+  .section-description {
+    font-size: 0.75rem;
+    margin-bottom: var(--space-xs);
+  }
 }
 </style>

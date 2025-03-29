@@ -1,5 +1,5 @@
 <template>
-  <div class="pixel-canvas">
+  <div class="pixel-canvas panel-gradient">
     <canvas ref="canvas" :width="400" :height="300" />
     <div class="progress">
       {{ renderedPixels }}/{{ totalPixels }} pixels rendered
@@ -235,29 +235,59 @@ onUnmounted(() => {
 
 <style scoped>
 .pixel-canvas {
-  width: 400px;
-  height: 300px;
-  border: 2px solid var(--button-border);
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: var(--space-md);
+  border: var(--panel-border);
+  background-color: var(--background-dark);
+  position: relative;
+  z-index: var(--z-content);
 }
 
 canvas {
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  max-height: 70vh;
+  max-width: min(70vh, 100%);
   image-rendering: pixelated;
+  background-color: var(--background-dark);
+  position: relative;
+  z-index: var(--z-content);
 }
 
 .progress {
-  margin-top: 0.5rem;
+  margin-top: var(--space-sm);
   font-family: var(--font-mono);
   color: var(--secondary);
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
 }
 
 .canvas-count {
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 2.2vw, 0.9rem);
   color: var(--text-secondary);
-  margin-left: 0.5rem;
+  margin-left: var(--space-xs);
+}
+
+@media (max-width: var(--breakpoint-small)) {
+  .pixel-canvas {
+    width: 100%;
+    padding: var(--space-sm);
+  }
+
+  .progress {
+    font-size: 0.75rem;
+    margin-top: var(--space-xs);
+  }
+
+  .canvas-count {
+    font-size: 0.7rem;
+  }
 }
 </style>

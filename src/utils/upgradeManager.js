@@ -21,11 +21,33 @@ export function loadUpgrades(upgradesData) {
   });
 }
 
-// Calculate the current cost of an upgrade based on its level
+// Calculate the current cost of an upgrade based on its level with extremely aggressive exponential scaling
 export function calculateUpgradeCost(upgrade) {
+  if (upgrade.level === 0) {
+    return upgrade.cost;
+  }
+  
+  // Cube the cost factor for dramatically more aggressive scaling
+  const cubedCostFactor = multiply(
+    multiply(upgrade.costFactor, upgrade.costFactor),
+    upgrade.costFactor
+  );
+  
+  // Apply extremely aggressive exponential scaling:
+  // base_cost * (cubed_factor^level) * (1.5^(level^2)) * (1.1^(level^3))
+  const baseScaling = power(cubedCostFactor, upgrade.level).toString();
+  const squared = multiply(upgrade.level, upgrade.level);
+  const cubed = multiply(squared, upgrade.level);
+  
+  const additionalScaling1 = power('1.5', squared).toString();
+  const additionalScaling2 = power('1.1', cubed).toString();
+  
   return multiply(
-    upgrade.cost,
-    upgrade.level > 0 ? power(upgrade.costFactor, upgrade.level).toString() : '1'
+    multiply(
+      multiply(upgrade.cost, baseScaling),
+      additionalScaling1
+    ),
+    additionalScaling2
   ).toString();
 }
 

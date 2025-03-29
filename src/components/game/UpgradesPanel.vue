@@ -17,16 +17,28 @@
           <!-- Filter by affordability -->
           <button 
             class="filter-button" 
-            :class="{ active: filters.onlyAffordable }" 
+            :class="{
+              'filter-show': filters.onlyAffordable === 'show',
+              'filter-hide': filters.onlyAffordable === 'hide'
+            }" 
             @click="toggleFilter('onlyAffordable')">
+            <span class="filter-mode-indicator">
+              {{ filters.onlyAffordable === 'show' ? '+' : filters.onlyAffordable === 'hide' ? '-' : '' }}
+            </span>
             AFFORDABLE
           </button>
           
           <!-- Filter by max level -->
           <button 
             class="filter-button" 
-            :class="{ active: filters.onlyMaxLevel }" 
+            :class="{
+              'filter-show': filters.onlyMaxLevel === 'show',
+              'filter-hide': filters.onlyMaxLevel === 'hide'
+            }" 
             @click="toggleFilter('onlyMaxLevel')">
+            <span class="filter-mode-indicator">
+              {{ filters.onlyMaxLevel === 'show' ? '+' : filters.onlyMaxLevel === 'hide' ? '-' : '' }}
+            </span>
             MAX LEVEL
           </button>
           
@@ -36,44 +48,86 @@
             <div class="filter-buttons">
               <button 
                 class="filter-button type-click" 
-                :class="{ active: filters.types.click }" 
+                :class="{
+                  'filter-show': filters.types.click === 'show',
+                  'filter-hide': filters.types.click === 'hide'
+                }" 
                 @click="toggleTypeFilter('click')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.click === 'show' ? '+' : filters.types.click === 'hide' ? '-' : '' }}
+                </span>
                 CLICK+
               </button>
               <button 
                 class="filter-button type-multiplier" 
-                :class="{ active: filters.types.clickMulti }" 
+                :class="{
+                  'filter-show': filters.types.clickMulti === 'show',
+                  'filter-hide': filters.types.clickMulti === 'hide'
+                }" 
                 @click="toggleTypeFilter('clickMulti')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.clickMulti === 'show' ? '+' : filters.types.clickMulti === 'hide' ? '-' : '' }}
+                </span>
                 MULTI×
               </button>
               <button 
                 class="filter-button type-automation" 
-                :class="{ active: filters.types.clickAuto }" 
+                :class="{
+                  'filter-show': filters.types.clickAuto === 'show',
+                  'filter-hide': filters.types.clickAuto === 'hide'
+                }" 
                 @click="toggleTypeFilter('clickAuto')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.clickAuto === 'show' ? '+' : filters.types.clickAuto === 'hide' ? '-' : '' }}
+                </span>
                 AUTO
               </button>
               <button 
                 class="filter-button type-critical" 
-                :class="{ active: filters.types.clickCrit }" 
+                :class="{
+                  'filter-show': filters.types.clickCrit === 'show',
+                  'filter-hide': filters.types.clickCrit === 'hide'
+                }" 
                 @click="toggleTypeFilter('clickCrit')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.clickCrit === 'show' ? '+' : filters.types.clickCrit === 'hide' ? '-' : '' }}
+                </span>
                 CRIT%
               </button>
               <button 
-                class="filter-button type-multiplier" 
-                :class="{ active: filters.types.clickCritMult }" 
+                class="filter-button type-multiplier"
+                :class="{
+                  'filter-show': filters.types.clickCritMult === 'show',
+                  'filter-hide': filters.types.clickCritMult === 'hide'
+                }" 
                 @click="toggleTypeFilter('clickCritMult')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.clickCritMult === 'show' ? '+' : filters.types.clickCritMult === 'hide' ? '-' : '' }}
+                </span>
                 CRIT×
               </button>
               <button 
                 class="filter-button type-rate" 
-                :class="{ active: filters.types.rate }" 
+                :class="{
+                  'filter-show': filters.types.rate === 'show',
+                  'filter-hide': filters.types.rate === 'hide'
+                }" 
                 @click="toggleTypeFilter('rate')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.rate === 'show' ? '+' : filters.types.rate === 'hide' ? '-' : '' }}
+                </span>
                 RATE+
               </button>
               <button 
                 class="filter-button type-multiplier" 
-                :class="{ active: filters.types.rateMulti }" 
+                :class="{
+                  'filter-show': filters.types.rateMulti === 'show',
+                  'filter-hide': filters.types.rateMulti === 'hide'
+                }" 
                 @click="toggleTypeFilter('rateMulti')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.rateMulti === 'show' ? '+' : filters.types.rateMulti === 'hide' ? '-' : '' }}
+                </span>
                 RATE×
               </button>
             </div>
@@ -142,16 +196,16 @@ const props = defineProps({
 // Filter state
 const filtersVisible = ref(false)
 const filters = ref({
-  onlyAffordable: false,
-  onlyMaxLevel: false,
+  onlyAffordable: 'off',  // 'off', 'show', 'hide'
+  onlyMaxLevel: 'off',    // 'off', 'show', 'hide'
   types: {
-    click: false,
-    clickMulti: false,
-    clickAuto: false,
-    clickCrit: false, 
-    clickCritMult: false,
-    rate: false,
-    rateMulti: false
+    click: 'off',
+    clickMulti: 'off',
+    clickAuto: 'off',
+    clickCrit: 'off', 
+    clickCritMult: 'off',
+    rate: 'off',
+    rateMulti: 'off'
   }
 })
 
@@ -160,39 +214,53 @@ const toggleFiltersVisible = () => {
   filtersVisible.value = !filtersVisible.value
 }
 
-// Toggle individual filters
+// Toggle individual filters - cycle through off -> show -> hide -> off
 const toggleFilter = (filterName) => {
-  filters.value[filterName] = !filters.value[filterName]
+  const currentMode = filters.value[filterName]
+  if (currentMode === 'off') {
+    filters.value[filterName] = 'show'
+  } else if (currentMode === 'show') {
+    filters.value[filterName] = 'hide'
+  } else {
+    filters.value[filterName] = 'off'
+  }
 }
 
-// Toggle type filters
+// Toggle type filters - cycle through off -> show -> hide -> off
 const toggleTypeFilter = (typeFilter) => {
-  filters.value.types[typeFilter] = !filters.value.types[typeFilter]
+  const currentMode = filters.value.types[typeFilter]
+  if (currentMode === 'off') {
+    filters.value.types[typeFilter] = 'show'
+  } else if (currentMode === 'show') {
+    filters.value.types[typeFilter] = 'hide'
+  } else {
+    filters.value.types[typeFilter] = 'off'
+  }
 }
 
 // Reset all filters
 const resetFilters = () => {
-  filters.value.onlyAffordable = false
-  filters.value.onlyMaxLevel = false
+  filters.value.onlyAffordable = 'off'
+  filters.value.onlyMaxLevel = 'off'
   Object.keys(filters.value.types).forEach(key => {
-    filters.value.types[key] = false
+    filters.value.types[key] = 'off'
   })
 }
 
 // Check if any filter is active
 const hasActiveFilters = computed(() => {
-  return filters.value.onlyAffordable || 
-    filters.value.onlyMaxLevel || 
-    Object.values(filters.value.types).some(value => value)
+  return filters.value.onlyAffordable !== 'off' || 
+    filters.value.onlyMaxLevel !== 'off' || 
+    Object.values(filters.value.types).some(value => value !== 'off')
 })
 
 // Count active filters
 const activeFilterCount = computed(() => {
   let count = 0
-  if (filters.value.onlyAffordable) count++
-  if (filters.value.onlyMaxLevel) count++
+  if (filters.value.onlyAffordable !== 'off') count++
+  if (filters.value.onlyMaxLevel !== 'off') count++
   Object.values(filters.value.types).forEach(value => {
-    if (value) count++
+    if (value !== 'off') count++
   })
   return count
 })
@@ -214,25 +282,48 @@ const filteredUpgrades = computed(() => {
   let result = [...props.upgrades]
   
   // Apply "affordable" filter if enabled
-  if (filters.value.onlyAffordable) {
+  if (filters.value.onlyAffordable === 'show') {
     result = result.filter(upgrade => canAffordUpgrade(upgrade))
+  } else if (filters.value.onlyAffordable === 'hide') {
+    result = result.filter(upgrade => !canAffordUpgrade(upgrade))
   }
   
   // Apply "max level" filter if enabled
-  if (filters.value.onlyMaxLevel) {
+  if (filters.value.onlyMaxLevel === 'show') {
     result = result.filter(upgrade => isMaxLevel(upgrade))
+  } else if (filters.value.onlyMaxLevel === 'hide') {
+    result = result.filter(upgrade => !isMaxLevel(upgrade))
   }
   
-  // Apply type filters if any are selected
-  const activeTypeFilters = Object.entries(filters.value.types)
-    .filter(([_, isActive]) => isActive)
+  // Get all active type filters grouped by mode
+  const showTypeFilters = Object.entries(filters.value.types)
+    .filter(([_, mode]) => mode === 'show')
+    .map(([filterName]) => filterName)
+    
+  const hideTypeFilters = Object.entries(filters.value.types)
+    .filter(([_, mode]) => mode === 'hide')
     .map(([filterName]) => filterName)
   
-  if (activeTypeFilters.length > 0) {
+  // Apply 'show' type filters if any are selected
+  if (showTypeFilters.length > 0) {
     // Get all upgrade types to include
-    const includedTypes = activeTypeFilters.flatMap(filter => typeFilterMap[filter])
+    const includedTypes = showTypeFilters.flatMap(filter => typeFilterMap[filter])
     result = result.filter(upgrade => includedTypes.includes(upgrade.type))
   }
+  
+  // Apply 'hide' type filters if any are selected
+  if (hideTypeFilters.length > 0) {
+    // Get all upgrade types to exclude
+    const excludedTypes = hideTypeFilters.flatMap(filter => typeFilterMap[filter])
+    result = result.filter(upgrade => !excludedTypes.includes(upgrade.type))
+  }
+  
+  // Always sort upgrades by price from low to high regardless of filters
+  result.sort((a, b) => {
+    const costA = calculateUpgradeCost(a)
+    const costB = calculateUpgradeCost(b)
+    return parseFloat(costA) - parseFloat(costB)
+  })
   
   return result
 })
@@ -286,161 +377,85 @@ defineEmits(['purchase'])
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
 .upgrades-panel {
-  height: 100%;
-  padding: 1.5rem 1rem;
+  height: 100vh;
+  position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 /* Filter controls styling */
 .filter-controls {
-  margin-bottom: 1rem;
-  border: 1px solid var(--button-border);
-  background-color: rgba(30, 30, 30, 0.9);
-  border-radius: 4px;
+  padding: var(--space-md);
+  background-color: var(--background-dark);
+  border-bottom: 2px solid var(--button-border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  transition: background-color var(--transition-speed-fast) ease;
 }
 
 .filter-section {
-  padding: 0.5rem;
+  padding: var(--space-xs);
 }
 
 .filter-toggle {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: var(--space-xs);
   user-select: none;
+  transition: transform var(--transition-speed-fast) var(--transition-timing-smooth);
+}
+
+.filter-toggle:hover {
+  transform: translateX(2px);
+  color: var(--primary);
 }
 
 .filter-icon {
   color: var(--secondary);
   margin-right: 0.5rem;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.8rem);
   width: 1rem;
   text-align: center;
+  transition: transform var(--transition-speed-fast) var(--transition-timing-spring);
 }
 
 .filter-label {
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   color: var(--secondary);
 }
 
 .filter-count {
   margin-left: 0.5rem;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.8rem);
   color: var(--warning);
 }
 
 .filter-options {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-xs);
   margin-top: 0.5rem;
-  padding: 0.5rem;
+  padding: var(--space-xs);
   border-top: 1px solid var(--button-border);
+  animation: slide-down var(--transition-speed-fast) var(--transition-timing) forwards;
+  transform-origin: top;
+  overflow: hidden;
 }
 
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.filter-group-label {
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-}
-
-.filter-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-}
-
-.filter-button {
-  background-color: var(--button-bg);
-  border: 1px solid var(--button-border);
-  color: var(--text-secondary);
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  padding: 0.3rem 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-radius: 3px;
-}
-
-.filter-button:hover {
-  border-color: var(--secondary);
-  color: var(--secondary);
-}
-
-.filter-button.active {
-  background-color: var(--secondary);
-  color: black;
-  border-color: var(--secondary);
-}
-
-.filter-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.filter-button.reset-button {
-  margin-top: 0.5rem;
-  color: var(--warning);
-  border-color: var(--warning);
-  align-self: flex-end;
-}
-
-.filter-button.reset-button:hover:not(:disabled) {
-  background-color: var(--warning);
-  color: black;
-}
-
-/* Apply type-specific colors to filter buttons */
-.filter-button.type-click {
-  border-color: var(--type-click);
-}
-
-.filter-button.type-click.active {
-  background-color: var(--type-click);
-}
-
-.filter-button.type-multiplier {
-  border-color: var(--type-multiplier);
-}
-
-.filter-button.type-multiplier.active {
-  background-color: var (--type-multiplier);
-}
-
-.filter-button.type-automation {
-  border-color: var(--type-automation);
-}
-
-.filter-button.type-automation.active {
-  background-color: var(--type-automation);
-}
-
-.filter-button.type-critical {
-  border-color: var(--type-critical);
-}
-
-.filter-button.type-critical.active {
-  background-color: var(--type-critical);
-}
-
-.filter-button.type-rate {
-  border-color: var(--type-rate);
-}
-
-.filter-button.type-rate.active {
-  background-color: var(--type-rate);
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
 }
 
 /* No results message */
@@ -456,37 +471,32 @@ defineEmits(['purchase'])
 
 /* Existing styles */
 .upgrades-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-bottom: 200px;
+  flex: 1;
+  padding: var(--space-md);
+  overflow-y: auto;
 }
 
 .upgrade-item {
   display: flex;
   flex-direction: column;
-  padding: 0.8rem;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
   border: 2px solid var(--button-border);
-  background-color: rgba(20, 20, 20, 0.8);
+  background-color: var(--panel-bg);
   transition: all 0.2s;
   position: relative;
-  overflow: hidden;
+  min-height: clamp(90px, 20vh, 120px);
+  margin-bottom: var(--space-lg);
 }
 
-.upgrade-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(45deg, transparent 0%, rgba(51, 255, 51, 0.05) 50%, transparent 100%);
-  z-index: 0;
+/* Using the common gradient from theme.css via panel-gradient class */
+.upgrade-item {
+  position: relative;
 }
 
 .upgrade-item.affordable {
   border-color: var(--primary);
-  box-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
+  box-shadow: var(--shadow-light);
   transform: scale(1.02);
   transition: all 0.2s;
   cursor: pointer;
@@ -494,7 +504,7 @@ defineEmits(['purchase'])
 
 .upgrade-item.affordable:hover {
   background-color: rgba(51, 255, 51, 0.1);
-  box-shadow: 0 0 20px rgba(51, 255, 51, 0.5);
+  box-shadow: var(--shadow-medium);
   transform: scale(1.05);
 }
 
@@ -506,19 +516,19 @@ defineEmits(['purchase'])
 
 .upgrade-info {
   flex: 1;
-  z-index: 1;
+  min-height: 0;
 }
 
 .upgrade-info h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 3vw, 1.3rem);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .level-badge {
-  background-color: #333;
+  background-color: var(--button-bg);
   color: var(--primary);
   padding: 0.1rem 0.4rem;
   font-size: 0.8rem;
@@ -528,7 +538,7 @@ defineEmits(['purchase'])
 .upgrade-info p {
   margin: 0 0 0.7rem 0;
   color: var(--text-secondary);
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 .upgrade-type {
@@ -589,5 +599,40 @@ defineEmits(['purchase'])
 
 button:disabled {
   cursor: not-allowed;
+}
+
+.retro-button {
+  margin-top: auto;
+  width: 100%;
+}
+
+/* Mobile optimizations - using CSS variables for breakpoints */
+@media (max-width: var(--breakpoint-small)) {
+  .upgrades-panel {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .filter-buttons {
+    gap: 0.2rem;
+  }
+
+  .filter-button {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.65rem;
+  }
+
+  .upgrade-item {
+    min-height: 90px;
+  }
+
+  .level-badge {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.3rem;
+  }
+
+  .upgrade-type {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+  }
 }
 </style>

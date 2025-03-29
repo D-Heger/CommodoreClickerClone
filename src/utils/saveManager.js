@@ -1,5 +1,5 @@
 // Save data structure version for future compatibility using semantic versioning
-const SAVE_VERSION = '1.0.0';
+const SAVE_VERSION = '2.0.0';
 
 // Version compatibility check levels
 const VERSION_COMPATIBILITY = {

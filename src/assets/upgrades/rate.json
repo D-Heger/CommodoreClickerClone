@@ -2,100 +2,111 @@
   {
     "id": "binary_logic",
     "name": "Binary Logic Gate",
-    "description": "Basic computational building block. +0.1 pixels per second.",
-    "cost": "15",
-    "costFactor": "1.25",
+    "description": "Basic computational building block. +0.05 pixels per second.",
+    "cost": "30",
+    "costFactor": "2.1",
     "type": "rate",
-    "value": "0.1"
+    "value": "0.05",
+    "maxLevel": 10
   },
   {
     "id": "oscillator",
     "name": "Quartz Crystal Oscillator",
-    "description": "Provides stable timing for pixel generation. +0.3 pixels per second.",
-    "cost": "50",
-    "costFactor": "1.35",
+    "description": "Provides stable timing for pixel generation. +0.15 pixels per second.",
+    "cost": "100",
+    "costFactor": "2.3",
     "type": "rate",
-    "value": "0.3"
+    "value": "0.15",
+    "maxLevel": 10
   },
   {
     "id": "univac_processor",
     "name": "UNIVAC Processing Unit",
-    "description": "Early electronic computer system. +0.8 pixels per second.",
-    "cost": "120",
-    "costFactor": "1.4",
+    "description": "Early electronic computer system. +0.4 pixels per second.",
+    "cost": "240",
+    "costFactor": "2.5",
     "type": "rate",
-    "value": "0.8"
+    "value": "0.4",
+    "maxLevel": 10
   },
   {
     "id": "transistor_cpu",
     "name": "Transistor-based CPU",
-    "description": "More efficient than vacuum tubes. +1.5 pixels per second.",
-    "cost": "350",
-    "costFactor": "1.45",
+    "description": "More efficient than vacuum tubes. +0.75 pixels per second.",
+    "cost": "700",
+    "costFactor": "2.7",
     "type": "rate",
-    "value": "1.5"
+    "value": "0.75",
+    "maxLevel": 10
   },
   {
     "id": "intel_4004",
     "name": "Intel 4004 Microprocessor",
-    "description": "First commercial microprocessor. +3 pixels per second.",
-    "cost": "800",
-    "costFactor": "1.5",
+    "description": "First commercial microprocessor. +1.5 pixels per second.",
+    "cost": "1600",
+    "costFactor": "2.9",
     "type": "rate",
-    "value": "3"
+    "value": "1.5",
+    "maxLevel": 10
   },
   {
     "id": "mos_6502",
     "name": "MOS 6502 Processor",
-    "description": "8-bit microprocessor used in early home computers. +7 pixels per second.",
-    "cost": "2000",
-    "costFactor": "1.55",
+    "description": "8-bit microprocessor used in early home computers. +3.5 pixels per second.",
+    "cost": "4000",
+    "costFactor": "3.1",
     "type": "rate",
-    "value": "7"
+    "value": "3.5",
+    "maxLevel": 10
   },
   {
     "id": "zilog_z80",
     "name": "Zilog Z80 CPU",
-    "description": "Popular 8-bit processor that powered many systems. +15 pixels per second.",
-    "cost": "5000",
-    "costFactor": "1.6",
+    "description": "Popular 8-bit processor that powered many systems. +7.5 pixels per second.",
+    "cost": "10000",
+    "costFactor": "3.3",
     "type": "rate",
-    "value": "15"
+    "value": "7.5",
+    "maxLevel": 10
   },
   {
     "id": "intel_80286",
     "name": "Intel 80286 Processor",
-    "description": "16-bit microprocessor for early PCs. +30 pixels per second.",
-    "cost": "12500",
-    "costFactor": "1.65",
+    "description": "16-bit microprocessor for early PCs. +15 pixels per second.",
+    "cost": "25000",
+    "costFactor": "3.5",
     "type": "rate",
-    "value": "30"
+    "value": "15",
+    "maxLevel": 10
   },
   {
     "id": "motorola_68000",
     "name": "Motorola 68000",
-    "description": "Powerful 16/32-bit hybrid processor used in the Amiga. +60 pixels per second.",
-    "cost": "30000",
-    "costFactor": "1.7",
+    "description": "Powerful 16/32-bit hybrid processor used in the Amiga. +30 pixels per second.",
+    "cost": "60000",
+    "costFactor": "3.7",
     "type": "rate",
-    "value": "60"
+    "value": "30",
+    "maxLevel": 10
   },
   {
     "id": "pentium",
     "name": "Pentium Processor",
-    "description": "Fifth-generation x86 architecture. +120 pixels per second.",
-    "cost": "75000",
-    "costFactor": "1.8",
+    "description": "Fifth-generation x86 architecture. +60 pixels per second.",
+    "cost": "150000",
+    "costFactor": "3.9",
     "type": "rate",
-    "value": "120"
+    "value": "60",
+    "maxLevel": 10
   },
   {
     "id": "quantum_processor",
     "name": "Quantum Processor",
-    "description": "Processes information using quantum bits. +500 pixels per second.",
-    "cost": "500000",
-    "costFactor": "2.0",
+    "description": "Processes information using quantum bits. +250 pixels per second.",
+    "cost": "5000000",
+    "costFactor": "4.1",
     "type": "rate",
-    "value": "500"
+    "value": "250",
+    "maxLevel": 10
   }
 ]

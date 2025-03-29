@@ -2,55 +2,61 @@
   {
     "id": "core_clock",
     "name": "Core Clock Optimization",
-    "description": "Fine-tuning of processor timing. +5% critical click chance.",
-    "cost": "200",
-    "costFactor": "1.4",
+    "description": "Fine-tuning of processor timing. +4% critical click chance.",
+    "cost": "4000",
+    "costFactor": "5.2",
     "type": "click_critical",
-    "value": "0.05"
+    "value": "0.04",
+    "maxLevel": 5
   },
   {
     "id": "voltage_regulator",
     "name": "Voltage Regulator",
-    "description": "Stabilizes power delivery to the CPU. +10% critical click chance.",
-    "cost": "500",
-    "costFactor": "1.5",
+    "description": "Stabilizes power delivery to the CPU. +8% critical click chance.",
+    "cost": "50000",
+    "costFactor": "6.4",
     "type": "click_critical",
-    "value": "0.1"
+    "value": "0.08",
+    "maxLevel": 5
   },
   {
     "id": "overclocking",
     "name": "CPU Overclocking",
-    "description": "Run your processor beyond rated specifications. +15% critical click chance.",
-    "cost": "1200",
-    "costFactor": "1.6",
+    "description": "Run your processor beyond rated specifications. +12% critical click chance.",
+    "cost": "120000",
+    "costFactor": "7.6",
     "type": "click_critical",
-    "value": "0.15"
+    "value": "0.12",
+    "maxLevel": 5
   },
   {
     "id": "heat_sink",
     "name": "Copper Heat Sink",
-    "description": "Improved thermal dissipation. +20% critical click chance.",
-    "cost": "3000",
-    "costFactor": "1.7",
+    "description": "Improved thermal dissipation. +16% critical click chance.",
+    "cost": "300000",
+    "costFactor": "8.8",
     "type": "click_critical",
-    "value": "0.2"
+    "value": "0.16",
+    "maxLevel": 5
   },
   {
     "id": "cooling_fan",
     "name": "CPU Cooling Fan",
-    "description": "Active air cooling for the processor. +25% critical click chance.",
-    "cost": "7500",
-    "costFactor": "1.8",
+    "description": "Active air cooling for the processor. +20% critical click chance.",
+    "cost": "750000",
+    "costFactor": "10.0",
     "type": "click_critical",
-    "value": "0.25"
+    "value": "0.2",
+    "maxLevel": 5
   },
   {
     "id": "liquid_cooling",
     "name": "Liquid Cooling System",
-    "description": "Advanced thermal management. +50% critical click chance.",
-    "cost": "20000",
-    "costFactor": "1.9",
+    "description": "Advanced thermal management. +40% critical click chance.",
+    "cost": "2000000",
+    "costFactor": "12.0",
     "type": "click_critical",
-    "value": "0.5"
+    "value": "0.4",
+    "maxLevel": 5
   }
 ]

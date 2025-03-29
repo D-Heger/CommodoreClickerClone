@@ -89,6 +89,62 @@ const languages = LANGUAGES;
 .settings-options {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-md);
+  position: relative;
+  z-index: var(--z-base);
+}
+
+.setting-label {
+  font-family: var(--font-display);
+  font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+  color: var(--text-secondary);
+}
+
+.setting-control {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+.option-button {
+  padding: clamp(0.3rem, 0.8vh, 0.4rem) clamp(0.4rem, 1vw, 0.6rem);
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  flex: 1;
+  min-width: calc(50% - 0.25rem);
+  text-align: center;
+  background-color: var(--button-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--button-border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option-button.selected {
+  background-color: var(--primary);
+  color: #000;
+  border-color: var(--primary);
+}
+
+.option-button:hover:not(.selected) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Mobile optimizations */
+@media (max-width: var(--breakpoint-small)) {
+  .settings-options {
+    gap: var(--space-sm);
+  }
+
+  .setting-control {
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+  }
+
+  .option-button {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.7rem;
+  }
 }
 </style>

@@ -153,39 +153,42 @@ defineProps({
 .stats-display {
   position: relative;
   width: 100%;
-  z-index: 20; /* Ensure stats stay above other elements */
+  z-index: 20;
 }
 
 .stats {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-xs);
+  padding: var(--space-xs);
   border-radius: 4px;
   border: 2px solid var(--secondary);
   position: relative;
+  background-color: var(--panel-bg);
+  max-width: min(800px, 95vw);
+  margin: 0 auto;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  min-width: max-content;
+  gap: 0.3rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.8rem);
 }
 
 .stats-toggle-btn {
   position: absolute;
-  right: 10px;
+  right: clamp(3px, 0.8vw, 5px);
   top: 50%;
   transform: translateY(-50%);
   background: var(--button-bg);
   color: var(--secondary);
   border: 1px solid var(--secondary);
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  font-size: 12px;
+  width: clamp(16px, 2.5vw, 20px);
+  height: clamp(16px, 2.5vw, 20px);
+  font-size: clamp(8px, 1.2vw, 10px);
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,41 +205,48 @@ defineProps({
 .detailed-stats {
   position: absolute;
   top: calc(100% + 5px);
-  left: 0;
-  right: 0;
-  background: var(--background-dark);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--panel-bg);
   border: 2px solid var(--secondary);
-  padding: 1rem;
+  padding: 0;
   border-radius: 4px;
   max-height: 0;
+  width: 90vw;
+  max-width: 1200px;
   overflow: hidden;
   opacity: 0;
-  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  transition: all 0.3s ease;
+  z-index: 25;
 }
 
 .detailed-stats.open {
-  max-height: 500px;
+  max-height: min(80vh, 500px);
   opacity: 1;
-  padding: 1rem;
+  padding: var(--space-md);
 }
 
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-md);
+  overflow-x: auto;
 }
 
 .stat-group {
   border: 1px solid var(--secondary);
-  padding: 1rem;
+  padding: var(--space-md);
   border-radius: 4px;
+  background-color: var(--background-dark);
+  min-width: 250px;
+  flex: 1;
 }
 
 .stat-group h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
   color: var(--secondary);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   text-align: center;
   border-bottom: 1px solid var(--secondary);
   padding-bottom: 0.5rem;
@@ -250,38 +260,51 @@ defineProps({
 
 .stat-label {
   font-family: var(--font-display);
-  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-size: clamp(0.65rem, 1.8vw, 0.8rem);
   color: var(--text-secondary);
 }
 
 .stat-value {
   font-family: var(--font-mono);
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
   color: var(--secondary);
   display: inline-block;
 }
 
-@media (max-width: 768px) {
-  .stats {
-    gap: 0.75rem;
-    padding: 0.5rem;
-    justify-content: space-around;
-  }
-  
-  .stat-item {
-    flex: 0 1 auto;
-  }
-  
+/* Responsive adjustments using CSS variables for breakpoints */
+@media (max-width: var(--breakpoint-large)) {
   .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: var(--space-sm);
+  }
+  
+  .stat-group {
+    padding: var(--space-sm);
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-medium)) {
   .stats {
-    gap: 0.5rem;
-    justify-content: space-between;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
+  }
+  
+  .stats-grid {
+    flex-direction: column;
+  }
+  
+  .stat-group {
+    min-width: auto;
+  }
+
+  .detailed-stats.open {
+    max-height: min(90vh, 800px);
+  }
+}
+
+@media (max-width: var(--breakpoint-small)) {
+  .stats {
+    gap: var(--space-xs);
+    padding: var(--space-xs) 1.2rem var(--space-xs) var(--space-xs);
   }
   
   .stat-item {
@@ -293,6 +316,14 @@ defineProps({
     height: 20px;
     font-size: 10px;
     right: 5px;
+  }
+
+  .detailed-stats.open {
+    max-height: min(95vh, 1000px);
+  }
+  
+  .stat-group {
+    padding: var(--space-sm);
   }
 }
 </style>

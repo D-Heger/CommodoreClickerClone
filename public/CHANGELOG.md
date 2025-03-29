@@ -28,7 +28,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
   - Support both English and German language
 - Offline generation (maybe only through upgrades)
 
-## 0.0.4 - 27.03.2025
+## 0.0.4 - 28.03.2025
 
 ### WARNING: UPDATE BRINGS SAVE-BREAKING CHANGES
 
@@ -47,8 +47,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Now sanitizing changelog
 - Improved code formatting
 - Improved handling of really big numbers
-- Improved Sats Panel UI
-- Improved Upgrades Panel UI
+- Complete overhaul of the games UI
 
 ### Fixed
 
