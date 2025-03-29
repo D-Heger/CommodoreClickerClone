@@ -41,7 +41,11 @@
           {{ showSettingsPanel ? '<' : '>' }} </button>
 
             <div class="render-area">
-              <PixelCanvas :available-pixels="pixels" :spent-pixels="spentPixels" />
+              <PixelCanvas 
+                :available-pixels="pixels" 
+                :spent-pixels="spentPixels" 
+                :completed-frames="completedCanvases"
+              />
               <button class="render-button retro-button" @click="renderPixel">
                 RENDER PIXEL
               </button>
@@ -319,7 +323,7 @@ const handleReset = () => {
     totalPixels.value = '0'
     spentPixels.value = '0'
     upgrades.value = loadUpgrades(upgradesData)
-    completedCanvases.value = 0
+    completedCanvases.value = '0'
     settings.value = { ...DEFAULT_SETTINGS }
 
     // Clear all saves
@@ -331,7 +335,7 @@ const handleReset = () => {
 }
 
 // Add completedCanvases ref for tracking completed frames
-const completedCanvases = ref(0)
+const completedCanvases = ref('0')
 
 // Settings update handler
 const updateSettings = (newSettings) => {

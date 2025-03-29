@@ -3,8 +3,8 @@
     <canvas ref="canvas" :width="400" :height="300" />
     <div class="progress">
       {{ renderedPixels }}/{{ totalPixels }} pixels rendered
-      <span v-if="completedCanvases > 0" class="canvas-count">
-        (Frame #{{ completedCanvases + 1 }})
+      <span v-if="toDecimal(completedCanvases).greaterThan(0)" class="canvas-count">
+        (Frame #{{ formatNumber(add(completedCanvases, '1')) }})
       </span>
     </div>
   </div>
@@ -12,7 +12,7 @@
 
 <script setup>
 import { ref, onMounted, watch, onUnmounted } from 'vue'
-import { toDecimal } from '../../utils/numbers'
+import { toDecimal, formatNumber, add, multiply, gte } from '../../utils/numbers'
 
 // Canvas state
 const canvas = ref(null)
@@ -22,7 +22,7 @@ const renderedPixels = ref(0)
 const totalPixels = ref(0)
 const hueShift = ref(0)
 const isComplete = ref(false)
-const completedCanvases = ref(0)
+const completedCanvases = ref('0')
 
 // Animation IDs for cleanup
 const cursorAnimationId = ref(null)
@@ -34,6 +34,10 @@ const props = defineProps({
     required: true
   },
   spentPixels: {
+    type: String,
+    default: '0'
+  },
+  completedFrames: {
     type: String,
     default: '0'
   }
@@ -116,17 +120,22 @@ const renderPixels = (totalAvailable) => {
   if (!imageData.value || !canvas.value) return
 
   const canvasTotal = canvas.value.width * canvas.value.height
+  const canvasTotalStr = canvasTotal.toString()
 
-  // Calculate how many complete canvases we have rendered
-  const newCompletedCanvases = Math.floor(totalAvailable / canvasTotal)
+  // Calculate how many complete canvases we have rendered using Decimal
+  const totalAvailableDecimal = toDecimal(totalAvailable.toString())
+  const canvasTotalDecimal = toDecimal(canvasTotalStr)
+  const newCompletedCanvases = totalAvailableDecimal.dividedToIntegerBy(canvasTotalDecimal).toString()
 
   // Calculate pixels to render in the current canvas
-  const pixelsInCurrentCanvas = totalAvailable % canvasTotal
+  const pixelsInCurrentCanvas = totalAvailableDecimal.mod(canvasTotalDecimal).toNumber()
 
   // If we've completed a new canvas, update the hue shift more dramatically
-  if (newCompletedCanvases > completedCanvases.value) {
+  if (toDecimal(newCompletedCanvases).greaterThan(toDecimal(completedCanvases.value))) {
     // For each new completed canvas, use a more noticeable hue shift
-    hueShift.value = (newCompletedCanvases * 60) % 360
+    // We'll use modulo 360 to keep within hue range
+    const hueShiftValue = toDecimal(newCompletedCanvases).times(60).mod(360).toNumber()
+    hueShift.value = hueShiftValue
     completedCanvases.value = newCompletedCanvases
     isComplete.value = false
   }
@@ -218,9 +227,30 @@ watch(() => props.availablePixels, (newValue) => {
   renderPixels(availablePixels)
 })
 
+// Watch for changes in completedFrames prop from parent
+watch(() => props.completedFrames, (newValue) => {
+  if (!newValue) return
+  // Update the local completedCanvases when prop changes (e.g., when loading a save)
+  completedCanvases.value = newValue
+  
+  // Update hue shift based on the completed frames
+  if (canvas.value) {
+    const hueShiftValue = toDecimal(newValue).times(60).mod(360).toNumber()
+    hueShift.value = hueShiftValue
+    updateCanvas()
+  }
+})
+
 onMounted(() => {
   initializeCanvas()
   cursorAnimationId.value = requestAnimationFrame(animate)
+  
+  // Initialize completedCanvases from prop if available
+  if (props.completedFrames && toDecimal(props.completedFrames).greaterThan(0)) {
+    completedCanvases.value = props.completedFrames
+    const hueShiftValue = toDecimal(props.completedFrames).times(60).mod(360).toNumber()
+    hueShift.value = hueShiftValue
+  }
 })
 
 onUnmounted(() => {
