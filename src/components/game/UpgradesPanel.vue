@@ -17,16 +17,28 @@
           <!-- Filter by affordability -->
           <button 
             class="filter-button" 
-            :class="{ active: filters.onlyAffordable }" 
+            :class="{
+              'filter-show': filters.onlyAffordable === 'show',
+              'filter-hide': filters.onlyAffordable === 'hide'
+            }" 
             @click="toggleFilter('onlyAffordable')">
+            <span class="filter-mode-indicator">
+              {{ filters.onlyAffordable === 'show' ? '+' : filters.onlyAffordable === 'hide' ? '-' : '' }}
+            </span>
             AFFORDABLE
           </button>
           
           <!-- Filter by max level -->
           <button 
             class="filter-button" 
-            :class="{ active: filters.onlyMaxLevel }" 
+            :class="{
+              'filter-show': filters.onlyMaxLevel === 'show',
+              'filter-hide': filters.onlyMaxLevel === 'hide'
+            }" 
             @click="toggleFilter('onlyMaxLevel')">
+            <span class="filter-mode-indicator">
+              {{ filters.onlyMaxLevel === 'show' ? '+' : filters.onlyMaxLevel === 'hide' ? '-' : '' }}
+            </span>
             MAX LEVEL
           </button>
           
@@ -36,44 +48,86 @@
             <div class="filter-buttons">
               <button 
                 class="filter-button type-click" 
-                :class="{ active: filters.types.click }" 
+                :class="{
+                  'filter-show': filters.types.click === 'show',
+                  'filter-hide': filters.types.click === 'hide'
+                }" 
                 @click="toggleTypeFilter('click')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.click === 'show' ? '+' : filters.types.click === 'hide' ? '-' : '' }}
+                </span>
                 CLICK+
               </button>
               <button 
                 class="filter-button type-multiplier" 
-                :class="{ active: filters.types.clickMulti }" 
+                :class="{
+                  'filter-show': filters.types.clickMulti === 'show',
+                  'filter-hide': filters.types.clickMulti === 'hide'
+                }" 
                 @click="toggleTypeFilter('clickMulti')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.clickMulti === 'show' ? '+' : filters.types.clickMulti === 'hide' ? '-' : '' }}
+                </span>
                 MULTI×
               </button>
               <button 
                 class="filter-button type-automation" 
-                :class="{ active: filters.types.clickAuto }" 
+                :class="{
+                  'filter-show': filters.types.clickAuto === 'show',
+                  'filter-hide': filters.types.clickAuto === 'hide'
+                }" 
                 @click="toggleTypeFilter('clickAuto')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.clickAuto === 'show' ? '+' : filters.types.clickAuto === 'hide' ? '-' : '' }}
+                </span>
                 AUTO
               </button>
               <button 
                 class="filter-button type-critical" 
-                :class="{ active: filters.types.clickCrit }" 
+                :class="{
+                  'filter-show': filters.types.clickCrit === 'show',
+                  'filter-hide': filters.types.clickCrit === 'hide'
+                }" 
                 @click="toggleTypeFilter('clickCrit')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.clickCrit === 'show' ? '+' : filters.types.clickCrit === 'hide' ? '-' : '' }}
+                </span>
                 CRIT%
               </button>
               <button 
-                class="filter-button type-multiplier" 
-                :class="{ active: filters.types.clickCritMult }" 
+                class="filter-button type-multiplier"
+                :class="{
+                  'filter-show': filters.types.clickCritMult === 'show',
+                  'filter-hide': filters.types.clickCritMult === 'hide'
+                }" 
                 @click="toggleTypeFilter('clickCritMult')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.clickCritMult === 'show' ? '+' : filters.types.clickCritMult === 'hide' ? '-' : '' }}
+                </span>
                 CRIT×
               </button>
               <button 
                 class="filter-button type-rate" 
-                :class="{ active: filters.types.rate }" 
+                :class="{
+                  'filter-show': filters.types.rate === 'show',
+                  'filter-hide': filters.types.rate === 'hide'
+                }" 
                 @click="toggleTypeFilter('rate')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.rate === 'show' ? '+' : filters.types.rate === 'hide' ? '-' : '' }}
+                </span>
                 RATE+
               </button>
               <button 
                 class="filter-button type-multiplier" 
-                :class="{ active: filters.types.rateMulti }" 
+                :class="{
+                  'filter-show': filters.types.rateMulti === 'show',
+                  'filter-hide': filters.types.rateMulti === 'hide'
+                }" 
                 @click="toggleTypeFilter('rateMulti')">
+                <span class="filter-mode-indicator">
+                  {{ filters.types.rateMulti === 'show' ? '+' : filters.types.rateMulti === 'hide' ? '-' : '' }}
+                </span>
                 RATE×
               </button>
             </div>
@@ -142,16 +196,16 @@ const props = defineProps({
 // Filter state
 const filtersVisible = ref(false)
 const filters = ref({
-  onlyAffordable: false,
-  onlyMaxLevel: false,
+  onlyAffordable: 'off',  // 'off', 'show', 'hide'
+  onlyMaxLevel: 'off',    // 'off', 'show', 'hide'
   types: {
-    click: false,
-    clickMulti: false,
-    clickAuto: false,
-    clickCrit: false, 
-    clickCritMult: false,
-    rate: false,
-    rateMulti: false
+    click: 'off',
+    clickMulti: 'off',
+    clickAuto: 'off',
+    clickCrit: 'off', 
+    clickCritMult: 'off',
+    rate: 'off',
+    rateMulti: 'off'
   }
 })
 
@@ -160,39 +214,53 @@ const toggleFiltersVisible = () => {
   filtersVisible.value = !filtersVisible.value
 }
 
-// Toggle individual filters
+// Toggle individual filters - cycle through off -> show -> hide -> off
 const toggleFilter = (filterName) => {
-  filters.value[filterName] = !filters.value[filterName]
+  const currentMode = filters.value[filterName]
+  if (currentMode === 'off') {
+    filters.value[filterName] = 'show'
+  } else if (currentMode === 'show') {
+    filters.value[filterName] = 'hide'
+  } else {
+    filters.value[filterName] = 'off'
+  }
 }
 
-// Toggle type filters
+// Toggle type filters - cycle through off -> show -> hide -> off
 const toggleTypeFilter = (typeFilter) => {
-  filters.value.types[typeFilter] = !filters.value.types[typeFilter]
+  const currentMode = filters.value.types[typeFilter]
+  if (currentMode === 'off') {
+    filters.value.types[typeFilter] = 'show'
+  } else if (currentMode === 'show') {
+    filters.value.types[typeFilter] = 'hide'
+  } else {
+    filters.value.types[typeFilter] = 'off'
+  }
 }
 
 // Reset all filters
 const resetFilters = () => {
-  filters.value.onlyAffordable = false
-  filters.value.onlyMaxLevel = false
+  filters.value.onlyAffordable = 'off'
+  filters.value.onlyMaxLevel = 'off'
   Object.keys(filters.value.types).forEach(key => {
-    filters.value.types[key] = false
+    filters.value.types[key] = 'off'
   })
 }
 
 // Check if any filter is active
 const hasActiveFilters = computed(() => {
-  return filters.value.onlyAffordable || 
-    filters.value.onlyMaxLevel || 
-    Object.values(filters.value.types).some(value => value)
+  return filters.value.onlyAffordable !== 'off' || 
+    filters.value.onlyMaxLevel !== 'off' || 
+    Object.values(filters.value.types).some(value => value !== 'off')
 })
 
 // Count active filters
 const activeFilterCount = computed(() => {
   let count = 0
-  if (filters.value.onlyAffordable) count++
-  if (filters.value.onlyMaxLevel) count++
+  if (filters.value.onlyAffordable !== 'off') count++
+  if (filters.value.onlyMaxLevel !== 'off') count++
   Object.values(filters.value.types).forEach(value => {
-    if (value) count++
+    if (value !== 'off') count++
   })
   return count
 })
@@ -214,24 +282,40 @@ const filteredUpgrades = computed(() => {
   let result = [...props.upgrades]
   
   // Apply "affordable" filter if enabled
-  if (filters.value.onlyAffordable) {
+  if (filters.value.onlyAffordable === 'show') {
     result = result.filter(upgrade => canAffordUpgrade(upgrade))
+  } else if (filters.value.onlyAffordable === 'hide') {
+    result = result.filter(upgrade => !canAffordUpgrade(upgrade))
   }
   
   // Apply "max level" filter if enabled
-  if (filters.value.onlyMaxLevel) {
+  if (filters.value.onlyMaxLevel === 'show') {
     result = result.filter(upgrade => isMaxLevel(upgrade))
+  } else if (filters.value.onlyMaxLevel === 'hide') {
+    result = result.filter(upgrade => !isMaxLevel(upgrade))
   }
   
-  // Apply type filters if any are selected
-  const activeTypeFilters = Object.entries(filters.value.types)
-    .filter(([_, isActive]) => isActive)
+  // Get all active type filters grouped by mode
+  const showTypeFilters = Object.entries(filters.value.types)
+    .filter(([_, mode]) => mode === 'show')
+    .map(([filterName]) => filterName)
+    
+  const hideTypeFilters = Object.entries(filters.value.types)
+    .filter(([_, mode]) => mode === 'hide')
     .map(([filterName]) => filterName)
   
-  if (activeTypeFilters.length > 0) {
+  // Apply 'show' type filters if any are selected
+  if (showTypeFilters.length > 0) {
     // Get all upgrade types to include
-    const includedTypes = activeTypeFilters.flatMap(filter => typeFilterMap[filter])
+    const includedTypes = showTypeFilters.flatMap(filter => typeFilterMap[filter])
     result = result.filter(upgrade => includedTypes.includes(upgrade.type))
+  }
+  
+  // Apply 'hide' type filters if any are selected
+  if (hideTypeFilters.length > 0) {
+    // Get all upgrade types to exclude
+    const excludedTypes = hideTypeFilters.flatMap(filter => typeFilterMap[filter])
+    result = result.filter(upgrade => !excludedTypes.includes(upgrade.type))
   }
   
   // Always sort upgrades by price from low to high regardless of filters
