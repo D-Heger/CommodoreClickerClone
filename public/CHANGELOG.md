@@ -10,12 +10,11 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Potentially more upgrade paths
 - Prestige System
 - Different Images to Render
-- Optional filters in upgrade menu
+- Improved rendering performance? (to allow for higher auto clicker values ;) )
+- Find a way to avoid resetting canvas on frame completion, making it seem like you paint over the last frame instead of a flash to black
 - More CRT effects
 - UI improvements
-  - Stats display needs to be reworked (partially done)
-  - Improve mobile user experience
-- Improved rendering performance? (to allow for higher auto clicker values ;) )
+  - Further improve mobile user experience as well
 - [ ] Code Cleanup
   - [x] Refactor settings panel
   - [ ] Refactor upgrade panel
@@ -27,6 +26,8 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
   - Sound FX and Music
   - Support both English and German language
 - Offline generation (maybe only through upgrades)
+
+## 0.0.5 - XX.XX.2025
 
 ## 0.0.4 - 29.03.2025
 
