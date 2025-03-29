@@ -53,6 +53,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 - Fixed a bug where the About Section was not interactable anymore
 - Fixed a bug where upgrade costs could reach 'Infinity' (Now up to at least one quadrillion levels should work)
+- Fixed a bug where the completed frames counter was able to reach integer overflow
 
 ### Removed
 
