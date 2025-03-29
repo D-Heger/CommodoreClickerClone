@@ -1,24 +1,90 @@
-import { toDecimal } from './numbers';
+// Save data structure version for future compatibility using semantic versioning
+const SAVE_VERSION = '2.0.0';
 
-// Save data structure version for future compatibility
-const SAVE_VERSION = '1';
+// Version compatibility check levels
+const VERSION_COMPATIBILITY = {
+  COMPATIBLE: 'compatible',
+  WARNING: 'warning',
+  INCOMPATIBLE: 'incompatible'
+};
+
+/**
+ * Parses a semantic version string into its components
+ * @param {string} version - Version string in format "major.minor.patch"
+ * @returns {Object} Object with major, minor, and patch numbers
+ */
+const parseVersion = (version) => {
+  try {
+    // Handle non-standard version formats gracefully
+    if (!version || typeof version !== 'string') {
+      return { major: 0, minor: 0, patch: 0 };
+    }
+    
+    const parts = version.split('.');
+    return {
+      major: parseInt(parts[0]) || 0,
+      minor: parseInt(parts[1]) || 0, 
+      patch: parseInt(parts[2]) || 0
+    };
+  } catch (error) {
+    console.error('Failed to parse version:', error);
+    return { major: 0, minor: 0, patch: 0 };
+  }
+};
+
+/**
+ * Checks if a save version is compatible with the current game version
+ * @param {string} saveVersion - The version of the save file
+ * @returns {string} Compatibility level from VERSION_COMPATIBILITY
+ */
+const checkVersionCompatibility = (saveVersion) => {
+  // Parse both versions
+  const currentVersion = parseVersion(SAVE_VERSION);
+  const savedVersion = parseVersion(saveVersion);
+  
+  // If versions are identical, they're fully compatible
+  if (saveVersion === SAVE_VERSION) {
+    return VERSION_COMPATIBILITY.COMPATIBLE;
+  }
+  
+  // Major version differences indicate breaking changes
+  if (savedVersion.major !== currentVersion.major) {
+    return VERSION_COMPATIBILITY.INCOMPATIBLE;
+  }
+  
+  // Minor version increases indicate new features but backward compatibility
+  if (savedVersion.minor < currentVersion.minor) {
+    return VERSION_COMPATIBILITY.WARNING;
+  }
+  
+  // If save has newer minor version than game, it might have data the game doesn't understand
+  if (savedVersion.minor > currentVersion.minor) {
+    return VERSION_COMPATIBILITY.WARNING;
+  }
+  
+  // Patch differences are generally compatible
+  if (savedVersion.patch !== currentVersion.patch) {
+    // Patch level differences are typically for bug fixes and are compatible
+    return VERSION_COMPATIBILITY.COMPATIBLE;
+  }
+  
+  // Fallback - should never reach here
+  return VERSION_COMPATIBILITY.COMPATIBLE;
+};
+
+//XXX: Don't forget to update the version in the game when you change the save structure.
+// - Increment MAJOR version when you make incompatible API changes
+// - Increment MINOR version when you add functionality in a backward compatible manner
+// - Increment PATCH version when you make backward compatible bug fixes
 
 // Maximum number of save slots
 const MAX_SAVE_SLOTS = 5;
-
-// Structure for settings (placeholder for future settings)
-const defaultSettings = {
-  theme: 'C64',
-  soundFx: true,
-  music: true,
-  language: 'ENGLISH'
-};
 
 // Structure for a save file
 const createSaveData = (gameState) => ({
   version: SAVE_VERSION,
   timestamp: Date.now(),
-  settings: { ...defaultSettings },
+  settings: gameState.settings,
   pixels: gameState.pixels,
   totalPixels: gameState.totalPixels,
   spentPixels: gameState.spentPixels,
@@ -52,7 +118,18 @@ export const loadFromSlot = (slot) => {
     return null;
   }
 
-  return JSON.parse(saveData);
+  const parsedSave = JSON.parse(saveData);
+  
+  // Add version compatibility check
+  if (parsedSave.version) {
+    parsedSave.compatibility = checkVersionCompatibility(parsedSave.version);
+  } else {
+    // If no version is found, treat as potentially incompatible
+    parsedSave.compatibility = VERSION_COMPATIBILITY.WARNING;
+    parsedSave.version = 'unknown';
+  }
+  
+  return parsedSave;
 };
 
 // Delete a save slot
@@ -107,6 +184,9 @@ export const importSave = async (file) => {
       throw new Error('Invalid save file format');
     }
     
+    // Add version compatibility check
+    saveData.compatibility = checkVersionCompatibility(saveData.version);
+    
     return saveData;
   } catch (error) {
     throw new Error('Failed to import save file: ' + error.message);
@@ -118,4 +198,24 @@ export const resetAllData = () => {
   for (let i = 1; i <= MAX_SAVE_SLOTS; i++) {
     deleteSaveSlot(i);
   }
+};
+
+// Find the latest save across all slots
+export const findLatestSave = () => {
+  let latestSave = null;
+  let latestTimestamp = 0;
+
+  for (let i = 1; i <= MAX_SAVE_SLOTS; i++) {
+    try {
+      const saveData = loadFromSlot(i);
+      if (saveData && saveData.timestamp > latestTimestamp) {
+        latestTimestamp = saveData.timestamp;
+        latestSave = { slot: i, data: saveData };
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return latestSave;
 };

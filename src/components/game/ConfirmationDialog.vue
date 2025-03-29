@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="confirmation-overlay">
+  <div v-if="show" class="overlay">
     <div class="confirmation-dialog crt-panel">
       <h3>{{ message }}</h3>
       <div class="confirmation-actions">
@@ -33,34 +33,38 @@ const cancel = () => emit('cancel');
 </script>
 
 <style scoped>
-.confirmation-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
 .confirmation-dialog {
-  padding: 2rem;
-  max-width: 400px;
+  padding: var(--space-lg);
+  max-width: min(400px, 90vw);
   text-align: center;
   border: var(--panel-border);
+  border-radius: 4px;
+  background-color: var(--panel-bg);
+  position: relative;
 }
 
 .confirmation-dialog h3 {
   color: var(--warning);
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  line-height: 1.4;
 }
 
 .confirmation-actions {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: var(--space-md);
+}
+
+@media (max-width: var(--breakpoint-small)) {
+  .confirmation-dialog {
+    padding: var(--space-md);
+  }
+  
+  .confirmation-actions {
+    gap: var(--space-sm);
+    flex-direction: column;
+  }
 }
 </style>

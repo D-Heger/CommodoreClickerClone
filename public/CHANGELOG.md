@@ -6,14 +6,14 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## Unreleased
 
-- More Upgrades
+- Even more Upgrades
 - Potentially more upgrade paths
 - Prestige System
 - Different Images to Render
 - Optional filters in upgrade menu
 - More CRT effects
 - UI improvements
-  - Stats display needs to be reworked
+  - Stats display needs to be reworked (partially done)
   - Improve mobile user experience
 - Improved rendering performance? (to allow for higher auto clicker values ;) )
 - [ ] Code Cleanup
@@ -26,8 +26,38 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
   - Additional themes including Amiga and ZX
   - Sound FX and Music
   - Support both English and German language
-  - Implement functionality for saving and loading settings
-- Implement autoloading of last save state upon game start (maybe with a confirmation dialog)
+- Offline generation (maybe only through upgrades)
+
+## 0.0.4 - 29.03.2025
+
+### WARNING: UPDATE BRINGS SAVE-BREAKING CHANGES
+
+### Added
+
+- You like upgrades? Get ready for a _LOT_ more of them!
+- More cool upgrade types!
+- Settings are now saved as well
+- Implemented Autoloading of the latest save
+- Fancy 'popup' on critical hits
+- Save version compatibility checks
+- Added filters in the Upgrades panel
+
+### Changed
+
+- Now sanitizing changelog
+- Improved code formatting
+- Improved handling of really big numbers
+- Complete overhaul of the games UI
+
+### Fixed
+
+- Fixed a bug where the About Section was not interactable anymore
+- Fixed a bug where upgrade costs could reach 'Infinity' (Now up to at least one quadrillion levels should work)
+- Fixed a bug where the completed frames counter was able to reach integer overflow
+
+### Removed
+
+- Total Pixel count on the Pixel Canvas
 
 ## 0.0.3 - 24.03.2025
 

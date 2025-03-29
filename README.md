@@ -51,6 +51,15 @@ A retro-style incremental game inspired by the Commodore computers of the 1980s.
 ## Project Structure
 
 - `src/assets` - Game assets and configuration
+  - `src/assets/upgrades/` - Modular upgrade definitions by type
+    - `click.json` - Click-based upgrades
+    - `rate.json` - Rate-based upgrades
+    - `click_automation.json` - Auto-clicking upgrades
+    - `click_critical.json` - Critical hit chance upgrades
+    - `click_multiplier.json` - Click multiplier upgrades
+    - `click_critical_multiplier.json` - Critical hit multiplier upgrades
+    - `rate_multiplier.json` - Rate multiplier upgrades
+    - `index.js` - Module that combines all upgrade types
 - `src/components/game` - Game UI components
 - `src/utils` - Utility functions and game logic
 

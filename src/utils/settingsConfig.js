@@ -22,7 +22,7 @@ export const DEFAULT_SETTINGS = {
   language: 'ENGLISH'
 };
 
-export const VERSION = '0.0.3';
+export const VERSION = '0.0.3'; // TODO: Update version dynamically
 
 /**
  * Validates settings object against expected structure

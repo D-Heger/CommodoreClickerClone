@@ -1,24 +1,30 @@
 <template>
-  <div v-if="show" class="changelog-overlay">
+  <div v-if="show" class="overlay">
     <div class="changelog-popup crt-panel">
-      <h2 class="retro-title">CHANGELOG</h2>
+      <h2 class="retro-title">
+        CHANGELOG
+      </h2>
       <div class="changelog-content">
         <div v-if="!showFullChangelog">
           <h3>Latest Changes (v{{ latestVersion }})</h3>
           <div v-for="(section, type) in latestChanges" :key="type" class="changelog-section">
             <h4>{{ type }}</h4>
             <ul>
-              <li v-for="change in section" :key="change">{{ change }}</li>
+              <li v-for="change in section" :key="change">
+                {{ change }}
+              </li>
             </ul>
           </div>
         </div>
-        <div v-else v-html="parsedFullChangelog" class="full-changelog"></div>
+        <div v-else class="full-changelog" v-html="parsedFullChangelog" /> <!-- eslint-disable-line vue/no-v-html -->
       </div>
       <div class="changelog-actions">
         <button class="retro-button" @click="toggleFullChangelog">
           {{ showFullChangelog ? 'SHOW LATEST' : 'VIEW FULL CHANGELOG' }}
         </button>
-        <button class="retro-button" @click="close">CLOSE</button>
+        <button class="retro-button" @click="close">
+          CLOSE
+        </button>
       </div>
     </div>
   </div>
@@ -27,6 +33,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 
 const props = defineProps({
   show: {
@@ -43,7 +50,8 @@ const emit = defineEmits(['close'])
 const showFullChangelog = ref(false)
 
 const parsedFullChangelog = computed(() => {
-  return marked(props.changelog)
+  const html = marked(props.changelog)
+  return DOMPurify.sanitize(html)
 })
 
 const latestVersion = computed(() => {
@@ -65,9 +73,9 @@ const latestChanges = computed(() => {
   let inCurrentVersion = false
   let currentType = null
   let latestVersionFound = false
-  
+
   const lines = props.changelog.split('\n')
-  
+
   for (const line of lines) {
     // Start capturing at first version after Unreleased
     if (line.startsWith('## ') && !line.includes('Unreleased')) {
@@ -80,7 +88,7 @@ const latestChanges = computed(() => {
         break
       }
     }
-    
+
     if (inCurrentVersion) {
       if (line.startsWith('### ')) {
         currentType = line.slice(4).trim()
@@ -90,7 +98,7 @@ const latestChanges = computed(() => {
       }
     }
   }
-  
+
   return sections
 })
 
@@ -105,89 +113,130 @@ const close = () => {
 </script>
 
 <style scoped>
-.changelog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
 .changelog-popup {
   width: 90%;
   max-width: 600px;
   max-height: 80vh;
-  padding: 2rem;
+  padding: var(--space-lg);
   border: var(--panel-border);
+  background-color: var(--panel-bg);
+  position: relative;
+  z-index: var(--z-popup);
+  border-radius: 4px;
 }
 
 .changelog-content {
-  margin: 1.5rem 0;
+  margin: var(--space-md) 0;
   max-height: calc(80vh - 200px);
   overflow-y: auto;
   font-family: var(--font-mono);
   color: var(--text-secondary);
+  padding-right: var(--space-xs);
 }
 
 .changelog-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-md);
 }
 
 .changelog-section h4 {
   color: var(--primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-display);
+  font-size: clamp(0.8rem, 2.2vw, 1rem);
 }
 
 .changelog-section ul {
   list-style-type: none;
-  padding-left: 1rem;
+  padding-left: var(--space-md);
+  margin: 0;
 }
 
 .changelog-section li {
-  margin-bottom: 0.3rem;
+  margin-bottom: var(--space-xs);
+  padding-left: var(--space-sm);
+  position: relative;
 }
 
 .changelog-section li::before {
   content: '>';
   color: var(--primary);
-  margin-right: 0.5rem;
+  position: absolute;
+  left: -4px;
 }
 
 .changelog-actions {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
 }
 
+/* Styling for the rendered markdown content */
 .full-changelog :deep(h1),
 .full-changelog :deep(h2),
 .full-changelog :deep(h3) {
   color: var(--primary);
-  margin: 1rem 0;
+  margin: var(--space-sm) 0;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
 }
 
 .full-changelog :deep(ul) {
   list-style-type: none;
-  padding-left: 1rem;
+  padding-left: var(--space-md);
+  margin: var(--space-xs) 0;
 }
 
 .full-changelog :deep(li) {
-  margin-bottom: 0.3rem;
+  margin-bottom: var(--space-xs);
+  padding-left: var(--space-sm);
+  position: relative;
 }
 
 .full-changelog :deep(li::before) {
   content: '>';
   color: var(--primary);
-  margin-right: 0.5rem;
+  position: absolute;
+  left: -4px;
 }
 
 .full-changelog :deep(a) {
   color: var(--secondary);
+  text-decoration: none;
+}
+
+.full-changelog :deep(a:hover) {
+  text-decoration: underline;
+  color: var(--primary);
+}
+
+/* Mobile optimizations */
+@media (max-width: var(--breakpoint-medium)) {
+  .changelog-popup {
+    padding: var(--space-md);
+    max-height: 85vh;
+  }
+  
+  .changelog-content {
+    max-height: calc(85vh - 180px);
+  }
+  
+  .changelog-actions {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+}
+
+@media (max-width: var(--breakpoint-small)) {
+  .changelog-popup {
+    padding: var(--space-sm);
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .changelog-content {
+    max-height: calc(90vh - 160px);
+    margin: var(--space-sm) 0;
+  }
 }
 </style>
