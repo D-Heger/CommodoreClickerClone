@@ -16,6 +16,10 @@ export default defineConfig({
     // simulate DOM with jsdom
     environment: 'jsdom',
     // support vue component testing
+    // Exclude Playwright E2E tests
+    exclude: [
+      '**/node_modules/**', '**/dist/**', '**/tests/e2e/**'
+    ],
     deps: {
       inline: ['@vue/test-utils'],
     },
