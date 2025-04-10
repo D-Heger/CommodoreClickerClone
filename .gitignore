@@ -17,6 +17,7 @@ yarn.lock
 dist
 dist-ssr
 coverage
+.nyc_output
 
 # Local development
 *.local
@@ -42,3 +43,13 @@ coverage
 *.sublime-workspace
 .history
 .vercel
+memory-bank/
+
+# Testing
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/tests/e2e/screenshots/
+/tests/e2e/videos/
+/tests/e2e/traces/
